@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="lightbulb.png">img/icons/light-bulb.png</file>
+        <file alias="grating.png">img/icons/grating.png</file>
+        <file alias="shield.png">img/icons/shield.png</file>
+        <file alias="laser.png">img/icons/laser.png</file>
+        <file alias="lense.png">img/icons/lense.png</file>
+        <file alias="blower.png">img/icons/blower.png</file>
+        <file alias="lambda2.png">img/icons/lambda2.png</file>
+        <file alias="lambda4.png">img/icons/lambda4.png</file>
+        <file alias="phase-moduator.png">img/icons/phase-modulator.png</file>
+        <file alias="polarizer.png">img/icons/polarizer.png</file>
+    </qresource>
+</RCC>
