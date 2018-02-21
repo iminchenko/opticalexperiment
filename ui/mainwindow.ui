@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>853</width>
+    <height>593</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="ConstructAreaWidget" name="graphicsView">
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QTableWidget" name="tableWidget">
+          <column>
+           <property name="text">
+            <string>Property</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Value</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>853</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="instrumentToolBar">
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>50</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLaser"/>
+   <addaction name="separator"/>
+   <addaction name="actionOpticalGrating"/>
+   <addaction name="actionLightBlower"/>
+   <addaction name="actionLambda_2"/>
+   <addaction name="actionLambda_4"/>
+   <addaction name="actionPolarizer"/>
+   <addaction name="actionPhaseModulator"/>
+   <addaction name="separator"/>
+   <addaction name="actionShield"/>
+  </widget>
+  <action name="actionOpticalGrating">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/grating.png</normaloff>:/icons/grating.png</iconset>
+   </property>
+   <property name="text">
+    <string>OpticalGrating</string>
+   </property>
+   <property name="toolTip">
+    <string>Device (optical grating)</string>
+   </property>
+  </action>
+  <action name="actionShield">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/shield.png</normaloff>:/icons/shield.png</iconset>
+   </property>
+   <property name="text">
+    <string>Shield</string>
+   </property>
+   <property name="toolTip">
+    <string>Reciever (shield)</string>
+   </property>
+  </action>
+  <action name="actionLaser">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/laser.png</normaloff>:/icons/laser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Laser</string>
+   </property>
+   <property name="toolTip">
+    <string>Light source (laser)</string>
+   </property>
+  </action>
+  <action name="actionLightBlower">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/blower.png</normaloff>:/icons/blower.png</iconset>
+   </property>
+   <property name="text">
+    <string>Light blower</string>
+   </property>
+   <property name="toolTip">
+    <string>Device (light blower)</string>
+   </property>
+  </action>
+  <action name="actionLambda_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/lambda2.png</normaloff>:/icons/lambda2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lambda/2</string>
+   </property>
+  </action>
+  <action name="actionLambda_4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/lambda4.png</normaloff>:/icons/lambda4.png</iconset>
+   </property>
+   <property name="text">
+    <string>Lambda/4</string>
+   </property>
+  </action>
+  <action name="actionPolarizer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/polarizer.png</normaloff>:/icons/polarizer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Polarizer</string>
+   </property>
+  </action>
+  <action name="actionPhaseModulator">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/phase-moduator.png</normaloff>:/icons/phase-moduator.png</iconset>
+   </property>
+   <property name="text">
+    <string>PhaseModulator</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ConstructAreaWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>ui/constructareawidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../recource.qrc"/>
+ </resources>
+ <connections/>
+</ui>
