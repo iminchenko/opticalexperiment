@@ -7,10 +7,8 @@
 #define DEVICE_LIST singleton<DeviceList>()
 
 class DeviceList {
-//    friend class класс, который будет добавлять поля
-public:
     friend DeviceList& singleton<DeviceList>();
-
+public:
     void loadDevices(std::string filename);
 
     const Device& operator[](size_t id) const;

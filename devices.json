@@ -1,0 +1,32 @@
+[
+{
+    "name": "Test",
+    "description" : "Test device",
+    "matrix" : {
+        "rows" : 2,
+        "columns" : 2,
+        "data" : [
+                    [[1,0], [1,0]],
+                    [[1,0], [1,0]]
+                 ]
+    },
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [20, 20]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [0, 0, 1, 1]
+        },
+        {   
+            "type" : "text",
+            "data" : "lolkek"
+        },
+        { 
+            "type" : "rect",
+            "coordinates" : [0, 0, 1, 1]
+        }
+    ]
+}
+]

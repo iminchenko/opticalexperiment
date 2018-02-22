@@ -8,6 +8,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += c++1z
+
 TARGET = OpticalExperiment
 TEMPLATE = app
 
@@ -40,8 +42,10 @@ SOURCES += \
     ui/lambdaitem.cpp \
     ui/polarizeritem.cpp \
     ui/phasemodulatoritem.cpp \
-    utility/devicelist.cpp \
-    utility/device.cpp
+    deviceconfigs/device.cpp \
+    deviceconfigs/devicelist.cpp \
+    deviceconfigs/deviceviewconfig.cpp \
+    deviceconfigs/deviceviewlist.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -61,8 +65,10 @@ HEADERS += \
     ui/polarizeritem.h \
     ui/phasemodulatoritem.h \
     utility/singleton.hpp \
-    utility/devicelist.h \
-    utility/device.h
+    deviceconfigs/device.h \
+    deviceconfigs/devicelist.h \
+    deviceconfigs/deviceviewconfig.h \
+    deviceconfigs/deviceviewlist.h
 
 FORMS += \
     ui/mainwindow.ui
