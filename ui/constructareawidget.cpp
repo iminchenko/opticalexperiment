@@ -11,6 +11,7 @@
 #include "lambdaitem.h"
 #include "polarizeritem.h"
 #include "phasemodulatoritem.h"
+#include "genericitem.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
@@ -78,6 +79,9 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
         break;
     case InstrumentConfig::TYPE_PHASEMODULATOR:
         scene()->addItem(new PhaseModulatorItem(pos));
+        break;
+    case InstrumentConfig::TYPE_GENERIC:
+        scene()->addItem(new GenericItem(pos, INSTRUMENT_CONFIG.getItemId()));
         break;
     }
 }

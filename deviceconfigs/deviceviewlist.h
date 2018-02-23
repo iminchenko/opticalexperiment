@@ -11,6 +11,7 @@ class DeviceViewList {
     friend DeviceViewList& singleton<DeviceViewList>();
 public:
     void loadDevices(std::string filename);
+    size_t count() const;
 
     const DeviceViewConfig &operator[](size_t id) const;
 

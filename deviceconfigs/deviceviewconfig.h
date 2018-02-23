@@ -48,5 +48,5 @@ private:
     std::string _name;
     std::string _description;
 
-    std::vector<DrawingConfig> _drawing;
+    std::vector<DrawingConfig> _drawings;
 };

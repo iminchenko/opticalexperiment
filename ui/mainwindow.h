@@ -1,7 +1,8 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
+
+class QActionGroup;
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +17,8 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
-};
+    void initDevices();
 
-#endif // MAINWINDOW_H
+    Ui::MainWindow *ui;
+    QActionGroup *_grInstruments;
+};

@@ -45,7 +45,8 @@ SOURCES += \
     deviceconfigs/device.cpp \
     deviceconfigs/devicelist.cpp \
     deviceconfigs/deviceviewconfig.cpp \
-    deviceconfigs/deviceviewlist.cpp
+    deviceconfigs/deviceviewlist.cpp \
+    ui/genericitem.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -68,7 +69,9 @@ HEADERS += \
     deviceconfigs/device.h \
     deviceconfigs/devicelist.h \
     deviceconfigs/deviceviewconfig.h \
-    deviceconfigs/deviceviewlist.h
+    deviceconfigs/deviceviewlist.h \
+    globaldefines.h \
+    ui/genericitem.h
 
 FORMS += \
     ui/mainwindow.ui

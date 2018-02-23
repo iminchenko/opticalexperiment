@@ -42,10 +42,10 @@ void DeviceViewList::loadDevices(std::string filename) {
 
     QJsonArray arr = doc.array();
 
-    _devList.resize(arr.size());
+    _devList.reserve(arr.size());
 
-    for (int i = 0; i < arr.size(); ++i) {
-        QJsonObject obj = arr[i].toObject();
+    for (const auto &iter : arr) {
+        QJsonObject obj = iter.toObject();
 
         QJsonArray drawArray = obj["drawing"].toArray();
 
@@ -75,9 +75,13 @@ void DeviceViewList::loadDevices(std::string filename) {
             drawing.push_back(oneDrawing);
         }
 
-        _devList[i] = DeviceViewConfig(obj["name"].toString().toStdString(),
-                obj["description"].toString().toStdString(), drawing);
+        _devList.push_back(DeviceViewConfig(obj["name"].toString().toStdString(),
+                obj["description"].toString().toStdString(), drawing));
     }
+}
+
+size_t DeviceViewList::count() const {
+    return _devList.size();
 }
 
 const DeviceViewConfig &DeviceViewList::operator[](size_t id) const {

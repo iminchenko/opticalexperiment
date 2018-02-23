@@ -17,12 +17,14 @@ public:
         TYPE_LAMBDA4,
         TYPE_POLARIZER,
         TYPE_PHASEMODULATOR,
-        TYPE_SHIELD
+        TYPE_SHIELD,
+        TYPE_GENERIC
     };
 
     InstrumentConfig();
 
     instrumentType getType() const;
+    int getItemId() const;
 
 public slots:
     void setType(instrumentType type);
@@ -35,7 +37,9 @@ public slots:
     void setTypeLambda4();
     void setTypePolarizer();
     void setTypePhaseModulator();
+    void setTypeGeneric();
 
 private:
     instrumentType _type;
+    int _itemId;
 };
