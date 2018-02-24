@@ -5,11 +5,11 @@
 #include <QByteArray>
 #include <QFile>
 #include <QDebug>
-#include <vector>
+#include <list>
 
 #include "deviceviewlist.h"
 
-using std::vector;
+using std::list;
 
 void DeviceViewList::loadDevices(std::string filename) {
     QJsonDocument doc;
@@ -49,8 +49,7 @@ void DeviceViewList::loadDevices(std::string filename) {
 
         QJsonArray drawArray = obj["drawing"].toArray();
 
-        vector<DrawingConfig> drawing;
-        drawing.reserve(drawArray.size());
+        list<DrawingConfig> drawing;
 
         for (const auto &item : drawArray) {
             QJsonValue drawObj = item.toObject();
@@ -69,14 +68,18 @@ void DeviceViewList::loadDevices(std::string filename) {
                 }
             }
             else {
-                oneDrawing.text = drawObj["text"].toString().toStdString();
+                oneDrawing.text = drawObj["data"].toString().toStdString();
             }
 
             drawing.push_back(oneDrawing);
         }
 
-        _devList.push_back(DeviceViewConfig(obj["name"].toString().toStdString(),
-                obj["description"].toString().toStdString(), drawing));
+        int inputCount = obj["inputs"].toInt();
+        int outputCount = obj["outputs"].toInt();
+
+        _devList.push_back(DeviceViewConfig(inputCount, outputCount,
+                        obj["name"].toString().toStdString(),
+                        obj["description"].toString().toStdString(), drawing));
     }
 }
 

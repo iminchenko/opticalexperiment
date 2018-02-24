@@ -1,10 +1,10 @@
 [
 {
-    "name": "Test",
-    "description" : "Test device",
+    "name": "Optical grating",
+    "description" : "",
+    "inputs" : 1,
+    "outputs" : 1,
     "matrix" : {
-        "rows" : 2,
-        "columns" : 2,
         "data" : [
                     [[1,0], [1,0]],
                     [[1,0], [1,0]]
@@ -13,19 +13,141 @@
     "drawing" : [
         { 
             "type" : "size",
-            "coordinates" :  [20, 20]
+            "coordinates" :  [50, 50]
         },
         { 
             "type" : "line",
-            "coordinates" : [0, 0, 1, 1]
+            "coordinates" : [0, -8, 0, -13]
         },
-        {   
+        { 
+            "type" : "line",
+            "coordinates" : [0, -3, 0, 3]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [0, 8, 0, 13]
+        }
+    ]
+},
+{
+    "name": "Light blower",
+    "description" : "",
+    "inputs" : 2,
+    "outputs" : 2,
+    "matrix" : {
+        "data" : [
+                    [[1,0], [1,0]],
+                    [[1,0], [1,0]]
+                 ]
+    },
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [50, 50]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [15, -15, -15, 15]
+        }
+    ]
+},
+{
+    "name": "Lambda/2",
+    "description" : "",
+    "inputs" : 1,
+    "outputs" : 1,
+    "matrix" : {
+        "data" : [
+                    [[1,0], [1,0]],
+                    [[1,0], [1,0]]
+                 ]
+    },
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [50, 50]
+        },
+        { 
             "type" : "text",
-            "data" : "lolkek"
+            "data" : "λ/2"
+        }
+    ]
+},
+{
+    "name": "Lambda/4",
+    "description" : "",
+    "inputs" : 1,
+    "outputs" : 1,
+    "matrix" : {
+        "data" : [
+                    [[1,0], [1,0]],
+                    [[1,0], [1,0]]
+                 ]
+    },
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [50, 50]
+        },
+        { 
+            "type" : "text",
+            "data" : "λ/4"
+        }
+    ]
+},
+{
+    "name": "Polariser",
+    "description" : "",
+    "inputs" : 1,
+    "outputs" : 1,
+    "matrix" : {
+        "data" : [
+                    [[1,0], [1,0]],
+                    [[1,0], [1,0]]
+                 ]
+    },
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [50, 50]
         },
         { 
             "type" : "rect",
-            "coordinates" : [0, 0, 1, 1]
+            "coordinates" : [-10, -7, 20, 14]
+        }
+    ]
+},
+{
+    "name": "Phase modulator",
+    "description" : "",
+    "inputs" : 1,
+    "outputs" : 1,
+    "matrix" : {
+        "data" : [
+                    [[1,0], [1,0]],
+                    [[1,0], [1,0]]
+                 ]
+    },
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [50, 50]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [-10, -5, 10, -5]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [-10, 5, 10, 5]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [0, -5, 0, -10]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [0, 5, 0, 10]
         }
     ]
 }

@@ -2,8 +2,11 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 #include <QPainter>
+#include <QRectF>
+#include <QDebug>
 
 struct DrawingConfig {
     enum drawingType {
@@ -11,7 +14,8 @@ struct DrawingConfig {
         TYPE_LINE,
         TYPE_RECT,
         TYPE_CIRCLE,
-        TYPE_TEXT
+        TYPE_TEXT,
+        TYPE_UNKNOWN
     };
 
     // возможно стоит отсюда перенести
@@ -26,6 +30,10 @@ struct DrawingConfig {
             return TYPE_CIRCLE;
         if (type == "text")
             return TYPE_TEXT;
+
+        qDebug() << "Unknown string drawing type" << type.c_str();
+
+        return TYPE_UNKNOWN;
     }
 
     std::string text;
@@ -36,17 +44,30 @@ struct DrawingConfig {
 class DeviceViewConfig {
 public:
     DeviceViewConfig() = default;
-    DeviceViewConfig(const std::string &name, const std::string &descrption,
-                                    const std::vector<DrawingConfig> &drawing);
+    DeviceViewConfig(int inputCount, int outputCount, const std::string &name,
+        const std::string &descrption, const std::list<DrawingConfig> &drawing);
+
+    void setSize(float width, float height);
+    void setBounding(const QRectF& rect);
+
+    QRectF getBounding() const;
 
     std::string getName() const;
     std::string getDescription() const;
 
-    void draw(QPainter *painter) const;
+    int getInputCount() const;
+    int getOutputCount() const;
+
+    void draw(QPainter *painter, bool selected = false) const;
 
 private:
+    int _inputs;
+    int _outputs;
+
     std::string _name;
     std::string _description;
 
-    std::vector<DrawingConfig> _drawings;
+    QRectF _bounding;
+
+    std::list<DrawingConfig> _drawings;
 };

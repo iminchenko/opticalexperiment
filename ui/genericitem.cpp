@@ -2,19 +2,33 @@
 #include "deviceconfigs/deviceviewlist.h"
 
 GenericItem::GenericItem(QPointF pos, int itemId, QGraphicsItem *parent)
-    :ConstructorItem(pos, parent), _itemId(itemId) {}
+    :ConstructorItem(pos, parent), _itemId(itemId) {
+    // как-то некрасиво, надо переписать
+    int count = DEVICEVIEW_LIST[_itemId].getInputCount();
+    if (count > 1) {
+        for (int i = 0; i < count; ++i)
+            addInputVertex((float)i / (count - 1) * 90);
+    }
+    else {
+        addInputVertex();
+    }
 
-void GenericItem::paint(QPainter *painter,
-                    const QStyleOptionGraphicsItem *option, QWidget *widget) {
-//    drawBox(painter);
+    count = DEVICEVIEW_LIST[_itemId].getOutputCount();
 
-//    painter->setPen(QPen(defaultBorderColor, defaultBorderWidth));
-//    painter->setBrush(Qt::NoBrush);
+    if (count > 1) {
+        for (int i = 0; i < count; ++i)
+            addOutputVertex(((float)i / (count - 1)) * 90);
+    }
+    else {
+        addOutputVertex();
+    }
+}
 
-//    painter->drawLine(QPointF(-15, 0), QPointF(15, 0));
-//    painter->drawLine(QPointF(10, 5), QPointF(10, -5));
-//    painter->drawLine(QPointF(7, 3), QPointF(13, -3));
-//    painter->drawLine(QPointF(13, 3), QPointF(7, -3));
+void GenericItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
+                                                                    QWidget *) {
+    DEVICEVIEW_LIST[_itemId].draw(painter, isSelected());
+}
 
-    DEVICEVIEW_LIST[_itemId].draw(painter);
+QRectF GenericItem::boundingRect() const {
+    return DEVICEVIEW_LIST[_itemId].getBounding();
 }
