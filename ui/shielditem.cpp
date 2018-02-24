@@ -4,8 +4,7 @@
 
 ShieldItem::ShieldItem(QPointF pos, QGraphicsItem *parent)
     :ConstructorItem(pos, parent), _angle(0) {
-    addInputVertex(15);
-    addInputVertex(-15);
+    addInputVertex();
 }
 
 void ShieldItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*,
