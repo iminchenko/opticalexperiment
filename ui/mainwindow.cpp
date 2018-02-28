@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
             p, SLOT(loadProperties(Properties*)));
 
     initDevices();
+
+    ui->graphicsView->resize(this->height() * 4 / 5, 0);
 }
 
 MainWindow::~MainWindow() {
