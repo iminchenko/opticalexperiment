@@ -44,7 +44,8 @@ SOURCES += \
     ui/genericitem.cpp \
     deviceconfigs/display.cpp \
     deviceconfigs/laser.cpp \
-    deviceconfigs/ordinalfunction.cpp
+    deviceconfigs/ordinalfunction.cpp \
+    devicemanager.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -73,7 +74,8 @@ HEADERS += \
     utility/singleton.hpp \
     globaldefines.h \
     matrix.h \
-    ui/laseritem.h
+    ui/laseritem.h \
+    devicemanager.h
 
 FORMS += \
     ui/mainwindow.ui
