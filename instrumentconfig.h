@@ -2,7 +2,7 @@
 
 #include <QObject>
 
-#include "singleton.hpp"
+#include "utility/singleton.hpp"
 
 #define INSTRUMENT_CONFIG singleton<InstrumentConfig>()
 

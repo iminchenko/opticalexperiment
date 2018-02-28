@@ -46,7 +46,10 @@ SOURCES += \
     deviceconfigs/devicelist.cpp \
     deviceconfigs/deviceviewconfig.cpp \
     deviceconfigs/deviceviewlist.cpp \
-    ui/genericitem.cpp
+    ui/genericitem.cpp \
+    deviceconfigs/display.cpp \
+    deviceconfigs/laser.cpp \
+    deviceconfigs/ordinalfunction.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -71,7 +74,15 @@ HEADERS += \
     deviceconfigs/deviceviewconfig.h \
     deviceconfigs/deviceviewlist.h \
     globaldefines.h \
-    ui/genericitem.h
+    ui/genericitem.h \
+    matrix.h \
+    deviceconfigs/display.h \
+    deviceconfigs/laser.h \
+    deviceconfigs/ordinalfunction.h \
+    deviceconfigs/wave.h \
+    utility/singleton.hpp \
+    globaldefines.h \
+    matrix.h
 
 FORMS += \
     ui/mainwindow.ui

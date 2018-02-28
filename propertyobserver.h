@@ -8,8 +8,7 @@
 class PropertyObserver: public QObject {
     Q_OBJECT
 public:
-    PropertyObserver(QTableWidget *propertyWidget,
-                     QObject *parent = nullptr);
+    PropertyObserver(QTableWidget *propertyWidget, QObject *parent = nullptr);
 
 public slots:
     void loadProperties(Properties *item);

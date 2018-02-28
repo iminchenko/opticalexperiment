@@ -1,6 +1,6 @@
 #pragma once
 
-#include <singleton.hpp>
+#include <utility/singleton.hpp>
 #include <vector>
 #include "device.h"
 

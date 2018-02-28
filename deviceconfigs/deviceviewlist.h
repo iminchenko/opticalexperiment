@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "singleton.hpp"
+#include "utility/singleton.hpp"
 #include "deviceviewconfig.h"
 
 #define DEVICEVIEW_LIST singleton<DeviceViewList>()

@@ -1,5 +1,6 @@
 #ifndef LASER_H
 #define LASER_H
+
 #include <cmath>
 #define _USE_MATH_DEFINES
 
@@ -7,7 +8,7 @@ class Laser
 {
 public:
     Laser();
-    const double c = 1;
+    static const double c;
 
     void setLambda(const double lambda);
     double getLamda() const;
@@ -17,5 +18,6 @@ public:
 private:
     double lambda_ = 1;
 };
+
 
 #endif // LASER_H

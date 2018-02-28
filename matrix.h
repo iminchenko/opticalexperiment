@@ -2,7 +2,7 @@
 #define MATRIX_H
 #include <complex>
 #include <vector>
-#include "wave.h"
+#include "deviceconfigs/wave.h"
 
 template<class T>
 class Matrix
