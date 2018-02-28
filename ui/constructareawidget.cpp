@@ -1,16 +1,12 @@
 #include <QMouseEvent>
 
 #include "constructareawidget.h"
-#include "opticalgratingitem.h"
 #include "shielditem.h"
 #include "laseritem.h"
 #include "vertexitem.h"
 #include "connectionitem.h"
 #include "instrumentconfig.h"
 #include "bloweritem.h"
-#include "lambdaitem.h"
-#include "polarizeritem.h"
-#include "phasemodulatoritem.h"
 #include "genericitem.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
@@ -59,26 +55,8 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     case InstrumentConfig::TYPE_LASER:
         scene()->addItem(new LaserItem(pos));
         break;
-    case InstrumentConfig::TYPE_OPTICALGRATING:
-        scene()->addItem(new OpticalGratingItem(pos));
-        break;
-    case InstrumentConfig::TYPE_LIGHTBLOWER:
-        scene()->addItem(new BlowerItem(pos));
-        break;
-    case InstrumentConfig::TYPE_LAMBDA2:
-        scene()->addItem(new LambdaItem(2, pos));
-        break;
-    case InstrumentConfig::TYPE_LAMBDA4:
-        scene()->addItem(new LambdaItem(4, pos));
-        break;
     case InstrumentConfig::TYPE_SHIELD:
         scene()->addItem(new ShieldItem(pos));
-        break;
-    case InstrumentConfig::TYPE_POLARIZER:
-        scene()->addItem(new PolarizerItem(pos));
-        break;
-    case InstrumentConfig::TYPE_PHASEMODULATOR:
-        scene()->addItem(new PhaseModulatorItem(pos));
         break;
     case InstrumentConfig::TYPE_GENERIC:
         scene()->addItem(new GenericItem(pos, INSTRUMENT_CONFIG.getItemId()));

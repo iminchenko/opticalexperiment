@@ -1,7 +1,7 @@
 #ifndef WAVE_H
 #define WAVE_H
-#include <complex>
 
+#include <complex>
 
 class Wave
 {

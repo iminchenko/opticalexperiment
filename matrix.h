@@ -1,5 +1,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
+
 #include <complex>
 #include <vector>
 #include "deviceconfigs/wave.h"

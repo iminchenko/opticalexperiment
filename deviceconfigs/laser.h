@@ -19,5 +19,6 @@ private:
     double lambda_ = 1;
 };
 
+const double Laser::c = 1;
 
 #endif // LASER_H
