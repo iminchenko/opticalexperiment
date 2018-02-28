@@ -30,18 +30,13 @@ SOURCES += \
     ui/mainwindow.cpp \
     ui/constructareawidget.cpp \
     ui/shielditem.cpp \
-    ui/opticalgratingitem.cpp \
     ui/vertexitem.cpp \
     ui/constructoritem.cpp \
     ui/connectionitem.cpp \
     instrumentconfig.cpp \
     ui/laseritem.cpp \
-    ui/bloweritem.cpp \
     properties.cpp \
     propertyobserver.cpp \
-    ui/lambdaitem.cpp \
-    ui/polarizeritem.cpp \
-    ui/phasemodulatoritem.cpp \
     deviceconfigs/device.cpp \
     deviceconfigs/devicelist.cpp \
     deviceconfigs/deviceviewconfig.cpp \
@@ -55,19 +50,14 @@ HEADERS += \
     ui/mainwindow.h \
     ui/constructareawidget.h \
     ui/shielditem.h \
-    ui/opticalgratingitem.h \
     ui/vertexitem.h \
     ui/constructoritem.h \
     ui/connectionitem.h \
     singleton.hpp \
     instrumentconfig.h \
-    ui/laseritem.h \
     ui/bloweritem.h \
     properties.h \
     propertyobserver.h \
-    ui/lambdaitem.h \
-    ui/polarizeritem.h \
-    ui/phasemodulatoritem.h \
     utility/singleton.hpp \
     deviceconfigs/device.h \
     deviceconfigs/devicelist.h \
@@ -82,7 +72,8 @@ HEADERS += \
     deviceconfigs/wave.h \
     utility/singleton.hpp \
     globaldefines.h \
-    matrix.h
+    matrix.h \
+    ui/laseritem.h
 
 FORMS += \
     ui/mainwindow.ui

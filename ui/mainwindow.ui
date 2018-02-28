@@ -94,30 +94,8 @@
    </attribute>
    <addaction name="actionLaser"/>
    <addaction name="separator"/>
-   <addaction name="actionOpticalGrating"/>
-   <addaction name="actionLightBlower"/>
-   <addaction name="actionLambda_2"/>
-   <addaction name="actionLambda_4"/>
-   <addaction name="actionPolarizer"/>
-   <addaction name="actionPhaseModulator"/>
-   <addaction name="separator"/>
    <addaction name="actionShield"/>
   </widget>
-  <action name="actionOpticalGrating">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../recource.qrc">
-     <normaloff>:/icons/grating.png</normaloff>:/icons/grating.png</iconset>
-   </property>
-   <property name="text">
-    <string>OpticalGrating</string>
-   </property>
-   <property name="toolTip">
-    <string>Device (optical grating)</string>
-   </property>
-  </action>
   <action name="actionShield">
    <property name="checkable">
     <bool>true</bool>
@@ -146,69 +124,6 @@
    </property>
    <property name="toolTip">
     <string>Light source (laser)</string>
-   </property>
-  </action>
-  <action name="actionLightBlower">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../recource.qrc">
-     <normaloff>:/icons/blower.png</normaloff>:/icons/blower.png</iconset>
-   </property>
-   <property name="text">
-    <string>Light blower</string>
-   </property>
-   <property name="toolTip">
-    <string>Device (light blower)</string>
-   </property>
-  </action>
-  <action name="actionLambda_2">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../recource.qrc">
-     <normaloff>:/icons/lambda2.png</normaloff>:/icons/lambda2.png</iconset>
-   </property>
-   <property name="text">
-    <string>Lambda/2</string>
-   </property>
-  </action>
-  <action name="actionLambda_4">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../recource.qrc">
-     <normaloff>:/icons/lambda4.png</normaloff>:/icons/lambda4.png</iconset>
-   </property>
-   <property name="text">
-    <string>Lambda/4</string>
-   </property>
-  </action>
-  <action name="actionPolarizer">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../recource.qrc">
-     <normaloff>:/icons/polarizer.png</normaloff>:/icons/polarizer.png</iconset>
-   </property>
-   <property name="text">
-    <string>Polarizer</string>
-   </property>
-  </action>
-  <action name="actionPhaseModulator">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../recource.qrc">
-     <normaloff>:/icons/phase-moduator.png</normaloff>:/icons/phase-moduator.png</iconset>
-   </property>
-   <property name="text">
-    <string>PhaseModulator</string>
    </property>
   </action>
  </widget>
