@@ -1,20 +1,31 @@
-#ifndef DEVICEMANAGER_H
-#define DEVICEMANAGER_H
+#pragma once
+#include <vector>
+
 #include "matrix.h"
+#include "utility/singleton.hpp"
 
-class DeviceManager
-{
+#define DEVICE_MANAGER singleton<DeviceManager>()
+
+class DeviceManager {
 public:
-    DeviceManager();
+    friend DeviceManager& singleton<DeviceManager>();
 
-    void addDevice();
+    enum deviceType {
+        TYPE_LASER = -1,
+        TYPE_SHIELD = -2
+    };
+
+    void addDevice(int type);
     void addConnection(int sourceIdDevice, int finalDivece, int destIdDevice);
+    // в разработке
     void removeDevice(int idDevice);
+
+    size_t deviceCount() const;
+
+protected:
+    DeviceManager() = default;
 
 private:
     Matrix<int> matrConn_;
-
-
+    std::vector<int> _types;
 };
-
-#endif // DEVICEMANAGER_H

@@ -8,6 +8,7 @@
 #include "instrumentconfig.h"
 #include "bloweritem.h"
 #include "genericitem.h"
+#include "devicemanager.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
@@ -16,7 +17,6 @@ ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     setScene(scene);
 
     setRenderHint(QPainter::Antialiasing);
-
 //    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
@@ -51,17 +51,24 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
 
     auto pos = mapToScene(event->pos());
 
+    int type;
+
     switch (INSTRUMENT_CONFIG.getType()) {
     case InstrumentConfig::TYPE_LASER:
         scene()->addItem(new LaserItem(pos));
+        type = DeviceManager::TYPE_LASER;
         break;
     case InstrumentConfig::TYPE_SHIELD:
         scene()->addItem(new ShieldItem(pos));
+        type = DeviceManager::TYPE_SHIELD;
         break;
     case InstrumentConfig::TYPE_GENERIC:
         scene()->addItem(new GenericItem(pos, INSTRUMENT_CONFIG.getItemId()));
+        type = INSTRUMENT_CONFIG.getItemId();
         break;
     }
+
+    DEVICE_MANAGER.addDevice(type);
 }
 
 void ConstructAreaWidget::keyPressEvent(QKeyEvent *event) {

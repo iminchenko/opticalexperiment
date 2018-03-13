@@ -18,6 +18,7 @@ public:
 
 private:
     void initDevices();
+    void initCharts();
 
     Ui::MainWindow *ui;
     QActionGroup *_grInstruments;

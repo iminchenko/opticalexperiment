@@ -67,9 +67,9 @@ QRectF ConstructorItem::boundingRect() const {
 void ConstructorItem::keyPressEvent(QKeyEvent *event) {
     QGraphicsItem::keyPressEvent(event);
 
-    // there may be a better solution
-    if (event->key() == Qt::Key_Delete)
-        delete this;
+//    // there may be a better solution
+//    if (event->key() == Qt::Key_Delete)
+//        delete this;
 }
 
 QVariant ConstructorItem::itemChange(QGraphicsItem::GraphicsItemChange change,

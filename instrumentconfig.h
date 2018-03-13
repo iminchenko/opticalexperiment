@@ -10,15 +10,9 @@ class InstrumentConfig: public QObject{
     Q_OBJECT
 public:
     enum instrumentType {
-        TYPE_LASER = 0,
-        TYPE_OPTICALGRATING,
-        TYPE_LIGHTBLOWER,
-        TYPE_LAMBDA2,
-        TYPE_LAMBDA4,
-        TYPE_POLARIZER,
-        TYPE_PHASEMODULATOR,
-        TYPE_SHIELD,
-        TYPE_GENERIC
+        TYPE_LASER = -1,
+        TYPE_SHIELD = -2,
+        TYPE_GENERIC = 0
     };
 
     InstrumentConfig();
@@ -30,13 +24,7 @@ public slots:
     void setType(instrumentType type);
 
     void setTypeLaser();
-    void setTypeOpticalGrating();
-    void setTypeLightblower();
     void setTypeShield();
-    void setTypeLambda2();
-    void setTypeLambda4();
-    void setTypePolarizer();
-    void setTypePhaseModulator();
     void setTypeGeneric();
 
 private:

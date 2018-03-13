@@ -55,9 +55,7 @@ void OrdinalFunction::createNullLlv()
             highLvls_[0].append(column);
             notUsedNode_.removeOne(column);
         }
-
     }
-
 }
 
 void OrdinalFunction::createNotUsedNode(const int N)

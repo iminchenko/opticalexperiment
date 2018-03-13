@@ -1,3 +1,7 @@
+#include <QtCharts>
+#include <QtCharts/QChartView>
+#include <QSpacerItem>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "instrumentconfig.h"
@@ -28,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
             p, SLOT(loadProperties(Properties*)));
 
     initDevices();
+    initCharts();
 
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
 }
@@ -47,6 +52,37 @@ void MainWindow::initDevices() {
         ui->instrumentToolBar->insertAction(ui->actionShield, act);
         connect(act, SIGNAL(toggled(bool)),
                 &INSTRUMENT_CONFIG, SLOT(setTypeGeneric()));
+
+        // icon creation
+        // TODO: вынести в отдельный блок
+        QImage img(DEVICEVIEW_LIST[i].getBounding().size().toSize(), QImage::Format_ARGB32);
+        QPainter painter(&img);
+
+        painter.setRenderHint(QPainter::Antialiasing);
+
+        painter.translate(img.width()/2, img.height()/2);
+        painter.scale(0.85, 0.85);
+
+        img.fill(QColor(0, 0, 0, 0));
+
+        DEVICEVIEW_LIST[i].draw(&painter);
+
+        QPixmap pix;
+        pix.convertFromImage(img);
+        act->setIcon(QIcon(pix));
     }
     ui->instrumentToolBar->insertSeparator(ui->actionShield);
+}
+
+void MainWindow::initCharts() {
+    QChart *chart = new QChart();
+    chart->setTitle("Screen chart");
+
+    chart->addSeries(new QLineSeries(chart));
+    chart->createDefaultAxes();
+    chart->legend()->hide();
+    chart->axisX()->setRange(-1, 1);
+    chart->axisY()->setRange(0, 1);
+
+    ui->leftLayout->insertWidget(1, new QChartView(chart));
 }

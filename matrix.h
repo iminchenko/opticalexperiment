@@ -85,9 +85,7 @@ void Matrix<T>::removeAt(int index)
     if (index > rows_ || index > columns_)
         throw "Не верный индекс";
 
-    matrix_.removeAt(index);
-    for (int i = 0; i < matrix_.size(); i++)
-        matrix_[i].removeAt(index);
+    matrix_.erase(matrix_.begin() + index);
 }
 
 /* Добавить реализацию */

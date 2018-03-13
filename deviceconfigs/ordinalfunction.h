@@ -1,15 +1,15 @@
-#ifndef ORDINALFUNCTION_H
-#define ORDINALFUNCTION_H
+#pragma once
+
 #include "matrix.h"
 #include <QVector>
 
-class OrdinalFunction
-{
+class OrdinalFunction {
 public:
     OrdinalFunction();
 
     QVector<int> path();
     QVector<int> path(const Matrix<int> &inc);
+
 private:
     Matrix<int> inc_;
     QVector<int> notUsedNode_;
@@ -22,5 +22,3 @@ private:
     void createHierarchyLvls();
     void allClear(); //Зачистка всех векторов
 };
-
-#endif // ORDINALFUNCTION_H

@@ -21,32 +21,8 @@ void InstrumentConfig::setTypeLaser() {
     setType(TYPE_LASER);
 }
 
-void InstrumentConfig::setTypeOpticalGrating() {
-    setType(TYPE_OPTICALGRATING);
-}
-
-void InstrumentConfig::setTypeLightblower() {
-    setType(TYPE_LIGHTBLOWER);
-}
-
 void InstrumentConfig::setTypeShield() {
     setType(TYPE_SHIELD);
-}
-
-void InstrumentConfig::setTypeLambda2() {
-    setType(TYPE_LAMBDA2);
-}
-
-void InstrumentConfig::setTypeLambda4() {
-    setType(TYPE_LAMBDA4);
-}
-
-void InstrumentConfig::setTypePolarizer() {
-    setType(TYPE_POLARIZER);
-}
-
-void InstrumentConfig::setTypePhaseModulator() {
-    setType(TYPE_PHASEMODULATOR);
 }
 
 void InstrumentConfig::setTypeGeneric() {
