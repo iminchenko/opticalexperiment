@@ -1,1 +1,8 @@
+**/release
+**/debug
 *.user
+Makefile*
+ui_*
+*.Release
+*.Debug
+*.qmake*
