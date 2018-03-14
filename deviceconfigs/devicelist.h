@@ -10,6 +10,7 @@ class DeviceList {
     friend DeviceList& singleton<DeviceList>();
 public:
     void loadDevices(std::string filename);
+    size_t count() const;
 
     const Device& operator[](size_t id) const;
 

@@ -10,6 +10,7 @@ class Matrix
 {
 public:
     Matrix() : rows_(0), columns_(0) {}
+    Matrix(int rows, int columns);
     Matrix(int rows, int columns, T element);
     Matrix(Matrix<T>&& m);
     Matrix(const Matrix<T>& m) = default;
@@ -50,6 +51,11 @@ private:
     std::vector<std::vector<T>> matrix_;
     int rows_, columns_;
 };
+
+template<class T>
+Matrix<T>::Matrix(int rows, int columns)
+        : rows_(rows), columns_(columns),
+          matrix_(rows, std::vector<std::complex<double>>(columns)) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns, T element)

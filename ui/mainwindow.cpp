@@ -8,6 +8,7 @@
 #include "propertyobserver.h"
 #include "globaldefines.h"
 #include "deviceconfigs/deviceviewlist.h"
+#include "deviceconfigs/devicelist.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -43,6 +44,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::initDevices() {
     DEVICEVIEW_LIST.loadDevices(CONFIG_PATH);
+    DEVICE_LIST.loadDevices(CONFIG_PATH);
 
     for (size_t i = 0; i < DEVICEVIEW_LIST.count(); ++i) {
         QAction *act = new QAction(DEVICEVIEW_LIST[i].getName().c_str(), this);
