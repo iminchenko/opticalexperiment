@@ -9,7 +9,7 @@ template<class T>
 class Matrix
 {
 public:
-    Matrix() : _rows(0), columns_(0) {}
+    Matrix() : _rows(0), _columns(0) {}
     Matrix(int rows, int columns);
     Matrix(int rows, int columns, T element);
     Matrix(Matrix<T>&& m);
@@ -41,7 +41,7 @@ public:
         {
             matrix_ = m.matrix_;
             _rows = m._rows;
-            columns_ = m.columns_;
+            _columns = m._columns;
         }
 
         return *this;
@@ -49,17 +49,17 @@ public:
 
 private:
     std::vector<std::vector<T>> matrix_;
-    int _rows, columns_;
+    int _rows, _columns;
 };
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns)
-        : _rows(rows), columns_(columns),
+        : _rows(rows), _columns(columns),
           matrix_(rows, std::vector<std::complex<double>>(columns)) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns, T element)
-        : _rows(rows), columns_(columns)
+        : _rows(rows), _columns(columns)
 {
     for (int row = 0; row < rows; row++)
     {
@@ -74,7 +74,7 @@ Matrix<T>::Matrix(Matrix<T>&& m)
     :matrix_(std::move(m.getMatrix()))
 {
     m._rows = 0;
-    m.columns_ = 0;
+    m._columns = 0;
 }
 
 template<class T>
@@ -82,13 +82,13 @@ void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix)
 {
     matrix_ = matrix;
     _rows = matrix.size();
-    _rows > 0 ? columns_ = matrix[0].size() : columns_ = 0;
+    _rows > 0 ? _columns = matrix[0].size() : _columns = 0;
 }
 
 template<class T>
 void Matrix<T>::removeAt(int index)
 {
-    if (index > _rows || index > columns_)
+    if (index > _rows || index > _columns)
         throw "Не верный индекс";
 
     matrix_.erase(matrix_.begin() + index);
@@ -117,7 +117,7 @@ void Matrix<T>::resize(int size)
                 matrix_[i][j] = 0;
         }
 
-        _rows = columns_ = matrix_.size();
+        _rows = _columns = matrix_.size();
     }
     else if (_rows > size)
     {
@@ -125,7 +125,7 @@ void Matrix<T>::resize(int size)
         _rows = size;
         for (int i = 0; i < _rows; i++)
             matrix_[i].resize(size);
-        columns_ = size;
+        _columns = size;
     }
 }
 
@@ -138,7 +138,7 @@ std::vector<std::vector<T>>& Matrix<T>::getMatrix()
 template<class T>
 int Matrix<T>::getColumns() const
 {
-   return columns_;
+   return _columns;
 }
 
 template<class T>

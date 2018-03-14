@@ -17,10 +17,14 @@ void DeviceList::loadDevices(std::string filename) {
     // возможно стоить принимать сразу QString?
     QFile file(filename.c_str());
 
-    if (file.open(QIODevice::ReadOnly)) {
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
         while (!file.atEnd()) {
             raw.append(file.readLine());
         }
+    }
+    else {
+        qDebug() << "Can't open file devices.json";
+        return;
     }
 
     QJsonParseError err;
