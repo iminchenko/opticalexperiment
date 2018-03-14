@@ -26,6 +26,6 @@ protected:
     DeviceManager() = default;
 
 private:
-    Matrix<int> matrConn_;
+    Matrix<int> _matrConn;
     std::vector<int> _types;
 };

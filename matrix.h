@@ -9,7 +9,7 @@ template<class T>
 class Matrix
 {
 public:
-    Matrix() : rows_(0), columns_(0) {}
+    Matrix() : _rows(0), columns_(0) {}
     Matrix(int rows, int columns);
     Matrix(int rows, int columns, T element);
     Matrix(Matrix<T>&& m);
@@ -28,7 +28,7 @@ public:
 
     std::vector<T>& operator [](int index)
     {
-        if (index < 0 || index > rows_)
+        if (index < 0 || index > _rows)
             throw "Выход за границы матрицы";
 
         return matrix_[index];
@@ -40,7 +40,7 @@ public:
         if (this != &m)
         {
             matrix_ = m.matrix_;
-            rows_ = m.rows_;
+            _rows = m._rows;
             columns_ = m.columns_;
         }
 
@@ -49,17 +49,17 @@ public:
 
 private:
     std::vector<std::vector<T>> matrix_;
-    int rows_, columns_;
+    int _rows, columns_;
 };
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns)
-        : rows_(rows), columns_(columns),
+        : _rows(rows), columns_(columns),
           matrix_(rows, std::vector<std::complex<double>>(columns)) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns, T element)
-        : rows_(rows), columns_(columns)
+        : _rows(rows), columns_(columns)
 {
     for (int row = 0; row < rows; row++)
     {
@@ -73,7 +73,7 @@ template<class T>
 Matrix<T>::Matrix(Matrix<T>&& m)
     :matrix_(std::move(m.getMatrix()))
 {
-    m.rows_ = 0;
+    m._rows = 0;
     m.columns_ = 0;
 }
 
@@ -81,14 +81,14 @@ template<class T>
 void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix)
 {
     matrix_ = matrix;
-    rows_ = matrix.size();
-    rows_ > 0 ? columns_ = matrix[0].size() : columns_ = 0;
+    _rows = matrix.size();
+    _rows > 0 ? columns_ = matrix[0].size() : columns_ = 0;
 }
 
 template<class T>
 void Matrix<T>::removeAt(int index)
 {
-    if (index > rows_ || index > columns_)
+    if (index > _rows || index > columns_)
         throw "Не верный индекс";
 
     matrix_.erase(matrix_.begin() + index);
@@ -104,26 +104,26 @@ void Matrix<T>::insert(int index)
 template<class T>
 void Matrix<T>::resize(int size)
 {
-    if (rows_ < size)
+    if (_rows < size)
     {
         matrix_.reserve(size);
-        for (int i = size - rows_; i > 0; i--)
+        for (int i = size - _rows; i > 0; i--)
             matrix_.push_back(std::vector<T>(size, 0));
 
-        for (int i = 0; i < rows_; i++)
+        for (int i = 0; i < _rows; i++)
         {
             matrix_[i].resize(size);
             for (int j = 0; j < size; j++)
                 matrix_[i][j] = 0;
         }
 
-        rows_ = columns_ = matrix_.size();
+        _rows = columns_ = matrix_.size();
     }
-    else if (rows_ > size)
+    else if (_rows > size)
     {
         matrix_.resize(size);
-        rows_ = size;
-        for (int i = 0; i < rows_; i++)
+        _rows = size;
+        for (int i = 0; i < _rows; i++)
             matrix_[i].resize(size);
         columns_ = size;
     }
@@ -144,7 +144,7 @@ int Matrix<T>::getColumns() const
 template<class T>
 int Matrix<T>::getRows() const
 {
-    return rows_;
+    return _rows;
 }
 
 template<class T>

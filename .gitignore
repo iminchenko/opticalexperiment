@@ -1,8 +1,9 @@
 **/release
 **/debug
 *.user
-Makefile*
-ui_*
 *.Release
 *.Debug
 *.qmake*
+*.autosave
+Makefile*
+ui_*
