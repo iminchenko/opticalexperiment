@@ -55,7 +55,6 @@ HEADERS += \
     ui/vertexitem.h \
     ui/constructoritem.h \
     ui/connectionitem.h \
-    singleton.hpp \
     instrumentconfig.h \
     ui/bloweritem.h \
     properties.h \
