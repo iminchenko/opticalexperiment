@@ -7,9 +7,6 @@
 
 using std::size_t;
 
-template<typename T>
-class Matrix;
-
 class Device {
 public:
     // чтобы вектор не ругался
@@ -21,7 +18,7 @@ public:
     const Matrix<std::complex<double>> &getMatrix() const;
 
 private:
-    Matrix<std::complex<double>> _matrix;
+    Matrix<std::complex<double> > _matrix;
     // а нужны ли эти параметры?
     size_t _inCount;
     size_t _outCount;

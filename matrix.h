@@ -9,10 +9,10 @@ template<class T>
 class Matrix
 {
 public:
-    Matrix<T>() : rows_(0), columns_(0) {}
-    Matrix<T>(int rows, int columns, T element);
-    Matrix<T>(Matrix<T>&& m);
-    Matrix<T>(const Matrix<T>& m);
+    Matrix() : rows_(0), columns_(0) {}
+    Matrix(int rows, int columns, T element);
+    Matrix(Matrix<T>&& m);
+    Matrix(const Matrix<T>& m) = default;
 
     ~Matrix<T>() { }
 
