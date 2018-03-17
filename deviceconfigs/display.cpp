@@ -5,8 +5,7 @@ Display::Display()
 
 }
 
-std::complex<double> Display::I(const std::vector<Wave>& ws, double x)
-{
+std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
     std::complex<double> Ix = 0, Iy = 0, a;
 
     for (unsigned int k = 1; k < ws.size(); k++) {
@@ -27,8 +26,7 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x)
     return Ix + Iy;
 }
 
-int Display::m(int i, int N)
-{
+int Display::m(int i, int N) {
     if (N / 2 == 0) {
         if (i > N)
             return i - N / 2;

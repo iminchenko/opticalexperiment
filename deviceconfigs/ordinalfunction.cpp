@@ -13,8 +13,7 @@ OrdinalFunction::OrdinalFunction()
     inc_[2][4] = 1; */
 }
 
-QVector<int> OrdinalFunction::path()
-{
+QVector<int> OrdinalFunction::path() {
     createNotUsedNode(inc_.getRows());
     createHierarchyLvls();
 
@@ -27,90 +26,73 @@ QVector<int> OrdinalFunction::path()
     return std::move(qv);
 }
 
-QVector<int> OrdinalFunction::path(const Matrix<int> &inc)
-{
+QVector<int> OrdinalFunction::path(const Matrix<int> &inc) {
     inc_ = inc;
     return path();
 }
 
-void OrdinalFunction::createNullLlv()
-{
+void OrdinalFunction::createNullLlv() {
     int row, column;
     highLvls_.push_back(QVector<int>());
     bool check;
     for (column = 0; column < inc_.getColumns(); column++)
     {
         check = true;
-        for (row = 0; row < inc_.getRows(); row++)
-        {
-            if (inc_[row][column] != 0)
-            {
+        for (row = 0; row < inc_.getRows(); row++) {
+            if (inc_[row][column] != 0) {
                 check = false;
                 break;
             }
         }
 
-        if (check)
-        {
+        if (check) {
             highLvls_[0].append(column);
             notUsedNode_.removeOne(column);
         }
     }
 }
 
-void OrdinalFunction::createNotUsedNode(const int N)
-{
+void OrdinalFunction::createNotUsedNode(const int N) {
     for (int i = 0; i < N; i++)
         notUsedNode_.push_back(i);
 }
 
-void OrdinalFunction::checkOnCoherency(const int lvl)
-{
+void OrdinalFunction::checkOnCoherency(const int lvl) {
     int swap;
     for (int i = 0; i < highLvls_[lvl].size() - 1; i++)
         for (int j = i + 1; j < highLvls_[lvl].size(); j++)
-            if (inc_[highLvls_[lvl][i]][highLvls_[lvl][j]] != 0)
-            {
+            if (inc_[highLvls_[lvl][i]][highLvls_[lvl][j]] != 0) {
                 swap = highLvls_[lvl][j];
                 highLvls_[lvl][j] = highLvls_[lvl][i];
                 highLvls_[lvl][i] = swap;
             }
-
-
 }
 
-void OrdinalFunction::createHierarchyLvls()
-{
+void OrdinalFunction::createHierarchyLvls() {
     int currLvl = 1, indexNode, count, column, row;
 
     createNullLlv();
     if (highLvls_[0].size() == 0)
         throw "Не удалось создать первый уровень";
 
-    while(notUsedNode_.size() != 0)
-    {
+    while(notUsedNode_.size() != 0) {
         highLvls_.append(QVector<int>());
-        for (count = 0; count < highLvls_[currLvl - 1].size(); count++)
-        {
+        for (count = 0; count < highLvls_[currLvl - 1].size(); count++) {
             row = highLvls_[currLvl - 1][count];
             for (column = 0; column < inc_.getColumns(); column++)
                 if (inc_[row][column] != 0
-                        && (indexNode = notUsedNode_.indexOf(column)) != -1)
-                {
+                        && (indexNode = notUsedNode_.indexOf(column)) != -1) {
                     notUsedNode_.removeAt(indexNode);
                     highLvls_[currLvl].append(column);
                 }
         }
+        
         checkOnCoherency(currLvl);
         currLvl++;
-        for (int i = 0; i < 5; i++){
-
-        }
     }    
 }
 
-void OrdinalFunction::allClear()
-{
+void OrdinalFunction::allClear() {
     highLvls_.clear();
     notUsedNode_.clear();
 }
