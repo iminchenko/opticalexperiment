@@ -6,23 +6,23 @@
 class Wave
 {
 public:
-    Wave(): ex_(std::complex<double>(0., 0.)), ey_(std::complex<double>(0., 0.))
+    Wave(): _ex(std::complex<double>(0., 0.)), _ey(std::complex<double>(0., 0.))
     {}
-    Wave(std::complex<double> ex, std::complex<double> ey): ex_(ex), ey_(ey)
+    Wave(std::complex<double> ex, std::complex<double> ey): _ex(ex), _ey(ey)
     {}
     Wave(double reEx, double imEx, double reEy, double imEy):
-        ex_(std::complex<double>(reEx, imEx)), ey_(std::complex<double>(reEy, imEy))
+        _ex(std::complex<double>(reEx, imEx)), _ey(std::complex<double>(reEy, imEy))
     {}
 
-    std::complex<double> getEx() const { return ex_; }
-    void setEx(const std::complex<double>& ex) { ex_ = ex; }
+    std::complex<double> getEx() const { return _ex; }
+    void setEx(const std::complex<double>& ex) { _ex = ex; }
 
-    std::complex<double> getEy() const { return ey_; }
-    void setEy(std::complex<double>& ey) { ey_ = ey; }
+    std::complex<double> getEy() const { return _ey; }
+    void setEy(std::complex<double>& ey) { _ey = ey; }
 
 private:
-    std::complex<double> ex_;
-    std::complex<double> ey_;
+    std::complex<double> _ex;
+    std::complex<double> _ey;
 };
 
 #endif // WAVE_H
