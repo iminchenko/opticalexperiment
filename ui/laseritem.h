@@ -2,7 +2,7 @@
 
 class LaserItem : public ConstructorItem {
 public:
-    LaserItem(QPointF pos, QGraphicsItem *parent = nullptr);
+    LaserItem(QPointF pos, int id, QGraphicsItem *parent = nullptr);
 
     Properties::map getProperties() const override;
     void setProperties(const Properties::map &properties) override;

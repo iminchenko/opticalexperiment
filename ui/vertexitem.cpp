@@ -8,8 +8,9 @@
 
 using std::list;
 
-VertexItem::VertexItem(ConstructorItem *parent)
-    :QGraphicsItem(parent), _hoverEvent(false), _connection(nullptr) {
+VertexItem::VertexItem(ConstructorItem *parent, int number)
+    :QGraphicsItem(parent), _hoverEvent(false), _connection(nullptr),
+                                                              _number(number){
     setZValue(1);
     setAcceptHoverEvents(true);
 }
@@ -28,6 +29,10 @@ bool VertexItem::canConnect(const VertexItem *vertex) {
         return false;
 
     return !_connection;
+}
+
+int VertexItem::getNumber() const {
+    return _number;
 }
 
 bool VertexItem::isHoverEvent() const {
@@ -52,8 +57,8 @@ void VertexItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
     _hoverEvent = false;
 }
 
-InputVertexItem::InputVertexItem(ConstructorItem *parent)
-    :VertexItem(parent) {}
+InputVertexItem::InputVertexItem(ConstructorItem *parent, int number)
+    :VertexItem(parent, number) {}
 
 void InputVertexItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*,
                              QWidget*) {
@@ -92,8 +97,8 @@ QVariant VertexItem::itemChange(QGraphicsItem::GraphicsItemChange change,
     return QGraphicsItem::itemChange(change, value);
 }
 
-OutputVertexItem::OutputVertexItem(ConstructorItem *parent)
-    :VertexItem(parent) {}
+OutputVertexItem::OutputVertexItem(ConstructorItem *parent, int number)
+    :VertexItem(parent, number) {}
 
 void OutputVertexItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*,
                              QWidget*) {

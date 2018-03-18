@@ -10,12 +10,12 @@ class VertexItem: public QGraphicsItem {
 friend class ConnectionItem;
 friend class ConstructorItem;
 public:
-    VertexItem(ConstructorItem *parent);
+    VertexItem(ConstructorItem *parent, int number);
     ~VertexItem();
 
     bool canConnect(const VertexItem *vertex);
 
-    QPointF pos() const;
+    int getNumber() const;
 
 protected:
     bool isHoverEvent() const;
@@ -38,11 +38,13 @@ private:
     bool _hoverEvent;
 
     ConnectionItem* _connection;
+
+    int _number;
 };
 
 class InputVertexItem: public VertexItem {
 public:
-    InputVertexItem(ConstructorItem *parent);
+    InputVertexItem(ConstructorItem *parent, int number);
 
 protected:
     virtual void paint(QPainter *painter,
@@ -51,7 +53,7 @@ protected:
 
 class OutputVertexItem: public VertexItem{
 public:
-    OutputVertexItem(ConstructorItem *parent);
+    OutputVertexItem(ConstructorItem *parent, int number);
 protected:
     virtual void paint(QPainter *painter,
             const QStyleOptionGraphicsItem *option, QWidget *widget) override;

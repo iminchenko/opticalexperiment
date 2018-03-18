@@ -39,14 +39,13 @@ SOURCES += \
     properties.cpp \
     propertyobserver.cpp \
     deviceconfigs/device.cpp \
-    deviceconfigs/devicelist.cpp \
-    deviceconfigs/deviceviewconfig.cpp \
-    deviceconfigs/deviceviewlist.cpp \
     ui/genericitem.cpp \
     deviceconfigs/display.cpp \
     deviceconfigs/laser.cpp \
     deviceconfigs/ordinalfunction.cpp \
-    devicemanager.cpp
+    devicemanager.cpp \
+    deviceconfigs/deviceconfig.cpp \
+    deviceconfigs/deviceconfiglist.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -61,9 +60,6 @@ HEADERS += \
     propertyobserver.h \
     utility/singleton.hpp \
     deviceconfigs/device.h \
-    deviceconfigs/devicelist.h \
-    deviceconfigs/deviceviewconfig.h \
-    deviceconfigs/deviceviewlist.h \
     globaldefines.h \
     ui/genericitem.h \
     matrix.h \
@@ -75,7 +71,11 @@ HEADERS += \
     globaldefines.h \
     matrix.h \
     ui/laseritem.h \
-    devicemanager.h
+    devicemanager.h \
+    deviceconfigs/deviceconfig.h \
+    deviceconfigs/deviceconfiglist.h \
+    deviceconfigs/devicedefines.h \
+    utility/triple.hpp
 
 FORMS += \
     ui/mainwindow.ui

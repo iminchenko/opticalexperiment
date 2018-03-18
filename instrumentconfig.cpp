@@ -5,15 +5,15 @@
 InstrumentConfig::InstrumentConfig()
     :_type(TYPE_LASER) {}
 
-InstrumentConfig::instrumentType InstrumentConfig::getType() const {
+deviceType InstrumentConfig::getType() const {
     return _type;
 }
 
-int InstrumentConfig::getItemId() const {
+int InstrumentConfig::getTypeId() const {
     return _itemId;
 }
 
-void InstrumentConfig::setType(instrumentType type) {
+void InstrumentConfig::setType(deviceType type) {
     _type = type;
 }
 

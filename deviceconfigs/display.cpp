@@ -1,9 +1,7 @@
 #include "display.h"
+#include "devicedefines.h"
 
-Display::Display()
-{
-
-}
+Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {}
 
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
     std::complex<double> Ix = 0, Iy = 0, a;
@@ -24,6 +22,10 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
     }
 
     return Ix + Iy;
+}
+
+Wave Display::getWave(int) const {
+    return Wave();
 }
 
 int Display::m(int i, int N) {

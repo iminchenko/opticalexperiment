@@ -1,9 +1,35 @@
 #include "device.h"
+#include "deviceconfiglist.h"
 
-Device::Device(size_t inCount, size_t outCount,
-               const Matrix<std::complex<double> > &matr)
-    :_matrix(matr), _inCount(inCount), _outCount(outCount) {}
+Device::Device(int type, int id) :_type(type), _id(id),
+    _connections(DEVICECONFIG_LIST[type].getInputCount(), {nullptr, 0, 0}) {}
 
-const Matrix<std::complex<double> > &Device::getMatrix() const {
-    return _matrix;
+Device::~Device() {}
+
+Wave Device::getWave(int output) const {
+    if (changed()) {
+        // магия с расчетом волн
+        _changed = false;
+    }
+
+    return _waveCache[output];
+}
+
+void Device::setConnection(int input, const Device *source,
+                           double distance, int output) {
+    _connections[input] =
+             make_triple<const Device *, double, int>(source, distance, output);
+}
+
+bool Device::changed() const {
+    if (_changed)
+        return true;
+
+    for (const auto &i : _connections) {
+        if (i.first->changed()) {
+            return _changed = true;
+        }
+    }
+
+    return false;
 }

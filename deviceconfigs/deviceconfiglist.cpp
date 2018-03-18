@@ -7,11 +7,12 @@
 #include <QDebug>
 #include <list>
 
-#include "deviceviewlist.h"
+#include "deviceconfiglist.h"
 
 using std::list;
+using std::complex;
 
-void DeviceViewList::loadDevices(std::string filename) {
+void DeviceConfigList::loadDevices(std::string filename) {
     QJsonDocument doc;
     QByteArray raw;
     QFile file(filename.c_str());
@@ -77,18 +78,35 @@ void DeviceViewList::loadDevices(std::string filename) {
         int inputCount = obj["inputs"].toInt();
         int outputCount = obj["outputs"].toInt();
 
-        _devList.push_back(DeviceViewConfig(inputCount, outputCount,
+        int size = 2 * inputCount;
+        Matrix<complex<double>> matr(size, size);
+        QJsonArray rows = obj["matrix"].toArray();
+        for (int i = 0; i < size; ++i) {
+            QJsonArray row = rows[i].toArray();
+            for (int j = 0; j < size; ++j) {
+                complex<double> temp(row[j].toArray()[0].toDouble(),
+                                     row[j].toArray()[1].toDouble());
+                matr[i][j] = temp;
+            }
+        }
+
+        _devList.push_back(DeviceConfig(inputCount, outputCount,
                         obj["name"].toString().toStdString(),
-                        obj["description"].toString().toStdString(), drawing));
+                        obj["description"].toString().toStdString(), drawing,
+                        matr));
     }
 }
 
-size_t DeviceViewList::count() const {
+size_t DeviceConfigList::count() const {
     return _devList.size();
 }
 
-const DeviceViewConfig &DeviceViewList::operator[](size_t id) const {
+const DeviceConfig &DeviceConfigList::operator[](size_t id) const {
+    // позже добавить нормальную проверку на лазер и экран
+    if (id == deviceType::TYPE_LASER || id == deviceType::TYPE_SHIELD)
+        return _devList[0];
+
     return _devList[id];
 }
 
-DeviceViewList::DeviceViewList() {}
+DeviceConfigList::DeviceConfigList() {}

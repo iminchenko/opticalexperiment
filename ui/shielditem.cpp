@@ -2,8 +2,8 @@
 
 #include "shielditem.h"
 
-ShieldItem::ShieldItem(QPointF pos, QGraphicsItem *parent)
-    :ConstructorItem(pos, parent), _angle(0) {
+ShieldItem::ShieldItem(QPointF pos, int id, QGraphicsItem *parent)
+    :ConstructorItem(pos, id, parent), _angle(0) {
     addInputVertex();
 }
 

@@ -11,10 +11,11 @@ const QColor ConstructorItem::defaultBorderColor = Qt::black;
 const float ConstructorItem::defaultBorderWidth = 2;
 const float ConstructorItem::defaultWidth = 50;
 
-ConstructorItem::ConstructorItem(QPointF pos, QGraphicsItem *parent)
+ConstructorItem::ConstructorItem(QPointF pos, int id, QGraphicsItem *parent)
     :QGraphicsItem(parent), _backgroundColor(defaultBackgroundColor),
       _selectedColor(defaultSelectedColor), _borderColor(defaultBorderColor),
-      _borderWidth(defaultBorderWidth), _width(defaultWidth) {
+      _borderWidth(defaultBorderWidth), _width(defaultWidth),
+      _outCount(0), _inCount(0), _id(id) {
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
     setFlag(ItemIsFocusable);
@@ -55,6 +56,10 @@ float ConstructorItem::getBorderWidth() const {
 
 float ConstructorItem::getWidth() const {
     return _width;
+}
+
+int ConstructorItem::getId() const {
+    return _id;
 }
 
 QRectF ConstructorItem::boundingRect() const {
@@ -99,7 +104,7 @@ void ConstructorItem::drawBox(QPainter *painter) {
 void ConstructorItem::addOutputVertex(float angle) {
     _source = true;
 
-    auto vertex = new OutputVertexItem(this);
+    auto vertex = new OutputVertexItem(this, _outCount++);
     vertex->setPos(0.75 * getWidth() * cos(angle*M_PI/180),
                    0.75 * getWidth() * sin(angle*M_PI/180));
     vertex->setRotation(angle);
@@ -108,7 +113,7 @@ void ConstructorItem::addOutputVertex(float angle) {
 void ConstructorItem::addInputVertex(float angle) {
     _reciever = true;
 
-    auto vertex = new InputVertexItem(this);
+    auto vertex = new InputVertexItem(this, _inCount++);
     vertex->setPos(-0.75 * getWidth() * cos(angle*M_PI/180),
                    -0.75 * getWidth() * sin(angle*M_PI/180));
     vertex->setRotation(angle);

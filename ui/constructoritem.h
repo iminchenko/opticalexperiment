@@ -13,7 +13,7 @@ public:
         TYPE_RECIEVER = 2,
     };
 
-    ConstructorItem(QPointF pos, QGraphicsItem *parent = nullptr);
+    ConstructorItem(QPointF pos, int id, QGraphicsItem *parent = nullptr);
 
     virtual ~ConstructorItem() = 0;
 
@@ -26,6 +26,8 @@ public:
     QColor getBorderColor() const;
     float getBorderWidth() const;
     float getWidth() const;
+
+    int getId() const;
 
 protected:
     virtual QRectF boundingRect() const override;
@@ -55,4 +57,8 @@ private:
 
     bool _source;
     bool _reciever;
+
+    int _outCount;
+    int _inCount;
+    int _id;
 };

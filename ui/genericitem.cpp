@@ -1,10 +1,10 @@
 #include "genericitem.h"
-#include "deviceconfigs/deviceviewlist.h"
+#include "deviceconfigs/deviceconfiglist.h"
 
-GenericItem::GenericItem(QPointF pos, int itemId, QGraphicsItem *parent)
-    :ConstructorItem(pos, parent), _itemId(itemId) {
+GenericItem::GenericItem(QPointF pos, int id, int itemType, QGraphicsItem *parent)
+    :ConstructorItem(pos, id, parent), _itemId(itemType) {
     // как-то некрасиво, надо переписать
-    int count = DEVICEVIEW_LIST[_itemId].getInputCount();
+    int count = DEVICECONFIG_LIST[_itemId].getInputCount();
     if (count > 1) {
         for (int i = 0; i < count; ++i)
             addInputVertex((float)i / (count - 1) * 90);
@@ -13,7 +13,7 @@ GenericItem::GenericItem(QPointF pos, int itemId, QGraphicsItem *parent)
         addInputVertex();
     }
 
-    count = DEVICEVIEW_LIST[_itemId].getOutputCount();
+    count = DEVICECONFIG_LIST[_itemId].getOutputCount();
 
     if (count > 1) {
         for (int i = 0; i < count; ++i)
@@ -26,9 +26,9 @@ GenericItem::GenericItem(QPointF pos, int itemId, QGraphicsItem *parent)
 
 void GenericItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
                                                                     QWidget *) {
-    DEVICEVIEW_LIST[_itemId].draw(painter, isSelected());
+    DEVICECONFIG_LIST[_itemId].draw(painter, isSelected());
 }
 
 QRectF GenericItem::boundingRect() const {
-    return DEVICEVIEW_LIST[_itemId].getBounding();
+    return DEVICECONFIG_LIST[_itemId].getBounding();
 }

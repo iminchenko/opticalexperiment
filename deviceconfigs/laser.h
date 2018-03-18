@@ -1,13 +1,11 @@
 #ifndef LASER_H
 #define LASER_H
 
-#include <cmath>
-#define _USE_MATH_DEFINES
+#include "device.h"
 
-class Laser
-{
+class Laser: public Device {
 public:
-    Laser();
+    Laser(int id);
     static const double c;
 
     void setLambda(const double lambda);
@@ -15,6 +13,9 @@ public:
 
     double getK() const; // k = 2*pi/lambda
     double getOmega() const; // omega = 2*pi*c/lambda
+
+    Wave getWave(int output) const override;
+
 private:
     double lambda_ = 1;
 };

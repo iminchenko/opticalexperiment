@@ -1,10 +1,11 @@
-#include "deviceviewconfig.h"
+#include "deviceconfig.h"
 
-DeviceViewConfig::DeviceViewConfig(int inputCount, int outputCount,
-    const std::string &name, const std::string &descrption,
-                                   const std::list<DrawingConfig> &drawing)
-    :_inputs(inputCount), _outputs(outputCount), _name(name),
-                                _description(descrption), _drawings(drawing) {
+DeviceConfig::DeviceConfig(int inputCount, int outputCount,
+                        const std::string &name, const std::string &descrption,
+                        const std::list<DrawingConfig> &drawing,
+                        const TransMatrix &matr)
+    :_inputs(inputCount), _outputs(outputCount), _matrix(matr), _name(name),
+                                  _description(descrption), _drawings(drawing) {
     auto iter = _drawings.begin();
 
     while (iter != _drawings.end()) {
@@ -21,35 +22,35 @@ DeviceViewConfig::DeviceViewConfig(int inputCount, int outputCount,
     }
 }
 
-void DeviceViewConfig::setSize(float width, float height) {
+void DeviceConfig::setSize(float width, float height) {
     setBounding(QRectF(-width/2, -height/2, width, height));
 }
 
-void DeviceViewConfig::setBounding(const QRectF &rect) {
+void DeviceConfig::setBounding(const QRectF &rect) {
     _bounding = rect;
 }
 
-QRectF DeviceViewConfig::getBounding() const {
+QRectF DeviceConfig::getBounding() const {
     return _bounding;
 }
 
-std::string DeviceViewConfig::getName() const {
+std::string DeviceConfig::getName() const {
     return _name;
 }
 
-std::string DeviceViewConfig::getDescription() const {
+std::string DeviceConfig::getDescription() const {
     return _description;
 }
 
-int DeviceViewConfig::getInputCount() const {
+int DeviceConfig::getInputCount() const {
     return _inputs;
 }
 
-int DeviceViewConfig::getOutputCount() const {
+int DeviceConfig::getOutputCount() const {
     return _outputs;
 }
 
-void DeviceViewConfig::draw(QPainter *painter, bool selected) const {
+void DeviceConfig::draw(QPainter *painter, bool selected) const {
     painter->setPen(QPen(Qt::black, 2));
 
     if (!selected)

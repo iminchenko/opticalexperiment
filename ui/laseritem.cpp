@@ -1,7 +1,7 @@
 #include "laseritem.h"
 
-LaserItem::LaserItem(QPointF pos, QGraphicsItem *parent)
-    :ConstructorItem(pos, parent), _frequency(0) {
+LaserItem::LaserItem(QPointF pos, int id, QGraphicsItem *parent)
+    :ConstructorItem(pos, id, parent), _frequency(0) {
     addOutputVertex();
 }
 

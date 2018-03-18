@@ -52,23 +52,24 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     auto pos = mapToScene(event->pos());
 
     int type;
+    int id = DEVICE_MANAGER.getMaxId();
 
     switch (INSTRUMENT_CONFIG.getType()) {
-    case InstrumentConfig::TYPE_LASER:
-        scene()->addItem(new LaserItem(pos));
-        type = DeviceManager::TYPE_LASER;
+    case deviceType::TYPE_LASER:
+        scene()->addItem(new LaserItem(pos, id));
+        type = deviceType::TYPE_LASER;
         break;
-    case InstrumentConfig::TYPE_SHIELD:
-        scene()->addItem(new ShieldItem(pos));
-        type = DeviceManager::TYPE_SHIELD;
+    case deviceType::TYPE_SHIELD:
+        scene()->addItem(new ShieldItem(pos, id));
+        type = deviceType::TYPE_SHIELD;
         break;
-    case InstrumentConfig::TYPE_GENERIC:
-        scene()->addItem(new GenericItem(pos, INSTRUMENT_CONFIG.getItemId()));
-        type = INSTRUMENT_CONFIG.getItemId();
+    case deviceType::TYPE_GENERIC:
+        scene()->addItem(new GenericItem(pos, id, INSTRUMENT_CONFIG.getTypeId()));
+        type = INSTRUMENT_CONFIG.getTypeId();
         break;
     }
 
-    DEVICE_MANAGER.addDevice(type);
+    DEVICE_MANAGER.addDevice(type, id);
 }
 
 void ConstructAreaWidget::keyPressEvent(QKeyEvent *event) {
@@ -106,6 +107,11 @@ void ConstructAreaWidget::dropConnectionLine() {
 
         if (v1 && v2 && v1->canConnect(v2)) {
             scene()->addItem(new ConnectionItem(v1, v2));
+            auto source = dynamic_cast<ConstructorItem *>(v1->parentItem());
+            auto dest = dynamic_cast<ConstructorItem *>(v2->parentItem());
+            // нет проверки на нулевые указатели
+            DEVICE_MANAGER.addConnection(source->getId(), v1->getNumber(),
+                                         dest->getId(), v2->getNumber());
         }
 
         delete _connectionLine;

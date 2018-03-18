@@ -4,7 +4,7 @@
 
 class GenericItem : public ConstructorItem {
 public:
-    GenericItem(QPointF pos, int itemId, QGraphicsItem *parent = nullptr);
+    GenericItem(QPointF pos, int id, int itemType, QGraphicsItem *parent = nullptr);
 
 protected:
     virtual void paint(QPainter *painter,

@@ -8,6 +8,9 @@
 #include <QRectF>
 #include <QDebug>
 
+#include "matrix.h"
+#include "devicedefines.h"
+
 struct DrawingConfig {
     enum drawingType {
         TYPE_SIZE = 0,
@@ -41,11 +44,12 @@ struct DrawingConfig {
     std::vector<int> coordinates;
 };
 
-class DeviceViewConfig {
+class DeviceConfig {
 public:
-    DeviceViewConfig() = default;
-    DeviceViewConfig(int inputCount, int outputCount, const std::string &name,
-        const std::string &descrption, const std::list<DrawingConfig> &drawing);
+    DeviceConfig() = default;
+    DeviceConfig(int inputCount, int outputCount, const std::string &name,
+        const std::string &descrption, const std::list<DrawingConfig> &drawing,
+                                       const TransMatrix &matr);
 
     void setSize(float width, float height);
     void setBounding(const QRectF& rect);
@@ -58,11 +62,15 @@ public:
     int getInputCount() const;
     int getOutputCount() const;
 
+    const TransMatrix &getMatrix() const;
+
     void draw(QPainter *painter, bool selected = false) const;
 
 private:
     int _inputs;
-    int _outputs;
+    int _outputs;    
+
+    TransMatrix _matrix;
 
     std::string _name;
     std::string _description;

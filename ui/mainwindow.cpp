@@ -7,9 +7,7 @@
 #include "instrumentconfig.h"
 #include "propertyobserver.h"
 #include "globaldefines.h"
-#include "deviceconfigs/deviceviewlist.h"
-#include "deviceconfigs/devicelist.h"
-
+#include "deviceconfigs/deviceconfiglist.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,11 +41,10 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::initDevices() {
-    DEVICEVIEW_LIST.loadDevices(CONFIG_PATH);
-    DEVICE_LIST.loadDevices(CONFIG_PATH);
+    DEVICECONFIG_LIST.loadDevices(CONFIG_PATH);
 
-    for (size_t i = 0; i < DEVICEVIEW_LIST.count(); ++i) {
-        QAction *act = new QAction(DEVICEVIEW_LIST[i].getName().c_str(), this);
+    for (size_t i = 0; i < DEVICECONFIG_LIST.count(); ++i) {
+        QAction *act = new QAction(DEVICECONFIG_LIST[i].getName().c_str(), this);
         act->setProperty("id", QVariant(int(i)));
         act->setCheckable(true);
         _grInstruments->addAction(act);
@@ -57,7 +54,7 @@ void MainWindow::initDevices() {
 
         // icon creation
         // TODO: вынести в отдельный блок
-        QImage img(DEVICEVIEW_LIST[i].getBounding().size().toSize(), QImage::Format_ARGB32);
+        QImage img(DEVICECONFIG_LIST[i].getBounding().size().toSize(), QImage::Format_ARGB32);
         QPainter painter(&img);
 
         painter.setRenderHint(QPainter::Antialiasing);
@@ -67,7 +64,7 @@ void MainWindow::initDevices() {
 
         img.fill(QColor(0, 0, 0, 0));
 
-        DEVICEVIEW_LIST[i].draw(&painter);
+        DEVICECONFIG_LIST[i].draw(&painter);
 
         QPixmap pix;
         pix.convertFromImage(img);
