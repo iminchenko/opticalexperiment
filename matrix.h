@@ -34,7 +34,6 @@ public:
         return matrix_[index];
     }
 
-    /* Добавить реализацию */
     Matrix<T>& operator =(const Matrix<T>& m)
     {
         if (this != &m)
@@ -151,13 +150,13 @@ template<class T>
 Wave operator *(const Matrix<T>& m, const Wave& w)
 {
     /* В волне всегда два компонента*/
-    if (m.columns != 2)
+    if (m.getColumns() != 2)
         throw "Количество столбцов матрицы не равно 2";
 
     Wave newW;
 
     newW.setEx(m[0][0]*w.getEx() + m[0][1]*w.getEy());
-    newW.getEy() = m[1][0]*w.getEx() + m[1][1]*w.getEy();
+    newW.setEy(m[1][0]*w.getEx() + m[1][1]*w.getEy());
 
     return newW;
 }
@@ -168,6 +167,12 @@ std::vector<Wave> operator *(const Matrix<T>& m, const std::vector<Wave>& ws)
 {
     if (m.columns != ws.size()*2)
         throw "Умножение не возможно";
+    
+    std::vector<Wave> newWs(ws.size());
+    for (int i = 0; i < m.getColumns(); ++i)
+        for (int j = 0; j < ws.size(); ++j) {
+            
+        }
 }
 
 template<class T>
