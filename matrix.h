@@ -161,18 +161,23 @@ Wave operator *(const Matrix<T>& m, const Wave& w)
     return newW;
 }
 
-/* Добавить реализацию*/
 template<class T>
 std::vector<Wave> operator *(const Matrix<T>& m, const std::vector<Wave>& ws)
 {
     if (m.columns != ws.size()*2)
         throw "Умножение не возможно";
     
+    std::complex<double> accum = 0;
     std::vector<Wave> newWs(ws.size());
-    for (int i = 0; i < m.getColumns(); ++i)
-        for (int j = 0; j < ws.size(); ++j) {
-            
+    for (int i = 0; i < m.getColumns(); ++i) {
+        for (int j = 0; j < m.getRows(); j += 2) {
+            accum += ws.at(i / 2).getEx() * m[i][j];
+            accum += ws.at(i / 2).getEx() * m[i][j + 1];
         }
+        
+        i % 2 == 0 ? newWs.at(i / 2).setEx(accum) : newWs.at(i / 2).setEy(accum);
+        accum = 0;
+    }
 }
 
 template<class T>
