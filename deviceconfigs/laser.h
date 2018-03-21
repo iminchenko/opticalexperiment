@@ -8,18 +8,15 @@
 
 class Laser: public Device {
 public:
+    Laser(int id);  
 
-    Laser(int id) :
-         Device(deviceType::TYPE_LASER, id) ,
-         _ex(0, 0), _ey(0, 0), _wave(_ex, _ey) {}  
-
-    Wave getWave(int output = 0) const override { return  _wave; }
+    Wave getWave(int output = 0) const override;
     
-    void setEx(std::complex<double> ex) { _ex = ex; _wave.setEx(_ex); }
-    std::complex<double> getEx() { return _ex; }
+    void setEx(std::complex<double> ex);
+    std::complex<double> getEx();
     
-    void setEy(std::complex<double> ey) { _ey = ey; _wave.setEy(_ey); }
-    std::complex<double> getEy() { return _ey; }
+    void setEy(std::complex<double> ey);
+    std::complex<double> getEy();
 
 private:
     std::complex<double> _ex, _ey;
