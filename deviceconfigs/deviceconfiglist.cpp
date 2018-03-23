@@ -19,6 +19,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Can't open file" << filename.c_str();
+        return;
     }
 
     while (!file.atEnd()) {

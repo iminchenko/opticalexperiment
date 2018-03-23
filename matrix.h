@@ -155,8 +155,8 @@ Wave operator *(const Matrix<T>& m, const Wave& w)
 
     Wave newW;
 
-    newW.setEx(m[0][0]*w.getEx() + m[0][1]*w.getEy());
-    newW.setEy(m[1][0]*w.getEx() + m[1][1]*w.getEy());
+//    newW.setEx(m[0][0]*w.getEx() + m[0][1]*w.getEy());
+//    newW.setEy(m[1][0]*w.getEx() + m[1][1]*w.getEy());
 
     return newW;
 }

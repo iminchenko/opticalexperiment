@@ -9,8 +9,8 @@ Device::~Device() {}
 Wave Device::getWave(int output) const {
     if (changed()) {
         // магия с расчетом волн
-        _waveCache[output] = DEVICECONFIG_LIST[_type].getMatrix()
-                              *_waveCache[output];
+//        _waveCache[output] = DEVICECONFIG_LIST[_type].getMatrix()
+//                              *_waveCache[output];
         _changed = false;
     }
 
