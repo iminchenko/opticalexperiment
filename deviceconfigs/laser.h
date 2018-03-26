@@ -2,9 +2,11 @@
 #define LASER_H
 
 #define _USE_MATH_DEFINES
+#include <QObject>
 
 #include "device.h"
 #include "wave.h"
+
 
 class Laser: public Device {
 public:
