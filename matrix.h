@@ -3,7 +3,6 @@
 
 #include <complex>
 #include <vector>
-#include "deviceconfigs/wave.h"
 
 template<class T>
 class Matrix
@@ -33,8 +32,16 @@ public:
 
         return matrix_[index];
     }
+    
+    const std::vector<T>& operator [](int index) const
+    {
+        if (index < 0 || index > _rows)
+            throw "Выход за границы матрицы";
 
-    Matrix<T>& operator =(const Matrix<T>& m)
+        return matrix_[index];
+    }
+
+    Matrix<T>& operator =(const Matrix<T> &m)
     {
         if (this != &m)
         {
@@ -70,7 +77,9 @@ Matrix<T>::Matrix(int rows, int columns, T element)
 
 template<class T>
 Matrix<T>::Matrix(Matrix<T>&& m)
-    :matrix_(std::move(m.getMatrix()))
+    : matrix_(std::move(m.getMatrix()))
+    , _rows(m.getRows())
+    , _columns(m.getColumns())
 {
     m._rows = 0;
     m._columns = 0;
@@ -144,40 +153,6 @@ template<class T>
 int Matrix<T>::getRows() const
 {
     return _rows;
-}
-
-template<class T>
-Wave operator *(const Matrix<T>& m, const Wave& w)
-{
-    /* В волне всегда два компонента*/
-    if (m.getColumns() != 2)
-        throw "Количество столбцов матрицы не равно 2";
-
-    Wave newW;
-
-//    newW.setEx(m[0][0]*w.getEx() + m[0][1]*w.getEy());
-//    newW.setEy(m[1][0]*w.getEx() + m[1][1]*w.getEy());
-
-    return newW;
-}
-
-template<class T>
-std::vector<Wave> operator *(const Matrix<T>& m, const std::vector<Wave>& ws)
-{
-    if (m.columns != ws.size()*2)
-        throw "Умножение не возможно";
-    
-    std::complex<double> accum = 0;
-    std::vector<Wave> newWs(ws.size());
-    for (int i = 0; i < m.getColumns(); ++i) {
-        for (int j = 0; j < m.getRows(); j += 2) {
-            accum += ws.at(i / 2).getEx() * m[i][j];
-            accum += ws.at(i / 2).getEx() * m[i][j + 1];
-        }
-        
-        i % 2 == 0 ? newWs.at(i / 2).setEx(accum) : newWs.at(i / 2).setEy(accum);
-        accum = 0;
-    }
 }
 
 template<class T>

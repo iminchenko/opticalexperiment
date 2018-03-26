@@ -45,7 +45,8 @@ SOURCES += \
     deviceconfigs/ordinalfunction.cpp \
     devicemanager.cpp \
     deviceconfigs/deviceconfig.cpp \
-    deviceconfigs/deviceconfiglist.cpp
+    deviceconfigs/deviceconfiglist.cpp \
+    deviceconfigs/wave.cpp
 
 HEADERS += \
     ui/mainwindow.h \
