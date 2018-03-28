@@ -7,3 +7,5 @@
 *.autosave
 Makefile*
 ui_*
+*.idea
+cmake-build*
