@@ -1,6 +1,6 @@
 #include <QPainter>
 #include <QKeyEvent>
-#include <math.h>
+#include <cmath>
 #include <QGraphicsScene>
 
 #include "constructoritem.h"

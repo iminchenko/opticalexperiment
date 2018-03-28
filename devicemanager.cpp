@@ -35,7 +35,5 @@ int DeviceManager::getMaxId() const {
     return _maxId;
 }
 
-DeviceManager::DeviceManager() :_maxId(0) {
-
-}
+DeviceManager::DeviceManager() :_maxId(0) {}
 

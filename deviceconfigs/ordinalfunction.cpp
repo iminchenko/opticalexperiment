@@ -1,7 +1,6 @@
 #include "ordinalfunction.h"
 
-OrdinalFunction::OrdinalFunction()
-{
+OrdinalFunction::OrdinalFunction() {
     /* Test matrix
     Matrix<int> inc(5, 5, 0);
 

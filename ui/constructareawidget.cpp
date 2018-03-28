@@ -3,16 +3,14 @@
 #include "constructareawidget.h"
 #include "shielditem.h"
 #include "laseritem.h"
-#include "vertexitem.h"
 #include "connectionitem.h"
 #include "instrumentconfig.h"
-#include "bloweritem.h"
 #include "genericitem.h"
 #include "devicemanager.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
-    QGraphicsScene *scene = new QGraphicsScene(this);
+    auto *scene = new QGraphicsScene(this);
     scene->setSceneRect(this->rect());
     setScene(scene);
 
@@ -28,8 +26,9 @@ void ConstructAreaWidget::mousePressEvent(QMouseEvent *event) {
     }
 
     // выглядит как то, чего тут не должно быть
-    auto prop = dynamic_cast<Properties *>(scene()->itemAt(mapToScene(event->pos()),
-                                                           transform()));
+    auto prop =
+            dynamic_cast<Properties *>(scene()->itemAt(mapToScene(event->pos()),
+                                                       transform()));
     // сигнал с nullptr - это ок
     emit propertiesItemClicked(prop);
 }
@@ -64,7 +63,8 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
         type = deviceType::TYPE_SHIELD;
         break;
     case deviceType::TYPE_GENERIC:
-        scene()->addItem(new GenericItem(pos, id, INSTRUMENT_CONFIG.getTypeId()));
+        scene()->addItem(new GenericItem(pos, id,
+                                         INSTRUMENT_CONFIG.getTypeId()));
         type = INSTRUMENT_CONFIG.getTypeId();
         break;
     }

@@ -1,10 +1,24 @@
 #include "display.h"
 #include "devicedefines.h"
 
+template <typename T1, typename  T2>
+T1 m(T1 i, T2 N) {
+    if ((T1)N / 2 == 0) {
+        if (i > N)
+            return i - (T1)N / 2;
+        else
+            return -(T1)N / 2 + i - 1;
+    }
+    else {
+        return -((T1)N + 2) / 2 + i;
+    }
+
+}
+
 Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {}
 
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
-    std::complex<double> Ix = 0, Iy = 0, a;
+    std::complex<double> Ix(0, 0), Iy(0, 0), a(0, 0);
 
     for (unsigned int k = 1; k < ws.size(); k++) {
         for (unsigned int p = 1; p < k; p++) {
@@ -26,17 +40,4 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
 
 Wave Display::getWave(int) const {
     return Wave();
-}
-
-int Display::m(int i, int N) {
-    if (N / 2 == 0) {
-        if (i > N)
-            return i - N / 2;
-        else
-            return -N / 2 + i - 1;
-    }
-    else {
-       return -(N + 2) / 2 + i;
-    }
-
 }

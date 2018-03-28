@@ -56,7 +56,6 @@ HEADERS += \
     ui/constructoritem.h \
     ui/connectionitem.h \
     instrumentconfig.h \
-    ui/bloweritem.h \
     properties.h \
     propertyobserver.h \
     utility/singleton.hpp \

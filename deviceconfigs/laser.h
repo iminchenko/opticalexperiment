@@ -1,7 +1,5 @@
-#ifndef LASER_H
-#define LASER_H
+#pragma  once
 
-#define _USE_MATH_DEFINES
 #include <QObject>
 
 #include "device.h"
@@ -10,9 +8,9 @@
 
 class Laser: public Device {
 public:
-    Laser(int id);  
+    explicit Laser(int id);
 
-    Wave getWave(int output = 0) const override;
+    Wave getWave(int output) const override;
     
     void setEx(std::complex<double> ex);
     std::complex<double> getEx();
@@ -24,5 +22,3 @@ private:
     std::complex<double> _ex, _ey;
     Wave _wave;
 };
-
-#endif // LASER_H

@@ -17,7 +17,7 @@ public:
     virtual ~Device();
 
     // получить волну с заданного выхода
-    virtual Wave getWave(int output) const;
+    virtual Wave getWave(int output = 0) const;
 
     void setConnection(int input, const Device *source, double distance,
                        int output);

@@ -58,8 +58,8 @@ void DeviceConfig::draw(QPainter *painter, bool selected) const {
     else
         painter->setBrush(QColor(200, 255, 225));
 
-    float halfWidth = _bounding.width() / 2;
-    float halfHeight = _bounding.height() / 2;
+    qreal halfWidth = _bounding.width() / 2;
+    qreal halfHeight = _bounding.height() / 2;
     painter->drawRoundRect(QRectF(-halfWidth, -halfHeight,
                                   _bounding.width(), _bounding.height()));
 
@@ -87,4 +87,8 @@ void DeviceConfig::draw(QPainter *painter, bool selected) const {
             break;
         }
     }
+}
+
+const TransMatrix &DeviceConfig::getMatrix() const {
+    return _matrix;
 }

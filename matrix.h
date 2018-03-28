@@ -1,67 +1,47 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#pragma once
 
 #include <complex>
 #include <vector>
 
 template<class T>
-class Matrix
-{
+class Matrix {
 public:
-    Matrix() : _rows(0), _columns(0) {}
+    Matrix();
     Matrix(int rows, int columns);
     Matrix(int rows, int columns, T element);
-    Matrix(Matrix<T>&& m);
+    Matrix(Matrix<T>&& m) noexcept;
     Matrix(const Matrix<T>& m) = default;
 
-    ~Matrix<T>() { }
+    ~Matrix<T>() = default;
 
     int getRows() const;
     int getColumns() const;
-    void setMatrix(const std::vector<std::vector<T>>& m);
+    void setMatrix(const std::vector<std::vector<T>>& matrix);
     void removeAt(int index);
     void insert(int index);
     void resize(int size);
 
     std::vector<std::vector<T>>& getMatrix();
 
-    std::vector<T>& operator [](int index)
-    {
-        if (index < 0 || index > _rows)
-            throw "Выход за границы матрицы";
-
-        return matrix_[index];
-    }
+    std::vector<T>& operator[](int index);
     
-    const std::vector<T>& operator [](int index) const
-    {
-        if (index < 0 || index > _rows)
-            throw "Выход за границы матрицы";
+    const std::vector<T>& operator[](int index) const;
 
-        return matrix_[index];
-    }
-
-    Matrix<T>& operator =(const Matrix<T> &m)
-    {
-        if (this != &m)
-        {
-            matrix_ = m.matrix_;
-            _rows = m._rows;
-            _columns = m._columns;
-        }
-
-        return *this;
-    }
+    Matrix<T>& operator=(const Matrix<T> &m);
 
 private:
-    std::vector<std::vector<T>> matrix_;
+    std::vector<std::vector<T>> _matrix;
     int _rows, _columns;
 };
 
 template<class T>
+Matrix<T>::Matrix() : _rows(0), _columns(0) {}
+
+template<class T>
 Matrix<T>::Matrix(int rows, int columns)
         : _rows(rows), _columns(columns),
-          matrix_(rows, std::vector<std::complex<double>>(columns)) {}
+          _matrix((size_t)rows,
+                  std::vector<std::complex<double>>((size_t)columns)) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns, T element)
@@ -69,15 +49,15 @@ Matrix<T>::Matrix(int rows, int columns, T element)
 {
     for (int row = 0; row < rows; row++)
     {
-        matrix_.push_back(std::vector<T>());
+        _matrix.push_back(std::vector<T>());
         for (int column = 0; column < columns; column++)
-            matrix_[row].push_back(element);
+            _matrix[row].push_back(element);
     }
 }
 
 template<class T>
-Matrix<T>::Matrix(Matrix<T>&& m)
-    : matrix_(std::move(m.getMatrix()))
+Matrix<T>::Matrix(Matrix<T>&& m) noexcept
+    : _matrix(std::move(m.getMatrix()))
     , _rows(m.getRows())
     , _columns(m.getColumns())
 {
@@ -85,11 +65,14 @@ Matrix<T>::Matrix(Matrix<T>&& m)
     m._columns = 0;
 }
 
+//template<class T>
+//Matrix<T>::~Matrix<T>() {}
+
 template<class T>
 void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix)
 {
-    matrix_ = matrix;
-    _rows = matrix.size();
+    _matrix = matrix;
+    _rows = (int)matrix.size();
     _rows > 0 ? _columns = matrix[0].size() : _columns = 0;
 }
 
@@ -99,7 +82,7 @@ void Matrix<T>::removeAt(int index)
     if (index > _rows || index > _columns)
         throw "Не верный индекс";
 
-    matrix_.erase(matrix_.begin() + index);
+    _matrix.erase(_matrix.begin() + index);
 }
 
 /* Добавить реализацию */
@@ -114,25 +97,25 @@ void Matrix<T>::resize(int size)
 {
     if (_rows < size)
     {
-        matrix_.reserve(size);
+        _matrix.reserve((size_t)size);
         for (int i = size - _rows; i > 0; i--)
-            matrix_.push_back(std::vector<T>(size, 0));
+            _matrix.push_back(std::vector<T>(size, 0));
 
         for (int i = 0; i < _rows; i++)
         {
-            matrix_[i].resize(size);
+            _matrix[i].resize(size);
             for (int j = 0; j < size; j++)
-                matrix_[i][j] = 0;
+                _matrix[i][j] = 0;
         }
 
-        _rows = _columns = matrix_.size();
+        _rows = _columns = (int)_matrix.size();
     }
     else if (_rows > size)
     {
-        matrix_.resize(size);
+        _matrix.resize((size_t)size);
         _rows = size;
         for (int i = 0; i < _rows; i++)
-            matrix_[i].resize(size);
+            _matrix[i].resize(size);
         _columns = size;
     }
 }
@@ -140,7 +123,7 @@ void Matrix<T>::resize(int size)
 template<class T>
 std::vector<std::vector<T>>& Matrix<T>::getMatrix()
 {
-    return matrix_;
+    return _matrix;
 }
 
 template<class T>
@@ -156,14 +139,42 @@ int Matrix<T>::getRows() const
 }
 
 template<class T>
+std::vector<T> &Matrix<T>::operator[](int index) {
+    if (index < 0 || index > _rows)
+        throw "Выход за границы матрицы";
+
+    return _matrix[index];
+}
+
+template<class T>
+const std::vector<T> &Matrix<T>::operator[](int index) const {
+    if (index < 0 || index > _rows)
+        throw "Выход за границы матрицы";
+
+    return _matrix[index];
+}
+
+template<class T>
+Matrix<T> &Matrix<T>::operator=(const Matrix<T> &m) {
+    if (this != &m)
+    {
+        _matrix = m._matrix;
+        _rows = m._rows;
+        _columns = m._columns;
+    }
+
+    return *this;
+}
+
+template<class T>
 Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2)
 {
-    if (m1.rows != m2.rows && m1.columns != m2.columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns)
         throw "Матрицы разного размера";
 
-    Matrix<T> newM = Matrix<T>(m1.rows, m2.columns);
-    for (int row = 0; row < m1.rows; row++)
-        for (int column = 0; column < m1.columns; column++)
+    Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
+    for (int row = 0; row < m1._rows; row++)
+        for (int column = 0; column < m1._columns; column++)
             newM[row][column] = m1[row][column] + m2[row][column];
 
     return newM;
@@ -172,12 +183,12 @@ Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2)
 template<class T>
 Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2)
 {
-    if (m1.rows != m2.rows && m1.columns != m2.columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns)
         throw "Матрицы разного размера";
 
-    Matrix<T> newM = Matrix<T>(m1.rows, m2.columns);
-    for (int row = 0; row < m1.rows; row++)
-        for (int column = 0; column < m1.columns; column++)
+    Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
+    for (int row = 0; row < m1._rows; row++)
+        for (int column = 0; column < m1._columns; column++)
             newM[row][column] = m1[row][column] - m2[row][column];
 
     return newM;
@@ -186,13 +197,13 @@ Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2)
 template<class T>
 Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2)
 {
-    if (m1.rows != m2.rows && m1.columns != m2.columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns)
         throw "Матрицы разного размера";
 
-    Matrix<T> newM = Matrix<T>(m1.rows, m2.columns);
-    for (int row = 0; row < m1.rows; row++)
-        for (int column = 0; column < m1.columns; column++)
-            for (int count = 0; count < m1.columns; count++)
+    Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
+    for (int row = 0; row < m1._rows; row++)
+        for (int column = 0; column < m1._columns; column++)
+            for (int count = 0; count < m1._columns; count++)
                 newM[row][column] += m1[row][count] * m2[count][column];
 
     return newM;
@@ -201,11 +212,11 @@ Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2)
 template<class T>
 bool operator ==(const Matrix<T>& m1, const Matrix<T>& m2)
 {
-    if (m1.rows != m2.rows && m1.columns != m2.columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns)
         return false;
 
-    for (int row = 0; row < m1.rows; row++)
-        for (int column = 0; column < m1.columns; column++)
+    for (int row = 0; row < m1._rows; row++)
+        for (int column = 0; column < m1._columns; column++)
             if (m1[row][column] != m2[row][column])
                 return false;
     return true;
@@ -216,5 +227,3 @@ Matrix<T> operator !=(const Matrix<T>& m1, const Matrix<T>& m2)
 {
     return !(m1 == m2);
 }
-
-#endif // MATRIX_H

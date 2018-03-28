@@ -7,7 +7,7 @@
 
 #define INSTRUMENT_CONFIG singleton<InstrumentConfig>()
 
-class InstrumentConfig: public QObject{
+class InstrumentConfig: public QObject {
     Q_OBJECT
 public:
     InstrumentConfig();

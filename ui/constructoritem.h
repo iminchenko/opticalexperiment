@@ -15,7 +15,7 @@ public:
 
     ConstructorItem(QPointF pos, int id, QGraphicsItem *parent = nullptr);
 
-    virtual ~ConstructorItem() = 0;
+    ~ConstructorItem() override = 0;
 
     virtual int getItemType() const;
     virtual bool isSource() const;
@@ -30,9 +30,9 @@ public:
     int getId() const;
 
 protected:
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
-    virtual void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
 
     QVariant itemChange(GraphicsItemChange change,
                         const QVariant &value) override;

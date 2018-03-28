@@ -8,7 +8,8 @@ using std::min;
 using std::max;
 
 ConnectionItem::ConnectionItem(OutputVertexItem *source,
-                               InputVertexItem *destination, QGraphicsItem *parent)
+                               InputVertexItem *destination,
+                               QGraphicsItem *parent)
     :QGraphicsItem(parent), _source(source), _dest(destination) {
     _source->addConnection(this);
     _dest->addConnection(this);
@@ -29,7 +30,10 @@ InputVertexItem *ConnectionItem::getDestination() {
 }
 
 QRectF ConnectionItem::boundingRect() const {
-    qreal x1, x2, y1, y2;
+    qreal x1 = 9999;
+    qreal x2 = -9999;
+    qreal y1 = 9999;
+    qreal y2 = -9999;
 
     auto points = getBezierCurvePoints();
 

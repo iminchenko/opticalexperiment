@@ -54,7 +54,8 @@ void MainWindow::initDevices() {
 
         // icon creation
         // TODO: вынести в отдельный блок
-        QImage img(DEVICECONFIG_LIST[i].getBounding().size().toSize(), QImage::Format_ARGB32);
+        QImage img(DEVICECONFIG_LIST[i].getBounding().size().toSize(),
+                   QImage::Format_ARGB32);
         QPainter painter(&img);
 
         painter.setRenderHint(QPainter::Antialiasing);

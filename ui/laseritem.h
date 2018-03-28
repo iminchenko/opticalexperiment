@@ -1,3 +1,5 @@
+#pragma once
+
 #include "constructoritem.h"
 
 class LaserItem : public ConstructorItem {

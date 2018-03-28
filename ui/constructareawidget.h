@@ -7,7 +7,7 @@ class Properties;
 class ConstructAreaWidget : public QGraphicsView {
     Q_OBJECT
 public:
-    ConstructAreaWidget(QWidget *parent = 0);
+    explicit ConstructAreaWidget(QWidget *parent = 0);
 
 signals:
     void propertiesItemClicked(Properties *);

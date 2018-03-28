@@ -9,15 +9,14 @@
 using std::list;
 
 VertexItem::VertexItem(ConstructorItem *parent, int number)
-    :QGraphicsItem(parent), _hoverEvent(false), _connection(nullptr),
-                                                              _number(number){
+    :QGraphicsItem(parent), _hoverEvent(false),
+     _connection(nullptr), _number(number){
     setZValue(1);
     setAcceptHoverEvents(true);
 }
 
 VertexItem::~VertexItem() {
-    if (_connection)
-        delete _connection;
+    delete _connection;
 }
 
 bool VertexItem::canConnect(const VertexItem *vertex) {

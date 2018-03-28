@@ -26,7 +26,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
         raw.append(file.readLine());
     }
 
-    QJsonParseError err;
+    QJsonParseError err{};
 
     doc = QJsonDocument::fromJson(raw, &err);
 
@@ -44,7 +44,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
     QJsonArray arr = doc.array();
 
-    _devList.reserve(arr.size());
+    _devList.reserve((size_t)arr.size());
 
     for (const auto &iter : arr) {
         QJsonObject obj = iter.toObject();
@@ -54,7 +54,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
         list<DrawingConfig> drawing;
 
         for (const auto &item : drawArray) {
-            QJsonValue drawObj = item.toObject();
+            QJsonObject drawObj = item.toObject();
             DrawingConfig oneDrawing;
             DrawingConfig::drawingType type =
                 DrawingConfig::toType(drawObj["type"].toString().toStdString());
@@ -63,7 +63,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
             if (type != DrawingConfig::TYPE_TEXT) {
                 QJsonArray jsonCoords = drawObj["coordinates"].toArray();
-                oneDrawing.coordinates.reserve(jsonCoords.size());
+                oneDrawing.coordinates.reserve((size_t)jsonCoords.size());
 
                 for (const auto &coordinate : jsonCoords) {
                     oneDrawing.coordinates.push_back(coordinate.toInt());
@@ -91,10 +91,10 @@ void DeviceConfigList::loadDevices(std::string filename) {
             }
         }
 
-        _devList.push_back(DeviceConfig(inputCount, outputCount,
+        _devList.emplace_back(inputCount, outputCount,
                         obj["name"].toString().toStdString(),
                         obj["description"].toString().toStdString(), drawing,
-                        matr));
+                        matr);
     }
 }
 

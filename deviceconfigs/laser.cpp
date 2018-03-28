@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 #include "laser.h"
@@ -11,30 +12,24 @@ Laser::Laser(int id) :
     , _wave(_ex, _ey) 
 {}
 
-Wave Laser::getWave(int output) const
-{ 
-    Q_UNUSED(output);
+Wave Laser::getWave(int) const {
     return  _wave;
 }
 
-void Laser::setEx(std::complex<double> ex) 
-{ 
+void Laser::setEx(std::complex<double> ex) {
     _ex = ex; 
     _wave.setEx(_ex);
 }
 
-std::complex<double> Laser::getEx() 
-{ 
+std::complex<double> Laser::getEx() {
     return _ex; 
 }
 
-void Laser::setEy(std::complex<double> ey) 
-{ 
+void Laser::setEy(std::complex<double> ey) {
     _ey = ey; 
     _wave.setEy(_ey); 
 }
 
-std::complex<double> Laser::getEy()
-{ 
+std::complex<double> Laser::getEy() {
     return _ey; 
 }

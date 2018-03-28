@@ -1,7 +1,8 @@
 #include "genericitem.h"
 #include "deviceconfigs/deviceconfiglist.h"
 
-GenericItem::GenericItem(QPointF pos, int id, int itemType, QGraphicsItem *parent)
+GenericItem::GenericItem(QPointF pos, int id, int itemType,
+                         QGraphicsItem *parent)
     :ConstructorItem(pos, id, parent), _itemId(itemType) {
     // как-то некрасиво, надо переписать
     int count = DEVICECONFIG_LIST[_itemId].getInputCount();
