@@ -11,6 +11,7 @@ public:
 
 signals:
     void propertiesItemClicked(Properties *);
+    void deviceEmplacementChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

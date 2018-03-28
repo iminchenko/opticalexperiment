@@ -50,7 +50,7 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
 
     auto pos = mapToScene(event->pos());
 
-    int type;
+    int type = 0;
     int id = DEVICE_MANAGER.getMaxId();
 
     switch (INSTRUMENT_CONFIG.getType()) {
@@ -70,6 +70,8 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     }
 
     DEVICE_MANAGER.addDevice(type, id);
+
+    emit deviceEmplacementChanged();
 }
 
 void ConstructAreaWidget::keyPressEvent(QKeyEvent *event) {
@@ -117,4 +119,6 @@ void ConstructAreaWidget::dropConnectionLine() {
         delete _connectionLine;
         _connectionLine = nullptr;
     }
+
+    emit deviceEmplacementChanged();
 }

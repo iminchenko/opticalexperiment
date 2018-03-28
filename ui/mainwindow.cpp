@@ -1,6 +1,4 @@
 #include <QtCharts>
-#include <QtCharts/QChartView>
-#include <QSpacerItem>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -8,6 +6,7 @@
 #include "propertyobserver.h"
 #include "globaldefines.h"
 #include "deviceconfigs/deviceconfiglist.h"
+#include "devicemanager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,7 +43,8 @@ void MainWindow::initDevices() {
     DEVICECONFIG_LIST.loadDevices(CONFIG_PATH);
 
     for (size_t i = 0; i < DEVICECONFIG_LIST.count(); ++i) {
-        QAction *act = new QAction(DEVICECONFIG_LIST[i].getName().c_str(), this);
+        QAction *act = new QAction(DEVICECONFIG_LIST[i].getName().c_str(),
+                                   this);
         act->setProperty("id", QVariant(int(i)));
         act->setCheckable(true);
         _grInstruments->addAction(act);
@@ -72,6 +72,9 @@ void MainWindow::initDevices() {
         act->setIcon(QIcon(pix));
     }
     ui->instrumentToolBar->insertSeparator(ui->actionShield);
+
+    connect(ui->graphicsView, SIGNAL(deviceEmplacementChanged()),
+            this, SLOT(onDeviceEmplacementChanged()));
 }
 
 void MainWindow::initCharts() {
@@ -85,4 +88,18 @@ void MainWindow::initCharts() {
     chart->axisY()->setRange(0, 1);
 
     ui->leftLayout->insertWidget(1, new QChartView(chart));
+}
+
+void MainWindow::onDeviceEmplacementChanged() {
+    qDebug() << "kek";
+
+    auto disp = DEVICE_MANAGER.getDisplay();
+
+    if (disp) {
+        qDebug() << disp->getValue(1).real();
+        qDebug() << disp->getValue(1).imag();
+    }
+    else {
+        qDebug() << "null disp";
+    }
 }

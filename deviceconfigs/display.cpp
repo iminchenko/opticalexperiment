@@ -1,6 +1,8 @@
 #include "display.h"
 #include "devicedefines.h"
 
+using std::vector;
+
 template <typename T1, typename  T2>
 T1 m(T1 i, T2 N) {
     if ((T1)N / 2 == 0) {
@@ -17,7 +19,11 @@ T1 m(T1 i, T2 N) {
 
 Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {}
 
-std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
+std::complex<double> Display::getValue(double x) const {
+    return I(vector<Wave>{getWave(0)}, x);
+}
+
+std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     std::complex<double> Ix(0, 0), Iy(0, 0), a(0, 0);
 
     for (unsigned int k = 1; k < ws.size(); k++) {
@@ -39,5 +45,8 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) {
 }
 
 Wave Display::getWave(int) const {
+    if (_connections[0].first)
+        return _connections[0].first->getWave(_connections[0].third);
+
     return Wave();
 }

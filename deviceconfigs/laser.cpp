@@ -7,8 +7,8 @@
 
 Laser::Laser(int id) :
     Device(deviceType::TYPE_LASER, id)
-    , _ex(0, 0)
-    , _ey(0, 0)
+    , _ex(1, 1)
+    , _ey(1, 1)
     , _wave(_ex, _ey) 
 {}
 

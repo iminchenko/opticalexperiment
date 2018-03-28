@@ -1,10 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+#include <deviceconfigs/display.h>
 
 #include "matrix.h"
 #include "utility/singleton.hpp"
-#include "deviceconfigs/devicedefines.h"
 #include "deviceconfigs/device.h"
 
 #define DEVICE_MANAGER singleton<DeviceManager>()
@@ -23,6 +24,9 @@ public:
     size_t deviceCount() const;
     int getMaxId() const;
 
+    // костыльный костыль
+    Display *getDisplay() const;
+
 protected:
     DeviceManager();
 
@@ -32,5 +36,5 @@ private:
 
     int _maxId;
 
-    std::vector<Device> _devices;
+    std::vector<std::unique_ptr<Device>> _devices;
 };
