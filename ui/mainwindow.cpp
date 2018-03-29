@@ -1,4 +1,5 @@
 #include <QtCharts>
+#include <functional>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -7,6 +8,20 @@
 #include "globaldefines.h"
 #include "deviceconfigs/deviceconfiglist.h"
 #include "devicemanager.h"
+
+// TODO: найти куда вынести
+void fillSeries(QXYSeries *series, double min, double max,
+                double step, std::function<double(double)> func) {
+    if (!series)
+        return;
+
+    series->clear();
+
+    for (double i = min; i <= max; i += step) {
+        series->append(i, func(i));
+
+    }
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -78,26 +93,40 @@ void MainWindow::initDevices() {
 }
 
 void MainWindow::initCharts() {
-    QChart *chart = new QChart();
-    chart->setTitle("Screen chart");
+    _chart = new QChart();
+    _chart->setTitle("Shield chart");
 
-    chart->addSeries(new QLineSeries(chart));
-    chart->createDefaultAxes();
-    chart->legend()->hide();
-    chart->axisX()->setRange(-1, 1);
-    chart->axisY()->setRange(0, 1);
+    // 2 серии - для реальной и мнимой части
+    _chart->addSeries(new QLineSeries(_chart));
+    _chart->series().back()->setName("real");
+    _chart->addSeries(new QLineSeries(_chart));
+    _chart->series().back()->setName("imag");
 
-    ui->leftLayout->insertWidget(1, new QChartView(chart));
+    _chart->createDefaultAxes();
+    _chart->axisX()->setRange(-2, 2);
+    _chart->axisY()->setRange(0, 3);
+
+    _chart->legend()->setVisible(true);
+//    _chart->legend()->detachFromChart();
+//    _chart->legend()->setBackgroundVisible(true);
+
+    ui->leftLayout->insertWidget(1, new QChartView(_chart));
+
+    _chart->legend()->update();
 }
 
 void MainWindow::onDeviceEmplacementChanged() {
-    qDebug() << "kek";
-
+    // TODO: должно быть не в этой функции и по графику на дисплей
     auto disp = DEVICE_MANAGER.getDisplay();
 
     if (disp) {
-        for (float i = -2; i <= 2; i += 0.1)
-        qDebug() << "i:" << i << "real:" << disp->getValue(i).real() << "imag:" << disp->getValue(i).imag();
+        // TODO: избавиться от dynamic_cast
+        // TODO: дублирование кода - зло
+        // TODO: куча функциональных вещей в одну строку - зло
+        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), -2, 2, 0.1,
+                   [&disp](double x){return disp->getValue(x).real();});
+        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[1]), -2, 2, 0.1,
+                   [&disp](double x){return disp->getValue(x).imag();});
     }
     else {
         qDebug() << "null disp";

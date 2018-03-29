@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QActionGroup>
+#include <QtCharts>
 
 namespace Ui {
 class MainWindow;
@@ -23,4 +24,6 @@ private:
 
     Ui::MainWindow *ui;
     QActionGroup *_grInstruments;
+    // TODO: мэнэджментом дисплеев должен заниматься не `MainWindow`
+    QChart *_chart;
 };

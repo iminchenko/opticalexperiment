@@ -11,6 +11,7 @@ using std::size_t;
 
 class Device {
     struct connection {
+        // TODO: std::weak_ptr
         const Device *device;
         double distance;
         int output;
