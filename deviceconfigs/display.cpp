@@ -44,9 +44,9 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     return Ix + Iy;
 }
 
-Waves Display::getWave(int) const {
+Wave Display::getWave(int) const {
     if (_connections[0].device)
         return _connections[0].device->getWave(_connections[0].output);
 
-    return Waves();
+    return Wave();
 }

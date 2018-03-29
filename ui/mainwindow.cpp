@@ -96,8 +96,8 @@ void MainWindow::onDeviceEmplacementChanged() {
     auto disp = DEVICE_MANAGER.getDisplay();
 
     if (disp) {
-        qDebug() << disp->getValue(1).real();
-        qDebug() << disp->getValue(1).imag();
+        for (float i = -2; i <= 2; i += 0.1)
+        qDebug() << "i:" << i << "real:" << disp->getValue(i).real() << "imag:" << disp->getValue(i).imag();
     }
     else {
         qDebug() << "null disp";

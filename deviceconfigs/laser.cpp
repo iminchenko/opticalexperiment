@@ -7,13 +7,13 @@
 
 Laser::Laser(int id) :
     Device(deviceType::TYPE_LASER, id)
-    , _ex(1, 1)
-    , _ey(1, 1)
+    , _ex(1, 0)
+    , _ey(1, 0)
     , _wave(_ex, _ey) 
 {}
 
-Waves Laser::getWave(int) const {
-    return Waves{_wave};
+Wave Laser::getWave(int) const {
+    return _wave;
 }
 
 void Laser::setEx(std::complex<double> ex) {

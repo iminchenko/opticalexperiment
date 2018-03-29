@@ -59,4 +59,6 @@ Waves operator*(const TransMatrix &m, const Waves &ws) {
                     : newWs.at(i / 2).setEy(accum));
         accum = 0;
     }
+
+    return newWs;
 }
