@@ -11,7 +11,7 @@
 
 // TODO: найти куда вынести
 void fillSeries(QXYSeries *series, double min, double max,
-                double step, std::function<double(double)> func) {
+                double step, const std::function<double(double)> &func) {
     if (!series)
         return;
 
@@ -19,7 +19,6 @@ void fillSeries(QXYSeries *series, double min, double max,
 
     for (double i = min; i <= max; i += step) {
         series->append(i, func(i));
-
     }
 }
 
