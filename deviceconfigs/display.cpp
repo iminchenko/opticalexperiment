@@ -26,19 +26,19 @@ std::complex<double> Display::getValue(double x) const {
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     std::complex<double> Ix(0, 0), Iy(0, 0), a(0, 0);
 
-    for (unsigned int k = 1; k < ws.size(); k++) {
-        for (unsigned int p = 1; p < k; p++) {
-            a = ws[k - 1].getEx()*(std::conj(ws[p - 1].getEx()));
-            Ix += 2*(a.real()*cos(m(k, ws.size()) - m(p, ws.size()))*deltaK_*x
-                   - a.imag()*sin(m(k, ws.size()) - m(p, ws.size()))*deltaK_*x);
+    for (unsigned int k = 0; k < ws.size(); k++) {
+        for (unsigned int p = 0; p < k; p++) {
+            a = ws[k].getEx()*(std::conj(ws[p].getEx()));
+            Ix += 2*(a.real()*cos(m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x
+                   - a.imag()*sin(m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x);
 
-            a = ws[k - 1].getEy()*(std::conj(ws[p - 1].getEy()));
-            Iy += 2*(a.real()*cos(m(k, ws.size()) - m(p, ws.size()))*deltaK_*x
-                    - a.imag()*sin(m(k,ws.size()) - m(p, ws.size()))*deltaK_*x);
+            a = ws[k].getEy()*(std::conj(ws[p].getEy()));
+            Iy += 2*(a.real()*cos(m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x
+                    - a.imag()*sin(m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x);
         }
 
-        Ix += ws[k - 1].getEx()*(std::conj(ws[k - 1].getEx()));
-        Iy += ws[k - 1].getEy()*(std::conj(ws[k - 1].getEy()));
+        Ix += ws[k].getEx()*(std::conj(ws[k].getEx()));
+        Iy += ws[k].getEy()*(std::conj(ws[k].getEy()));
     }
 
     return Ix + Iy;
