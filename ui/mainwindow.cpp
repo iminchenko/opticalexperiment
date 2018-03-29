@@ -98,21 +98,14 @@ void MainWindow::initCharts() {
 
     // 2 серии - для реальной и мнимой части
     _chart->addSeries(new QLineSeries(_chart));
-    _chart->series().back()->setName("real");
-    _chart->addSeries(new QLineSeries(_chart));
-    _chart->series().back()->setName("imag");
 
     _chart->createDefaultAxes();
     _chart->axisX()->setRange(-2, 2);
     _chart->axisY()->setRange(0, 3);
 
-    _chart->legend()->setVisible(true);
-//    _chart->legend()->detachFromChart();
-//    _chart->legend()->setBackgroundVisible(true);
+    _chart->legend()->hide();
 
     ui->leftLayout->insertWidget(1, new QChartView(_chart));
-
-    _chart->legend()->update();
 }
 
 void MainWindow::onDeviceEmplacementChanged() {
@@ -121,12 +114,8 @@ void MainWindow::onDeviceEmplacementChanged() {
 
     if (disp) {
         // TODO: избавиться от dynamic_cast
-        // TODO: дублирование кода - зло
-        // TODO: куча функциональных вещей в одну строку - зло
         fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), -2, 2, 0.1,
                    [&disp](double x){return disp->getValue(x).real();});
-        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[1]), -2, 2, 0.1,
-                   [&disp](double x){return disp->getValue(x).imag();});
     }
     else {
         qDebug() << "null disp";
