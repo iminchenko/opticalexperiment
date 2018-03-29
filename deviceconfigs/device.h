@@ -6,11 +6,19 @@
 
 #include "matrix.h"
 #include "wave.h"
-#include "utility/triple.hpp"
 
 using std::size_t;
 
 class Device {
+    struct connection {
+        const Device *device;
+        double distance;
+        int output;
+
+        connection(const Device *dev, double dist, int out):
+        device(dev), distance(dist), output(out) {}
+    };
+
 public:
     Device() = default;
     Device(int type, int id);
@@ -27,16 +35,16 @@ protected:
     bool changed() const;
 
     // графовая инфа
-    // double - расстояниеЫ
+    // double - расстояние
     // int - id выхода
-    std::vector<triple<const Device *, double, int>> _connections;
+    std::vector<connection> _connections;
 
 private:
-    int _type;
-
-    int _id;
+    // базовая инфа об устройстве
+    int _type = 0;
+    int _id = -1;
 
     // для кэширования
-    mutable bool _changed;
+    mutable bool _changed = false;
     mutable std::vector<Wave> _waveCache;
 };

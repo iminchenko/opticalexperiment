@@ -14,10 +14,10 @@ Wave Device::getWave(int output) const {
         for (auto &wave : _waveCache) {
             wave = Wave();
             for (const auto &connection : _connections) {
-                if (connection.first) {
+                if (connection.device) {
                     // по-хорошему должно быть +=
                     wave = DEVICECONFIG_LIST[_type].getMatrix() *
-                           connection.first->getWave(connection.third);
+                           connection.device->getWave(connection.output);
                 }
             }
         }
@@ -28,8 +28,7 @@ Wave Device::getWave(int output) const {
 
 void Device::setConnection(int input, const Device *source,
                            double distance, int output) {
-    _connections[input] =
-             make_triple<const Device *, double, int>(source, distance, output);
+    _connections[input] = connection(source, distance, output);
 }
 
 bool Device::changed() const {
@@ -37,7 +36,7 @@ bool Device::changed() const {
         return true;
 
     for (const auto &i : _connections) {
-        if (i.first && i.first->changed()) {
+        if (i.device && i.device->changed()) {
             _changed = true;
             return true;
         }
