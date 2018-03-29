@@ -30,7 +30,7 @@ void Wave::setEy(const std::complex<double> &ey)  {
     _ey = ey; 
 }
 
-Wave operator*(const Matrix<std::complex<double>> &m, const Wave &w) {
+Wave operator*(const TransMatrix &m, const Wave &w) {
     /* В волне всегда два компонента */
     if (m.getColumns() != 2)
         throw "Количество столбцов матрицы не равно 2";
@@ -43,13 +43,12 @@ Wave operator*(const Matrix<std::complex<double>> &m, const Wave &w) {
     return newW;
 }
 
-std::vector<Wave> operator*(const Matrix<std::complex<double>> &m,
-                            const std::vector<Wave> &ws) {
-    if (m.getColumns() != ws.size()*2)
+Waves operator*(const TransMatrix &m, const Waves &ws) {
+    if (m.getColumns() != ws.size() * 2)
         throw "Умножение не возможно";
 
     std::complex<double> accum(0, 0);
-    std::vector<Wave> newWs(ws.size());
+    Waves newWs(ws.size());
     for (size_t i = 0; i < m.getColumns(); ++i) {
         for (int j = 0; j < m.getRows(); j += 2) {
             accum += ws.at(i / 2).getEx() * m[i][j];

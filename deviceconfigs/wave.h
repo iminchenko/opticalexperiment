@@ -1,7 +1,12 @@
 #pragma once
 
 #include <complex>
+
 #include "matrix.h"
+#include "devicedefines.h"
+
+class Wave;
+using Waves = std::vector<Wave>;
 
 class Wave {
 public:
@@ -20,8 +25,7 @@ private:
     std::complex<double> _ey;
 };
 
-Wave operator*(const Matrix<std::complex<double>> &m, const Wave &w);
+Wave operator*(const TransMatrix &m, const Wave &w);
 
-std::vector<Wave> operator*(const Matrix<std::complex<double>> &m,
-                             const std::vector<Wave> &ws);
+Waves operator*(const TransMatrix &m, const Waves &ws);
 

@@ -10,7 +10,7 @@ class Laser: public Device {
 public:
     explicit Laser(int id);
 
-    Wave getWave(int output) const override;
+    Waves getWave(int output) const override;
     
     void setEx(std::complex<double> ex);
     std::complex<double> getEx();

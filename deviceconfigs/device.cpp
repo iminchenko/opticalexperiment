@@ -3,21 +3,20 @@
 
 Device::Device(int type, int id) :_type(type), _id(id),
     _connections(DEVICECONFIG_LIST[type].getInputCount(), {nullptr, 0, 0}),
-    _waveCache(DEVICECONFIG_LIST[type].getOutputCount()){}
+    _waveCache(DEVICECONFIG_LIST[type].getOutputCount()) {}
 
-Device::~Device() {}
-
-Wave Device::getWave(int output) const {
+Waves Device::getWave(int output) const {
     if (changed()) {
         _changed = false;
 
-        for (auto &wave : _waveCache) {
-            wave = Wave();
+        for (auto &waves : _waveCache) {
+            waves = Waves();
             for (const auto &connection : _connections) {
                 if (connection.device) {
-                    // по-хорошему должно быть +=
-                    wave = DEVICECONFIG_LIST[_type].getMatrix() *
-                           connection.device->getWave(connection.output);
+                    for (auto &wave: (DEVICECONFIG_LIST[_type].getMatrix() *
+                                connection.device->getWave(connection.output))) {
+                        waves.push_back(wave);
+                    }
                 }
             }
         }
@@ -28,6 +27,7 @@ Wave Device::getWave(int output) const {
 
 void Device::setConnection(int input, const Device *source,
                            double distance, int output) {
+    _changed = true;
     _connections[input] = connection(source, distance, output);
 }
 
