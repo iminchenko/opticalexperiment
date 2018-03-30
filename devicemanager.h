@@ -36,5 +36,5 @@ private:
 
     int _maxId;
 
-    std::vector<std::unique_ptr<Device>> _devices;
+    std::vector<std::shared_ptr<Device>> _devices;
 };

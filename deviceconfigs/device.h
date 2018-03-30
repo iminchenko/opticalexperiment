@@ -3,6 +3,7 @@
 #include <complex>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "matrix.h"
 #include "wave.h"
@@ -11,12 +12,11 @@ using std::size_t;
 
 class Device {
     struct connection {
-        // TODO: std::weak_ptr
-        const Device *device;
+        std::weak_ptr<const Device> device;
         double distance;
         int output;
 
-        connection(const Device *dev, double dist, int out):
+        connection(const std::shared_ptr<Device> &dev, double dist, int out):
         device(dev), distance(dist), output(out) {}
     };
 
@@ -28,7 +28,7 @@ public:
     // получить волну с заданного выхода
     virtual Wave getWave(int output) const;
 
-    void setConnection(int input, const Device *source,
+    void setConnection(int input, std::shared_ptr<Device> &source,
                        double distance, int output);
 
 protected:

@@ -12,8 +12,8 @@ Wave Device::getWave(int output) const {
         Waves inputWaves;
 
         for (const auto& connection : _connections) {
-            if (connection.device) {
-                inputWaves.push_back(connection.device->getWave(connection.output));
+            if (!connection.device.expired()) {
+                inputWaves.push_back(connection.device.lock()->getWave(connection.output));
             }
             else {
                 inputWaves.emplace_back(Wave());
@@ -26,7 +26,7 @@ Wave Device::getWave(int output) const {
     return _waveCache[output];
 }
 
-void Device::setConnection(int input, const Device *source,
+void Device::setConnection(int input, std::shared_ptr<Device> &source,
                            double distance, int output) {
     _changed = true;
     _connections[input] = connection(source, distance, output);
@@ -37,7 +37,7 @@ bool Device::changed() const {
         return true;
 
     for (const auto &i : _connections) {
-        if (i.device && i.device->changed()) {
+        if (!i.device.expired() && i.device.lock()->changed()) {
             _changed = true;
             return true;
         }

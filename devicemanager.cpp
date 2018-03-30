@@ -34,7 +34,7 @@ void DeviceManager::addConnection(int sourceIdDevice,
 void DeviceManager::addConnection(int sourceDevId, int sourceOut,
                                   int destDevId, int destInput) {
     // 10 - magic number for distance
-    _devices[destDevId]->setConnection(destInput, _devices[sourceDevId].get(),
+    _devices[destDevId]->setConnection(destInput, _devices[sourceDevId],
                                       10, sourceOut);
 }
 

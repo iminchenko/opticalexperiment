@@ -45,8 +45,8 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
 }
 
 Wave Display::getWave(int) const {
-    if (_connections[0].device)
-        return _connections[0].device->getWave(_connections[0].output);
+    if (!_connections[0].device.expired())
+        return _connections[0].device.lock()->getWave(_connections[0].output);
 
     return Wave();
 }
