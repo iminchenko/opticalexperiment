@@ -5,7 +5,8 @@
 *.Debug
 *.qmake*
 *.autosave
+*.pro.*
+*.idea
 Makefile*
 ui_*
-*.idea
 cmake-build*
