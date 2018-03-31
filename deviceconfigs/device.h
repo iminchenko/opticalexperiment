@@ -26,7 +26,7 @@ public:
     virtual ~Device() = default;
 
     // получить волну с заданного выхода
-    virtual Wave getWave(int output) const;
+    virtual Waves getWave(int output) const;
 
     void setConnection(int input, std::shared_ptr<Device> &source,
                        double distance, int output);
@@ -47,5 +47,5 @@ private:
 
     // для кэширования
     mutable bool _changed = true;
-    mutable std::vector<Wave> _waveCache;
+    mutable std::vector<Waves> _waveCache;
 };

@@ -20,6 +20,8 @@ public:
     std::complex<double> getEy() const;
     void setEy(const std::complex<double> &ey);
 
+    bool operator==(const Wave &wave);
+
 private:
     std::complex<double> _ex;
     std::complex<double> _ey;
@@ -28,4 +30,6 @@ private:
 Wave operator*(const TransMatrix &m, const Wave &w);
 
 Waves operator*(const TransMatrix &m, const Waves &ws);
+
+void clearEmpty(Waves &waves);
 

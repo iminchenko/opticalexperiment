@@ -30,6 +30,10 @@ void Wave::setEy(const std::complex<double> &ey)  {
     _ey = ey; 
 }
 
+bool Wave::operator==(const Wave &wave) {
+    return _ex == wave._ex && _ey == wave._ey;
+}
+
 Wave operator*(const TransMatrix &m, const Wave &w) {
     /* В волне всегда два компонента */
     if (m.getColumns() != 2)
@@ -47,18 +51,34 @@ Waves operator*(const TransMatrix &m, const Waves &ws) {
     if (m.getColumns() != ws.size() * 2)
         throw "Умножение не возможно";
 
-    std::complex<double> accum(0, 0);
-    Waves newWs(ws.size());
-    for (size_t i = 0; i < m.getColumns(); ++i) {
-        for (int j = 0; j < m.getRows(); j += 2) {
-            accum += ws.at(i / 2).getEx() * m[i][j];
-            accum += ws.at(i / 2).getEy() * m[i][j + 1];
+    Waves newWs((size_t)(m.getRows() / 2));
+    for (size_t i = 0; i < m.getRows(); ++i) {
+        std::complex<double> accum(0, 0);
+
+        for (int j = 0; j < ws.size(); ++j) {
+            accum += ws[j].getEx() * m[i][2 * j];
+            accum += ws[j].getEy() * m[i][2 * j + 1];
         }
 
-        (i % 2 == 0 ? newWs.at(i / 2).setEx(accum)
-                    : newWs.at(i / 2).setEy(accum));
-        accum = 0;
+        if (i & 1) { // NOLINT
+            newWs[i / 2].setEy(accum);
+        } else {
+            newWs[i / 2].setEx(accum);
+        }
     }
 
     return newWs;
 }
+
+void clearEmpty(Waves &waves) {
+    for (auto iter = waves.begin(); iter != waves.end();) {
+        auto empty = Wave();
+        if (*iter == empty) {
+            iter = waves.erase(iter);
+        }
+        else {
+            ++iter;
+        }
+    }
+}
+

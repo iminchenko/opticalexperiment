@@ -20,7 +20,7 @@ T1 m(T1 i, T2 N) {
 Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {}
 
 std::complex<double> Display::getValue(double x) const {
-    return I(vector<Wave>{getWave(0)}, x);
+    return I(getWave(0), x);
 }
 
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
@@ -44,9 +44,9 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     return Ix + Iy;
 }
 
-Wave Display::getWave(int) const {
+Waves Display::getWave(int) const {
     if (!_connections[0].device.expired())
         return _connections[0].device.lock()->getWave(_connections[0].output);
 
-    return Wave();
+    return Waves();
 }

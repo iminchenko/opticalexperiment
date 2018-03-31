@@ -12,8 +12,8 @@ Laser::Laser(int id) :
     , _wave(_ex, _ey) 
 {}
 
-Wave Laser::getWave(int) const {
-    return _wave;
+Waves Laser::getWave(int) const {
+    return Waves{_wave};
 }
 
 void Laser::setEx(std::complex<double> ex) {

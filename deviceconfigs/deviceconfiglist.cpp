@@ -80,11 +80,11 @@ void DeviceConfigList::loadDevices(std::string filename) {
         int outputCount = obj["outputs"].toInt();
 
         int size = 2 * inputCount;
-        Matrix<complex<double>> matr(size, size);
         QJsonArray rows = obj["matrix"].toArray();
-        for (int i = 0; i < size; ++i) {
+        Matrix<complex<double>> matr(rows.size(), size);
+        for (int i = 0; i < rows.size(); ++i) {
             QJsonArray row = rows[i].toArray();
-            for (int j = 0; j < size; ++j) {
+            for (int j = 0; j < row.size(); ++j) {
                 complex<double> temp(row[j].toArray()[0].toDouble(),
                                      row[j].toArray()[1].toDouble());
                 matr[i][j] = temp;
