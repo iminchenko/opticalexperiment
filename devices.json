@@ -48,6 +48,10 @@
             "coordinates" :  [50, 50]
         },
         { 
+            "type" : "rect",
+            "coordinates" : [-15, -15, 30, 30]
+        },
+        { 
             "type" : "line",
             "coordinates" : [-15, -15, 15, 15]
         }
@@ -110,6 +114,33 @@
         { 
             "type" : "rect",
             "coordinates" : [-10, -7, 20, 14]
+        }
+    ]
+},
+{
+    "name": "Translucent mirror",
+    "description" : "",
+    "inputs" : 2,
+    "outputs" : 1,
+    "matrix" : [
+        [[0, 0], [0, 0]]
+    ],
+    "drawing" : [
+        { 
+            "type" : "size",
+            "coordinates" :  [50, 50]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [-15, -15, 15, 15]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [-15, -15, -15, 15]
+        },
+        { 
+            "type" : "line",
+            "coordinates" : [-15, 15, 15, 15]
         }
     ]
 },
