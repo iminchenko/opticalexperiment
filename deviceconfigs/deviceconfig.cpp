@@ -64,6 +64,7 @@ void DeviceConfig::draw(QPainter *painter, bool selected) const {
                                   _bounding.width(), _bounding.height()));
 
     painter->setPen(QPen(Qt::black, 2, Qt::SolidLine));
+    painter->setBrush(Qt::NoBrush);
 
     for (const auto &iter : _drawings) {
         // кажется в этом свитче многовато дублирований
