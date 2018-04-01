@@ -75,6 +75,13 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="instrumentToolBar">
    <property name="orientation">
@@ -132,6 +139,11 @@
     <string>Light source (laser)</string>
    </property>
   </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -144,5 +156,25 @@
  <resources>
   <include location="../recource.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showInfoWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>showInfoWindow()</slot>
+ </slots>
 </ui>

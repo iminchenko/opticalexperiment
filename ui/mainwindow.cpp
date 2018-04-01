@@ -74,7 +74,7 @@ void MainWindow::initDevices() {
 
         painter.setRenderHint(QPainter::Antialiasing);
 
-        painter.translate(img.width()/2, img.height()/2);
+        painter.translate(img.width()/2., img.height()/2.);
         painter.scale(0.85, 0.85);
 
         img.fill(QColor(0, 0, 0, 0));
@@ -100,7 +100,7 @@ void MainWindow::initCharts() {
 
     _chart->createDefaultAxes();
     _chart->axisX()->setRange(-2, 2);
-    _chart->axisY()->setRange(0, 3);
+    _chart->axisY()->setRange(0, 10);
 
     _chart->legend()->hide();
 
@@ -119,4 +119,18 @@ void MainWindow::onDeviceEmplacementChanged() {
     else {
         qDebug() << "null disp";
     }
+}
+
+void MainWindow::showInfoWindow() {
+    QMessageBox mesbox(this);
+    mesbox.setWindowTitle("About");
+    mesbox.setText("This is simulation of a physical experiment<br><br>"
+                   "<a href='https://bitbucket.org/iminchenko/opticalexperiment'>Repository</a><br><br>"
+                   "Autors:<ul>"
+                   "<li>Ilia Minchenko - developer</li>"
+                   "<li>Roman Larin - developer</li>"
+                   "<li>Andrey Kozy - mathematician</li>"
+                   "<li>Evgeniy Kiktenko - research supervisor</li></ul>");
+    mesbox.setTextFormat(Qt::RichText);
+    mesbox.exec();
 }

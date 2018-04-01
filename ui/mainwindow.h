@@ -15,6 +15,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow() override;
 
+public slots:
+    void showInfoWindow();
+
 private slots:
     void onDeviceEmplacementChanged();
 
