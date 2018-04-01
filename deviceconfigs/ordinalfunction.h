@@ -5,7 +5,7 @@
 
 class OrdinalFunction {
 public:
-    OrdinalFunction();
+    OrdinalFunction() = default;
 
     QVector<int> path();
     QVector<int> path(const Matrix<int> &inc);

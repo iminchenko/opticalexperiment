@@ -8,6 +8,7 @@
 #include <list>
 
 #include "deviceconfiglist.h"
+#include "globaldefines.h"
 
 using std::list;
 using std::complex;
@@ -31,6 +32,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
     doc = QJsonDocument::fromJson(raw, &err);
 
     if (err.error != QJsonParseError::NoError) {
+#ifdef _DEBUG
         // на самом деле надо бы кидать исключение и сообщать
         // об этом в окошке
         qDebug() << err.errorString() << err.offset;
@@ -40,6 +42,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
             str.push_back(QChar(raw[i]));
         qDebug() << raw;
         qDebug() << str;
+#endif
     }
 
     QJsonArray arr = doc.array();
@@ -109,5 +112,3 @@ const DeviceConfig &DeviceConfigList::operator[](size_t id) const {
 
     return _devList[id];
 }
-
-DeviceConfigList::DeviceConfigList() {}

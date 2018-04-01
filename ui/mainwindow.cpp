@@ -116,9 +116,12 @@ void MainWindow::onDeviceEmplacementChanged() {
         fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), -2, 2, 0.1,
                    [&disp](double x){return disp->getValue(x).real();});
     }
+#ifdef _DEBUG
     else {
+
         qDebug() << "null disp";
     }
+#endif
 }
 
 void MainWindow::showInfoWindow() {

@@ -109,9 +109,7 @@ void Matrix<T>::resize(int size)
         }
 
         _rows = _columns = (int)_matrix.size();
-    }
-    else if (_rows > size)
-    {
+    } else if (_rows > size) {
         _matrix.resize((size_t)size);
         _rows = size;
         for (int i = 0; i < _rows; i++)
@@ -121,20 +119,17 @@ void Matrix<T>::resize(int size)
 }
 
 template<class T>
-std::vector<std::vector<T>>& Matrix<T>::getMatrix()
-{
+std::vector<std::vector<T>>& Matrix<T>::getMatrix() {
     return _matrix;
 }
 
 template<class T>
-int Matrix<T>::getColumns() const
-{
+int Matrix<T>::getColumns() const {
    return _columns;
 }
 
 template<class T>
-int Matrix<T>::getRows() const
-{
+int Matrix<T>::getRows() const {
     return _rows;
 }
 
@@ -156,8 +151,7 @@ const std::vector<T> &Matrix<T>::operator[](int index) const {
 
 template<class T>
 Matrix<T> &Matrix<T>::operator=(const Matrix<T> &m) {
-    if (this != &m)
-    {
+    if (this != &m) {
         _matrix = m._matrix;
         _rows = m._rows;
         _columns = m._columns;
@@ -167,8 +161,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix<T> &m) {
 }
 
 template<class T>
-Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2)
-{
+Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns)
         throw "Матрицы разного размера";
 
@@ -181,8 +174,7 @@ Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2)
 }
 
 template<class T>
-Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2)
-{
+Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns)
         throw "Матрицы разного размера";
 
@@ -195,8 +187,7 @@ Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2)
 }
 
 template<class T>
-Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2)
-{
+Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns)
         throw "Матрицы разного размера";
 
@@ -210,8 +201,7 @@ Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2)
 }
 
 template<class T>
-bool operator ==(const Matrix<T>& m1, const Matrix<T>& m2)
-{
+bool operator ==(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns)
         return false;
 
@@ -223,7 +213,6 @@ bool operator ==(const Matrix<T>& m1, const Matrix<T>& m2)
 }
 
 template<class T>
-Matrix<T> operator !=(const Matrix<T>& m1, const Matrix<T>& m2)
-{
+Matrix<T> operator !=(const Matrix<T>& m1, const Matrix<T>& m2) {
     return !(m1 == m2);
 }

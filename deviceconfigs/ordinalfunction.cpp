@@ -1,17 +1,5 @@
 #include "ordinalfunction.h"
 
-OrdinalFunction::OrdinalFunction() {
-    /* Test matrix
-    Matrix<int> inc(5, 5, 0);
-
-    inc_.setMatrix(inc.getMatrix());
-
-    inc_[0][3] = 1;
-    inc_[1][2] = 1;
-    inc_[3][2] = 1;
-    inc_[2][4] = 1; */
-}
-
 QVector<int> OrdinalFunction::path() {
     createNotUsedNode(inc_.getRows());
     createHierarchyLvls();

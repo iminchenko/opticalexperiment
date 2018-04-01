@@ -17,8 +17,7 @@ void PropertyObserver::loadProperties(Properties *item) {
 
     if (item) {
         fillList();
-    }
-    else {
+    } else {
         _propertyWidget->clearContents();
     }
 }
@@ -30,11 +29,10 @@ void PropertyObserver::writeProperties() {
                    _propertyWidget->item(i, 1)->text().toDouble());
     }
 
-    if (_propertyItem)
+    if (_propertyItem) {
         _propertyItem->setProperties(lst);
-    else {
-        while (_propertyWidget->rowCount())
-            _propertyWidget->removeRow(0);
+    } else {
+        while (_propertyWidget->rowCount()) _propertyWidget->removeRow(0);
     }
 }
 

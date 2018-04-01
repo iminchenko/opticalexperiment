@@ -9,8 +9,7 @@ GenericItem::GenericItem(QPointF pos, int id, int itemType,
     if (count > 1) {
         for (int i = 0; i < count; ++i)
             addInputVertex((float)i / (count - 1) * 90);
-    }
-    else {
+    } else {
         addInputVertex();
     }
 
@@ -19,8 +18,7 @@ GenericItem::GenericItem(QPointF pos, int id, int itemType,
     if (count > 1) {
         for (int i = 0; i < count; ++i)
             addOutputVertex(((float)i / (count - 1)) * 90);
-    }
-    else {
+    } else {
         addOutputVertex();
     }
 }

@@ -75,8 +75,7 @@ void clearEmpty(Waves &waves) {
         auto empty = Wave();
         if (*iter == empty) {
             iter = waves.erase(iter);
-        }
-        else {
+        } else {
             ++iter;
         }
     }

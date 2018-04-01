@@ -8,6 +8,7 @@
 #include <QRectF>
 #include <QDebug>
 
+#include "globaldefines.h"
 #include "matrix.h"
 #include "devicedefines.h"
 
@@ -34,7 +35,9 @@ struct DrawingConfig {
         if (type == "text")
             return TYPE_TEXT;
 
+#ifdef _DEBUG
         qDebug() << "Unknown string drawing type" << type.c_str();
+#endif
 
         return TYPE_UNKNOWN;
     }
@@ -67,8 +70,8 @@ public:
     void draw(QPainter *painter, bool selected = false) const;
 
 private:
-    int _inputs;
-    int _outputs;    
+    int _inputs = 0;
+    int _outputs = 0;
 
     TransMatrix _matrix;
 

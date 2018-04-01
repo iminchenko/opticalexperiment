@@ -16,7 +16,7 @@ public:
     const DeviceConfig &operator[](size_t id) const;
 
 protected:
-    DeviceConfigList();
+    DeviceConfigList() = default;
 
 private:
     std::vector<DeviceConfig> _devList;
