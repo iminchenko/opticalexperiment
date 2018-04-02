@@ -6,14 +6,14 @@ using std::vector;
 
 template <typename T1, typename  T2>
 T1 m(T1 i, T2 N) {
-    if ((T1)N / 2 == 0) {
+    if ((T1)N % 2 == 0) {
         if (i > N / 2)
             return i - (T1)N / 2;
         else
             return -(T1)N / 2 + i - 1;
     }
     else {
-        return -((T1)N + 2) / 2 + i;
+        return -((T1)N + 1) / 2 + i;
     }
 }
 
@@ -26,10 +26,10 @@ std::complex<double> Display::getValue(double x) const {
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     std::complex<double> Ix(0, 0), Iy(0, 0), a(0, 0);
     
-    for (int i = 1; i <= 4; i++)
-        qDebug() << QString("i = %1, N = 4, m = %2").arg(i).arg(m(i, 4));
+//    for (int i = 1; i <= 4; i++)
+//        qDebug() << QString("i = %1, N = 4, m = %2").arg(i).arg(m(i, 4));
 
-    return std::complex<double>();
+//    return std::complex<double>();
     //qDebug() << QString("x = %1").arg(x);
     //qDebug() << QString("deltaK = %1").arg(deltaK_);
     for (unsigned int k = 0; k < ws.size(); k++) {
