@@ -100,7 +100,7 @@ void MainWindow::initCharts() {
 
     _chart->createDefaultAxes();
     _chart->axisX()->setRange(-2, 2);
-    _chart->axisY()->setRange(0, 10);
+    _chart->axisY()->setRange(0, 15);
 
     _chart->legend()->hide();
 
@@ -116,7 +116,7 @@ void MainWindow::onDeviceEmplacementChanged() {
 
     if (disp) {
         // TODO: избавиться от dynamic_cast
-        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), -2, 2, 0.1,
+        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), -2, 2, 0.02,
                    [&disp](double x){return disp->getValue(x).real();});
     }
 #ifdef _DEBUG

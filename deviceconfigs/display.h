@@ -16,6 +16,6 @@ public:
 private:
     std::complex<double> I(const std::vector<Wave>& ws, double x) const;
 
-    double K_ = 2*M_PI;
-    double deltaK_ = 1e-2*K_;
+    double K_ = M_PI / 2;
+    double deltaK_ = 1*K_;
 };
