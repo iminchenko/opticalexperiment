@@ -9,8 +9,8 @@ public:
     Matrix();
     Matrix(int rows, int columns);
     Matrix(int rows, int columns, T element);
-    Matrix(Matrix<T>&& m) noexcept;
-    Matrix(const Matrix<T>& m) = default;
+    Matrix(Matrix<T> &&m) noexcept;
+    Matrix(const Matrix<T> &m) = default;
 
     ~Matrix<T>() = default;
 
@@ -39,16 +39,15 @@ Matrix<T>::Matrix() : _rows(0), _columns(0) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns)
-        : _rows(rows), _columns(columns),
-          _matrix((size_t)rows,
-                  std::vector<std::complex<double>>((size_t)columns)) {}
+        : _rows(rows), _columns(columns)
+        , _matrix((size_t)rows
+        ,  std::vector<std::complex<double>>((size_t)columns)) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns, T element)
         : _rows(rows), _columns(columns)
 {
-    for (int row = 0; row < rows; row++)
-    {
+    for (int row = 0; row < rows; row++) {
         _matrix.push_back(std::vector<T>());
         for (int column = 0; column < columns; column++)
             _matrix[row].push_back(element);
@@ -65,44 +64,29 @@ Matrix<T>::Matrix(Matrix<T>&& m) noexcept
     m._columns = 0;
 }
 
-//template<class T>
-//Matrix<T>::~Matrix<T>() {}
-
 template<class T>
-void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix)
-{
+void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix) {
     _matrix = matrix;
     _rows = (int)matrix.size();
     _rows > 0 ? _columns = matrix[0].size() : _columns = 0;
 }
 
 template<class T>
-void Matrix<T>::removeAt(int index)
-{
+void Matrix<T>::removeAt(int index) {
     if (index > _rows || index > _columns)
         throw "Не верный индекс";
 
     _matrix.erase(_matrix.begin() + index);
 }
 
-/* Добавить реализацию */
 template<class T>
-void Matrix<T>::insert(int index)
-{
-
-}
-
-template<class T>
-void Matrix<T>::resize(int size)
-{
-    if (_rows < size)
-    {
+void Matrix<T>::resize(int size) {
+    if (_rows < size) {
         _matrix.reserve((size_t)size);
         for (int i = size - _rows; i > 0; i--)
             _matrix.push_back(std::vector<T>(size, 0));
 
-        for (int i = 0; i < _rows; i++)
-        {
+        for (int i = 0; i < _rows; i++) {
             _matrix[i].resize(size);
             for (int j = 0; j < size; j++)
                 _matrix[i][j] = 0;
@@ -112,6 +96,7 @@ void Matrix<T>::resize(int size)
     } else if (_rows > size) {
         _matrix.resize((size_t)size);
         _rows = size;
+        
         for (int i = 0; i < _rows; i++)
             _matrix[i].resize(size);
         _columns = size;
@@ -209,10 +194,11 @@ bool operator ==(const Matrix<T>& m1, const Matrix<T>& m2) {
         for (int column = 0; column < m1._columns; column++)
             if (m1[row][column] != m2[row][column])
                 return false;
+    
     return true;
 }
 
 template<class T>
-Matrix<T> operator !=(const Matrix<T>& m1, const Matrix<T>& m2) {
+bool operator !=(const Matrix<T>& m1, const Matrix<T>& m2) {
     return !(m1 == m2);
 }
