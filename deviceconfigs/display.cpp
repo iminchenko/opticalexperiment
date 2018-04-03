@@ -4,28 +4,15 @@
 
 using std::vector;
 
-//template <typename T1, typename  T2>
-//T1 m(T1 i, T2 N) {
-//    if ((T1)N % 2 == 0) {
-//        if (i > N / 2)
-//            return i - (T1)N / 2;
-//        else
-//            return -(T1)N / 2 + i - 1;
-//    }
-//    else {
-//        return -((T1)N + 1) / 2 + i;
-//    }
-//}
-
-int Display::m(int i, int N) const {
-    if (N % 2 == 0) {
+int64_t m(size_t i, size_t N) {
+    if (!(N & 1)) {
         if (i > N / 2)
-            return i - N / 2;
+            return (int64_t)i - (int64_t)N / 2;
         else
-            return - N / 2 + i - 1;
+            return - (int64_t)N / 2 + (int64_t)i - 1;
     }
     else {
-       return -(N + 1) / 2 + i;
+       return -((int64_t)N + 1) / 2 + (int64_t)i;
     }
 
 }
@@ -39,23 +26,13 @@ std::complex<double> Display::getValue(double x) const {
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     std::complex<double> Ix(0, 0), Iy(0, 0), a(0, 0);
     
-//    for (int i = 1; i <= 4; i++)
-//        qDebug() << QString("i = %1, N = 4, m = %2").arg(i).arg(m(i, 4));
-
-//    return std::complex<double>();
-    //qDebug() << QString("x = %1").arg(x);
-    //qDebug() << QString("deltaK = %1").arg(deltaK_);
-    for (unsigned int k = 0; k < ws.size(); k++) {
-        for (unsigned int p = 0; p < k; p++) {
-            //qDebug() << QString("k = %1, p = %2").arg(k + 1).arg(p + 1);
+    for (size_t k = 0; k < ws.size(); k++) {
+        for (size_t p = 0; p < k; p++) {
             a = ws[k].getEx()*(std::conj(ws[p].getEx()));
-            //qDebug() << QString("A: Re = %1, Im = %2").arg(a.real()).arg(a.imag());
-            qDebug() << QString("k = %1, p = %2, mk = %3, mp = %4").arg(k + 1).arg(p + 1).arg(m(k + 1, ws.size())).arg(m(p + 1, ws.size()));
             Ix += 2*(a.real()*cos((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x)
                    - a.imag()*sin((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x));
 
             a = ws[k].getEy()*(std::conj(ws[p].getEy()));
-            //qDebug() << QString("A: Re = %1, Im = %2").arg(a.real()).arg(a.imag());
             Iy += 2*(a.real()*cos((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x)
                     - a.imag()*sin((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x));
         }
@@ -64,8 +41,6 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
         Iy += ws[k].getEy()*(std::conj(ws[k].getEy()));
     }
     
-    //qDebug() << QString("I = %1").arg((Ix + Iy).real());
-    qDebug() << "-------------------";
     return Ix + Iy;
 }
 

@@ -104,7 +104,9 @@ void MainWindow::initCharts() {
 
     _chart->legend()->hide();
 
-    QChartView* chartView = new QChartView(_chart);
+    _chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    auto chartView = new QChartView(_chart);
     chartView->setRenderHint(QPainter::Antialiasing, true);
 
     ui->leftLayout->insertWidget(1, chartView);
