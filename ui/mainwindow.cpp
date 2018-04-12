@@ -100,7 +100,7 @@ void MainWindow::initCharts() {
 
     _chart->createDefaultAxes();
     _chart->axisX()->setRange(-2, 2);
-    _chart->axisY()->setRange(0, 35);
+    _chart->axisY()->setRange(0, 20);
 
     _chart->legend()->hide();
 

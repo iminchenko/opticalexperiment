@@ -14,7 +14,6 @@ int64_t m(size_t i, size_t N) {
     else {
        return -((int64_t)N + 1) / 2 + (int64_t)i;
     }
-
 }
 
 Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {}

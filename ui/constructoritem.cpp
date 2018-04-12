@@ -89,7 +89,7 @@ QVariant ConstructorItem::itemChange(QGraphicsItem::GraphicsItemChange change,
     return QGraphicsItem::itemChange(change, value);
 }
 
-void ConstructorItem::drawBox(QPainter *painter) {
+void ConstructorItem::drawBox(QPainter *painter) const {
     painter->setPen(QPen(getBorderColor(), getBorderWidth()));
 
     if (!isSelected())

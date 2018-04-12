@@ -37,7 +37,7 @@ protected:
     QVariant itemChange(GraphicsItemChange change,
                         const QVariant &value) override;
 
-    void drawBox(QPainter *painter);
+    void drawBox(QPainter *painter) const;
 
     void addOutputVertex(float angle = 0);
     void addInputVertex(float angle = 0);
