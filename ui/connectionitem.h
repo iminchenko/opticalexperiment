@@ -3,6 +3,7 @@
 #include <QGraphicsItem>
 #include <array>
 
+class ConnectionItem;
 class VertexItem;
 class InputVertexItem;
 class OutputVertexItem;
@@ -18,13 +19,17 @@ public:
     InputVertexItem *getDestination();
 
 protected:
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
-    virtual void paint(QPainter *painter,
-            const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget) override;
+
+    QPainterPath shape() const override;
 
 private:
     std::array<QPointF, 4> getBezierCurvePoints() const;
+    QPointF getSourceShift() const;
+    QPointF getDestShift() const;
 
     OutputVertexItem *_source;
     InputVertexItem *_dest;

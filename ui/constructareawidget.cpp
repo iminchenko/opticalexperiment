@@ -42,8 +42,10 @@ void ConstructAreaWidget::mouseReleaseEvent(QMouseEvent *event) {
 void ConstructAreaWidget::mouseMoveEvent(QMouseEvent *event) {
     QGraphicsView::mouseMoveEvent(event);
 
-    if (event->buttons())
+    if (event->buttons()) {
         adjustConnectionLine(mapToScene(event->pos()));
+        scene()->update();
+    }
 }
 
 void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {

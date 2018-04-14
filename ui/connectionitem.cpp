@@ -14,6 +14,9 @@ ConnectionItem::ConnectionItem(OutputVertexItem *source,
     _source->addConnection(this);
     _dest->addConnection(this);
     setPos(0, 0);
+    setFlag(ItemIsSelectable);
+//    setFlag(ItemIsFocusable);
+    setFlag(ItemClipsToShape);
 }
 
 ConnectionItem::~ConnectionItem() {
@@ -47,9 +50,49 @@ QRectF ConnectionItem::boundingRect() const {
     return QRectF(QPointF(x1, y1), QPointF(x2, y2));
 }
 
+QPainterPath ConnectionItem::shape() const {
+    QPainterPath path;
+
+//    path.addRect(boundingRect());
+
+    auto points = getBezierCurvePoints();
+
+    double width = 10;
+
+    auto sourceShift = getSourceShift();
+    auto destShift = getDestShift();
+
+    path.moveTo(points[0] + sourceShift);
+
+    path.cubicTo(points[1] + sourceShift,
+                 points[2] + destShift,
+                 points[3] + destShift);
+
+    path.lineTo(points[3] - destShift);
+
+    path.cubicTo(points[2] - destShift,
+                 points[1] - sourceShift,
+                 points[0] - sourceShift);
+
+//
+//    QPainterPath path;
+//    path.moveTo(_sourcePoint - _sl1);
+//    path.quadTo(_c1 - _sc1, -_sm);
+//    path.quadTo(_c2 - _sc2, _destPoint - _sl2);
+//    path.lineTo(_destPoint + _sl2);
+//    path.quadTo(_c2 + _sc2, _center + _sm);
+//    path.quadTo(_c1 + _sc1, _sourcePoint + _sl1);
+
+    return path;
+}
+
 void ConnectionItem::paint(QPainter *painter,
                     const QStyleOptionGraphicsItem *, QWidget *) {
-    painter->setPen(Qt::black);
+    if (this->isSelected()) {
+        painter->setPen(Qt::red);
+    } else {
+        painter->setPen(Qt::black);
+    }
     painter->setBrush(Qt::NoBrush);
 
     QPainterPath path;
@@ -72,7 +115,7 @@ std::array<QPointF, 4> ConnectionItem::getBezierCurvePoints() const {
 
     indent = std::min<double>(175, indent);
 
-    float angle = _source->rotation()*M_PI/180;
+    qreal angle = _source->rotation()*M_PI/180;
 
     std::array<QPointF, 4> points;
 
@@ -86,4 +129,27 @@ std::array<QPointF, 4> ConnectionItem::getBezierCurvePoints() const {
                                 points[3].y() - indent * sin(angle));
 
     return points;
+}
+
+QPointF ConnectionItem::getSourceShift() const {
+    auto points = getBezierCurvePoints();
+
+    QLineF line(points[0], points[1]);
+
+    auto normal = line.normalVector().unitVector();
+
+    return normal.p2() - normal.p1();
+}
+
+QPointF ConnectionItem::getDestShift() const {
+    auto points = getBezierCurvePoints();
+
+    QLineF line(points[2], points[3]);
+
+    auto normal = line.normalVector().unitVector();
+
+    qreal factor = 10.;
+    normal = QLineF(0, 0, normal.dx() * factor, normal.dy() * factor);
+
+    return normal.p2() - normal.p1();
 }
