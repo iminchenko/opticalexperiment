@@ -1,5 +1,7 @@
 **/release
 **/debug
+**/latex
+**/html
 *.user
 *.Release
 *.Debug
