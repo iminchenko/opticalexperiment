@@ -127,7 +127,7 @@ void MainWindow::onDeviceEmplacementChanged() {
         maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
                    -2, 2, 0.02,
                    [&disp](double x){return disp->getValue(x).real();});
-        _chart->axisY()->setRange(0, maxValue * 1.3);
+        _chart->axisY()->setRange(0, ceil(maxValue) + 1);
     }
 #ifdef _DEBUG
     else {
