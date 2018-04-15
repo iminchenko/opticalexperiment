@@ -15,12 +15,18 @@ GenericItem::GenericItem(QPointF pos, int id, int itemType,
 
     count = DEVICECONFIG_LIST[_itemId].getOutputCount();
 
-    if (count > 1) {
-        for (int i = 0; i < count; ++i)
-            addOutputVertex(((float)i / (count - 1)) * 90);
-    } else {
-        addOutputVertex();
+    addOutputVertex();
+    for (int i = 1; i < count; ++i)
+        addOutputVertex(((float)i / (count - 1)) * 90);
+
+    const auto& vars =  DEVICECONFIG_LIST[_itemId].getVariables();
+    QMap<QString, double> properties;
+
+    for (const auto &iter : vars) {
+        properties[QString(iter.first.c_str())] = iter.second;
     }
+
+    setProperties(properties);
 }
 
 void GenericItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
