@@ -10,16 +10,21 @@
 #include "devicemanager.h"
 
 // TODO: найти куда вынести
-void fillSeries(QXYSeries *series, double min, double max,
+double fillSeries(QXYSeries *series, double min, double max,
                 double step, const std::function<double(double)> &func) {
+    double maxValue = 1;
     if (!series)
-        return;
+        return maxValue;
 
     series->clear();
 
     for (double i = min; i <= max; i += step) {
-        series->append(i, func(i));
+        double value = func(i);
+        series->append(i, value);
+        maxValue = std::max(value, maxValue);
     }
+
+    return maxValue;
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -117,9 +122,12 @@ void MainWindow::onDeviceEmplacementChanged() {
     auto disp = DEVICE_MANAGER.getDisplay();
 
     if (disp) {
+        double maxValue;
         // TODO: избавиться от dynamic_cast
-        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), -2, 2, 0.02,
+        maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
+                   -2, 2, 0.02,
                    [&disp](double x){return disp->getValue(x).real();});
+        _chart->axisY()->setRange(0, maxValue * 1.3);
     }
 #ifdef _DEBUG
     else {

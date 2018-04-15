@@ -49,7 +49,7 @@ Wave operator*(const TransMatrix &m, const Wave &w) {
 
 Waves operator*(const TransMatrix &m, const Waves &ws) {
     if (m.getColumns() != ws.size() * 2)
-        throw "Умножение не возможно";
+        throw "Умножение невозможно";
 
     Waves newWs((size_t)(m.getRows() / 2));
     for (size_t i = 0; i < m.getRows(); ++i) {
