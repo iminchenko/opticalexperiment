@@ -41,7 +41,7 @@ template<class T>
 Matrix<T>::Matrix(int rows, int columns)
         : _rows(rows), _columns(columns)
         , _matrix((size_t)rows
-        ,  std::vector<std::complex<double>>((size_t)columns)) {}
+        ,  std::vector<T>((size_t)columns)) {}
 
 template<class T>
 Matrix<T>::Matrix(int rows, int columns, T element)
