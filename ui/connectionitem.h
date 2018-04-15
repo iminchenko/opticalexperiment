@@ -13,7 +13,7 @@ friend class VertexItem;
 public:
     ConnectionItem(OutputVertexItem *source, InputVertexItem *destination,
                    QGraphicsItem *parent = nullptr);
-    ~ConnectionItem();
+    ~ConnectionItem() override;
 
     OutputVertexItem *getSource();
     InputVertexItem *getDestination();

@@ -53,31 +53,32 @@ void DeviceConfigList::loadDevices(std::string filename) {
     for (const auto &iter : arr) {
         QJsonObject obj = iter.toObject();
 
-        QJsonArray drawArray = obj["drawing"].toArray();
-
         list<DrawingConfig> drawing;
 
-        for (const auto &item : drawArray) {
-            QJsonObject drawObj = item.toObject();
-            DrawingConfig oneDrawing;
-            DrawingConfig::drawingType type =
-                DrawingConfig::toType(drawObj["type"].toString().toStdString());
+        if (obj.contains("drawing")) {
+            QJsonArray drawArray = obj["drawing"].toArray();
 
-            oneDrawing.type = type;
+            for (const auto &item : drawArray) {
+                QJsonObject drawObj = item.toObject();
+                DrawingConfig oneDrawing;
+                DrawingConfig::drawingType type =
+                        DrawingConfig::toType(drawObj["type"].toString().toStdString());
 
-            if (type != DrawingConfig::TYPE_TEXT) {
-                QJsonArray jsonCoords = drawObj["coordinates"].toArray();
-                oneDrawing.coordinates.reserve((size_t)jsonCoords.size());
+                oneDrawing.type = type;
 
-                for (const auto &coordinate : jsonCoords) {
-                    oneDrawing.coordinates.push_back(coordinate.toInt());
+                if (type != DrawingConfig::TYPE_TEXT) {
+                    QJsonArray jsonCoords = drawObj["coordinates"].toArray();
+                    oneDrawing.coordinates.reserve((size_t) jsonCoords.size());
+
+                    for (const auto &coordinate : jsonCoords) {
+                        oneDrawing.coordinates.push_back(coordinate.toInt());
+                    }
+                } else {
+                    oneDrawing.text = drawObj["data"].toString().toStdString();
                 }
-            }
-            else {
-                oneDrawing.text = drawObj["data"].toString().toStdString();
-            }
 
-            drawing.push_back(oneDrawing);
+                drawing.push_back(oneDrawing);
+            }
         }
 
         int inputCount = obj["inputs"].toInt();
@@ -126,7 +127,7 @@ size_t DeviceConfigList::count() const {
 const DeviceConfig &DeviceConfigList::operator[](size_t id) const {
     // позже добавить нормальную проверку на лазер и экран
     if (id == deviceType::TYPE_LASER || id == deviceType::TYPE_SHIELD)
-        return _devList[0];
+        return _dummyDevice;
 
     return _devList[id];
 }

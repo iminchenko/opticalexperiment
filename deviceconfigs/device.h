@@ -18,6 +18,7 @@ class Device {
         double distance;
         int output;
 
+        connection() = default;
         connection(const std::shared_ptr<Device> &dev, double dist, int out):
         device(dev), distance(dist), output(out) {}
     };

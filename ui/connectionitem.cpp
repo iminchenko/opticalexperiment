@@ -7,6 +7,8 @@
 using std::min;
 using std::max;
 
+constexpr double FACTOR = 10;
+
 ConnectionItem::ConnectionItem(OutputVertexItem *source,
                                InputVertexItem *destination,
                                QGraphicsItem *parent)
@@ -51,37 +53,40 @@ QRectF ConnectionItem::boundingRect() const {
 }
 
 QPainterPath ConnectionItem::shape() const {
+    double indent =
+            max<double>(abs(_source->scenePos().x() - _dest->scenePos().x()), 1);
+    if (indent < abs(_source->scenePos().y() - _dest->scenePos().y()))
+        indent = abs(_source->scenePos().y() - _dest->scenePos().y());
+//    indent *= 0.75;
+
+//    indent = std::min<double>(175, indent);
+
+    indent /= FACTOR;
+
     QPainterPath path;
 
 //    path.addRect(boundingRect());
 
     auto points = getBezierCurvePoints();
 
-    double width = 10;
-
     auto sourceShift = getSourceShift();
     auto destShift = getDestShift();
 
+    auto unit = QLineF(points[0], points[3]).normalVector().unitVector();
+    auto centerShift = unit.p2() - unit.p1();
+    centerShift = QPointF(centerShift.x() * indent, centerShift.y() * indent);
+
     path.moveTo(points[0] + sourceShift);
 
-    path.cubicTo(points[1] + sourceShift,
-                 points[2] + destShift,
+    path.cubicTo(points[1] + sourceShift + centerShift,
+                 points[2] + destShift + centerShift,
                  points[3] + destShift);
 
     path.lineTo(points[3] - destShift);
 
-    path.cubicTo(points[2] - destShift,
-                 points[1] - sourceShift,
+    path.cubicTo(points[2] - destShift - centerShift,
+                 points[1] - sourceShift - centerShift,
                  points[0] - sourceShift);
-
-//
-//    QPainterPath path;
-//    path.moveTo(_sourcePoint - _sl1);
-//    path.quadTo(_c1 - _sc1, -_sm);
-//    path.quadTo(_c2 - _sc2, _destPoint - _sl2);
-//    path.lineTo(_destPoint + _sl2);
-//    path.quadTo(_c2 + _sc2, _center + _sm);
-//    path.quadTo(_c1 + _sc1, _sourcePoint + _sl1);
 
     return path;
 }
@@ -102,6 +107,9 @@ void ConnectionItem::paint(QPainter *painter,
     path.moveTo(points[0]);
 
     path.cubicTo(points[1],  points[2], points[3]);
+
+//    painter->setBrush(Qt::black);
+//    path.addPath(shape());
 
     painter->drawPath(path);
 }
@@ -138,6 +146,8 @@ QPointF ConnectionItem::getSourceShift() const {
 
     auto normal = line.normalVector().unitVector();
 
+    normal = QLineF(0, 0, normal.dx() * FACTOR, normal.dy() * FACTOR);
+
     return normal.p2() - normal.p1();
 }
 
@@ -148,8 +158,7 @@ QPointF ConnectionItem::getDestShift() const {
 
     auto normal = line.normalVector().unitVector();
 
-    qreal factor = 10.;
-    normal = QLineF(0, 0, normal.dx() * factor, normal.dy() * factor);
+    normal = QLineF(0, 0, normal.dx() * FACTOR, normal.dy() * FACTOR);
 
     return normal.p2() - normal.p1();
 }

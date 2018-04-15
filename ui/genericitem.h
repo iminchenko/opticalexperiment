@@ -11,7 +11,7 @@ protected:
                        const QStyleOptionGraphicsItem *option,
                        QWidget *widget) override;
 
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
 private:
     int _itemId;

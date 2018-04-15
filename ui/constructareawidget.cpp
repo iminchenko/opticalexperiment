@@ -15,7 +15,8 @@ ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     setScene(scene);
 
     setRenderHint(QPainter::Antialiasing);
-//    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setRenderHint(QPainter::TextAntialiasing);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 void ConstructAreaWidget::mousePressEvent(QMouseEvent *event) {

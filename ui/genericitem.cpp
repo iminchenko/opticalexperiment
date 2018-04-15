@@ -30,7 +30,10 @@ GenericItem::GenericItem(QPointF pos, int id, int itemType,
 }
 
 void GenericItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-                                                                    QWidget *) {
+                        QWidget *) {
+    painter->setRenderHint(QPainter::TextAntialiasing);
+    painter->setRenderHint(QPainter::Antialiasing);
+
     DEVICECONFIG_LIST[_itemId].draw(painter, isSelected());
 }
 

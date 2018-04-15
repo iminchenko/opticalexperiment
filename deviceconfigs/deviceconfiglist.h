@@ -20,4 +20,5 @@ protected:
 
 private:
     std::vector<DeviceConfig> _devList;
+    DeviceConfig _dummyDevice;
 };

@@ -16,7 +16,9 @@ int64_t m(size_t i, size_t N) {
     }
 }
 
-Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {}
+Display::Display(int id) :Device(deviceType::TYPE_SHIELD, id) {
+    _connections.resize(1);
+}
 
 std::complex<double> Display::getValue(double x) const {
     return I(getWave(0), x);
