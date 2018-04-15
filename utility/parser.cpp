@@ -6,7 +6,8 @@
 #include <list>
 #include <algorithm>
 #include <sstream>
-#include <experimental/array>
+#include <array>
+//#include <experimental/array>
 #include <experimental/string_view>
 #include <cmath>
 
@@ -19,13 +20,13 @@ using std::array;
 using std::list;
 using std::pair;
 using std::make_pair;
-using std::experimental::make_array;
+//using std::experimental::make_array;
 using std::experimental::string_view;
 
 // символы, которые не могут быть посредине операторов
 // явное указание длины строки, чтобы был `constexpr`
-constexpr auto delimeters = make_array(',', '.', '(', ')',   // NOLINT
-                                       '+', '-', '*', '/');
+const array<char, 8> delimeters = {',', '.', '(', ')',   // NOLINT
+                                       '+', '-', '*', '/'};
 
 // операторы с приоритетом
 enum opType {
@@ -43,10 +44,10 @@ enum opType {
     OP_UNKNOWN,
 };
 
-constexpr auto unaryOps = make_array(OP_MINUS_UNARY, OP_SIN, OP_COS, // NOLINT
-                                     OP_LOG, OP_SQRT, OP_EXP);
+const array<opType, 6> unaryOps = {OP_MINUS_UNARY, OP_SIN, OP_COS, // NOLINT
+                                     OP_LOG, OP_SQRT, OP_EXP};
 
-constexpr auto mathConsts = make_array(make_pair("M_E", M_E),        // NOLINT
+const array<pair<const char*, double>, 13> mathConsts = {make_pair("M_E", M_E),        // NOLINT
                                        make_pair("M_LOG2E", M_LOG2E),
                                        make_pair("M_LOG10E", M_LOG10E),
                                        make_pair("M_LN2", M_LN2),
@@ -58,7 +59,7 @@ constexpr auto mathConsts = make_array(make_pair("M_E", M_E),        // NOLINT
                                        make_pair("M_2_PI", M_2_PI),
                                        make_pair("M_2_SQRTPI", M_2_SQRTPI),
                                        make_pair("M_SQRT2", M_SQRT2),
-                                       make_pair("M_SQRT1_2", M_SQRT1_2));
+                                       make_pair("M_SQRT1_2", M_SQRT1_2)};
 
 template <class T>
 void insertVariables(string &exp, const T &vars) {
