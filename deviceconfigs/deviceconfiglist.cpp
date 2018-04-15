@@ -9,6 +9,7 @@
 
 #include "deviceconfiglist.h"
 #include "globaldefines.h"
+#include "utility/parser.h"
 
 using std::list;
 using std::complex;
@@ -84,20 +85,37 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
         int size = 2 * inputCount;
         QJsonArray rows = obj["matrix"].toArray();
-        Matrix<complex<double>> matr(rows.size(), size);
+        ExprMatrix matr(rows.size(), size);
         for (int i = 0; i < rows.size(); ++i) {
             QJsonArray row = rows[i].toArray();
             for (int j = 0; j < row.size(); ++j) {
-                complex<double> temp(row[j].toArray()[0].toDouble(),
-                                     row[j].toArray()[1].toDouble());
-                matr[i][j] = temp;
+                const auto &item = row[j].toArray();
+
+                matr[i][j].first = (item[0].isDouble() ?
+                    QString::number(item[0].toDouble()) : item[0].toString()
+                    ).toStdString();
+                matr[i][j].second = (item[1].isDouble() ?
+                    QString::number(item[1].toDouble()) : item[1].toString()
+                    ).toStdString();
+
+                insertMathConsts(matr[i][j].first);
+                insertMathConsts(matr[i][j].second);
+            }
+        }
+
+        VarList variables;
+
+        if (obj.contains("variables")) {
+            QJsonObject varObj = obj["variables"].toObject();
+            for (const auto& key : varObj.keys()) {
+                variables.emplace_back(key.toStdString(), varObj[key].toDouble());
             }
         }
 
         _devList.emplace_back(inputCount, outputCount,
                         obj["name"].toString().toStdString(),
                         obj["description"].toString().toStdString(), drawing,
-                        matr);
+                        variables, matr);
     }
 }
 

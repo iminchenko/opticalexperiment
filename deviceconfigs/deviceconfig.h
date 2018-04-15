@@ -22,7 +22,7 @@ struct DrawingConfig {
         TYPE_UNKNOWN
     };
 
-    // возможно стоит отсюда перенести
+    // TODO: возможно стоит отсюда перенести
     static drawingType toType(const std::string &type) {
         if (type == "size")
             return TYPE_SIZE;
@@ -52,7 +52,8 @@ public:
     DeviceConfig() = default;
     DeviceConfig(int inputCount, int outputCount, const std::string &name,
         const std::string &descrption, const std::list<DrawingConfig> &drawing,
-                                       const TransMatrix &matr);
+                                       const VarList &variables,
+                                       const ExprMatrix &matr);
 
     void setSize(float width, float height);
     void setBounding(const QRectF& rect);
@@ -65,7 +66,8 @@ public:
     int getInputCount() const;
     int getOutputCount() const;
 
-    const TransMatrix &getMatrix() const;
+    const ExprMatrix &getExprMatrix() const;
+    const std::list<std::pair<std::string, double>> &getVariables() const;
 
     void draw(QPainter *painter, bool selected = false) const;
 
@@ -73,12 +75,13 @@ private:
     int _inputs = 0;
     int _outputs = 0;
 
-    TransMatrix _matrix;
-
     std::string _name;
     std::string _description;
 
     QRectF _bounding;
 
     std::list<DrawingConfig> _drawings;
+
+    ExprMatrix _sourceMatrix;
+    VarList _defaultVariables;
 };

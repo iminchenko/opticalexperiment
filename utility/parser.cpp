@@ -23,7 +23,9 @@ using std::experimental::make_array;
 using std::experimental::string_view;
 
 // символы, которые не могут быть посредине операторов
-constexpr string_view delimeters(".,()+-*/", 8);
+// явное указание длины строки, чтобы был `constexpr`
+constexpr auto delimeters = make_array(',', '.', '(', ')',   // NOLINT
+                                       '+', '-', '*', '/');
 
 // операторы с приоритетом
 enum opType {
@@ -41,24 +43,41 @@ enum opType {
     OP_UNKNOWN,
 };
 
-constexpr auto unaryOps = make_array(OP_MINUS_UNARY, OP_SIN, OP_COS,
+constexpr auto unaryOps = make_array(OP_MINUS_UNARY, OP_SIN, OP_COS, // NOLINT
                                      OP_LOG, OP_SQRT, OP_EXP);
 
-double insertVariables(string &exp, const list<pair<string, double>> &vars) {
+constexpr auto mathConsts = make_array(make_pair("M_E", M_E),        // NOLINT
+                                       make_pair("M_LOG2E", M_LOG2E),
+                                       make_pair("M_LOG10E", M_LOG10E),
+                                       make_pair("M_LN2", M_LN2),
+                                       make_pair("M_LN10", M_LN10),
+                                       make_pair("M_PI", M_PI),
+                                       make_pair("M_PI_2", M_PI_2),
+                                       make_pair("M_PI_4", M_PI_4),
+                                       make_pair("M_1_PI", M_1_PI),
+                                       make_pair("M_2_PI", M_2_PI),
+                                       make_pair("M_2_SQRTPI", M_2_SQRTPI),
+                                       make_pair("M_SQRT2", M_SQRT2),
+                                       make_pair("M_SQRT1_2", M_SQRT1_2));
+
+template <class T>
+void insertVariables(string &exp, const T &vars) {
     for (const auto& iter : vars) {
         stringstream ss;
         ss << '(' << iter.second << ')';
 
         size_t found = exp.find(iter.first);
         while (found != string::npos) {
-            exp.replace(found, iter.first.size(), ss.str());
+            exp.replace(found, string_view(iter.first).size(), ss.str());
 
             found = exp.find(iter.first, found + 1);
         }
     }
 }
 
-
+void insertMathConsts(string &exp) {
+    insertVariables(exp, mathConsts);
+}
 
 void removeSpaces(string &str) {
     string noSpaces;
@@ -76,7 +95,9 @@ void removeSpaces(string &str) {
 }
 
 inline bool isDelimeter(char c) {
-    return delimeters.find(c) != string_view::npos;
+    return std::find(delimeters.cbegin(),
+                     delimeters.cend(),
+                     c) != delimeters.cend();
 }
 
 inline bool isUnary(opType op) {
@@ -203,28 +224,6 @@ bool inBrackets(const string::const_iterator &begin,
         throw "incorrect brackets";
 
     return false;
-}
-
-// поиск закрывающейся скобки к переданной открывающейся
-string::const_iterator closingBracket(const string::const_iterator &brOpen,
-                                      const string::const_iterator &end) {
-    if (brOpen >= end || *brOpen != '(') {
-        throw "incorrect open bracket";
-    }
-
-    int brCount = 1;
-
-    auto iter = brOpen;
-
-    while (++iter != end && *iter != ')' && brCount) {
-        if (*iter == '(') {
-            ++brCount;
-        } else if (*iter == ')') {
-            --brCount;
-        }
-    }
-
-    return iter;
 }
 
 // применение унарного оператора

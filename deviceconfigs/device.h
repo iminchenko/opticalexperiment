@@ -3,7 +3,9 @@
 #include <complex>
 #include <string>
 #include <vector>
+#include <list>
 #include <memory>
+#include <utility>
 
 #include "matrix.h"
 #include "wave.h"
@@ -41,9 +43,15 @@ protected:
     std::vector<connection> _connections;
 
 private:
+    void updateWaveChache() const;
+    void updateMatrix();
+
     // базовая инфа об устройстве
     int _type = 0;
     int _id = -1;
+
+    TransMatrix _concreteMatrix;
+    VarList _concreteVariables;
 
     // для кэширования
     mutable bool _changed = true;
