@@ -208,25 +208,47 @@
         [[0, 0], [0.5, 0.5]]
     ],
     "drawing" : [
-        { 
+        {
             "type" : "size",
             "coordinates" :  [50, 50]
         },
-        { 
+        {
             "type" : "line",
             "coordinates" : [-10, -5, 10, -5]
         },
-        { 
+        {
             "type" : "line",
             "coordinates" : [-10, 5, 10, 5]
         },
-        { 
+        {
             "type" : "line",
             "coordinates" : [0, -5, 0, -10]
         },
-        { 
+        {
             "type" : "line",
             "coordinates" : [0, 5, 0, 10]
+        }
+    ]
+},
+{
+    "name": "Strange element",
+    "description" : "",
+    "inputs" : 1,
+    "outputs" : 1,
+    "matrix" : [
+        [["M_SQRT1_2", "M_SQRT1_2"], [0, 0]],
+        [[0, 0], ["M_SQRT1_2", "M_SQRT1_2"]],
+        [["-M_SQRT1_2", "-M_SQRT1_2"], [0.5, 0.5]],
+        [[0, 0], ["-M_SQRT1_2", "-M_SQRT1_2"]]
+    ],
+    "drawing" : [
+        {
+            "type" : "size",
+            "coordinates" :  [50, 50]
+        },
+        {
+            "type" : "text",
+            "data" : "kek"
         }
     ]
 }
