@@ -15,6 +15,7 @@ int InstrumentConfig::getTypeId() const {
 
 void InstrumentConfig::setType(deviceType type) {
     _type = type;
+    _itemId = type;
 }
 
 void InstrumentConfig::setTypeLaser() {

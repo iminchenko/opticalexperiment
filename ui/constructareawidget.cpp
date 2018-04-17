@@ -1,5 +1,6 @@
 #include <QMouseEvent>
 #include <memory>
+#include <QDebug>
 
 #include "constructareawidget.h"
 #include "shielditem.h"
@@ -55,19 +56,12 @@ void ConstructAreaWidget::mouseMoveEvent(QMouseEvent *event) {
 void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
-    int type;
-    if (INSTRUMENT_CONFIG.getType() == deviceType::TYPE_LASER)
-        type = deviceType::TYPE_LASER;
-    else if (INSTRUMENT_CONFIG.getType() == deviceType::TYPE_SHIELD)
-        type = deviceType::TYPE_SHIELD;
-    else type = INSTRUMENT_CONFIG.getTypeId();
-    
     //auto pos = mapToScene(event->pos());
     CH_GLOBAL.comandHandler(std::make_unique<Command>
                             (TypeCommand::ADD,
-                             mapToScene(event->pos()), 
-                             INSTRUMENT_CONFIG.getType(),
-                             type,
+                             mapToScene(event->pos()),
+                             INSTRUMENT_CONFIG.getTypeId(),
+                             INSTRUMENT_CONFIG.getTypeId(),
                              DEVICE_MANAGER.getMaxId()));
 //    int type = 0;
 //    int id = DEVICE_MANAGER.getMaxId();
