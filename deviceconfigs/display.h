@@ -11,7 +11,7 @@ public:
 
     std::complex<double> getValue(double x) const;
 
-     Waves getWave(int output) const override;
+    Waves getWave(int output) const override;
 
 private:
     std::complex<double> I(const std::vector<Wave>& ws, double x) const;

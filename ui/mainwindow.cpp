@@ -8,6 +8,7 @@
 #include "globaldefines.h"
 #include "deviceconfigs/deviceconfiglist.h"
 #include "devicemanager.h"
+#include "commandhandlerview.h"
 
 // TODO: найти куда вынести
 double fillSeries(QXYSeries *series, double min, double max,
@@ -52,6 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
     initCharts();
 
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
+    
+    // ToDo: Скорее всего эту строчку куда-то нужно перенести
+    CH_VIEW.setScene(ui->graphicsView->scene()); 
 }
 
 MainWindow::~MainWindow() {

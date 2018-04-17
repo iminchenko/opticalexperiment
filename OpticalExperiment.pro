@@ -46,7 +46,13 @@ SOURCES += \
     devicemanager.cpp \
     deviceconfigs/deviceconfig.cpp \
     deviceconfigs/deviceconfiglist.cpp \
-    deviceconfigs/wave.cpp
+    deviceconfigs/wave.cpp \
+    utility/parser.cpp \
+    deviceconfigs/commandhadlermodel.cpp \
+    ui/commandhandlerview.cpp \
+    command.cpp \
+    commandhandler.cpp \
+    commandhanlerglobal.cpp
 
 HEADERS += \
     ui/mainwindow.h \
@@ -67,7 +73,6 @@ HEADERS += \
     deviceconfigs/laser.h \
     deviceconfigs/ordinalfunction.h \
     deviceconfigs/wave.h \
-    utility/singleton.hpp \
     globaldefines.h \
     matrix.h \
     ui/laseritem.h \
@@ -75,7 +80,13 @@ HEADERS += \
     deviceconfigs/deviceconfig.h \
     deviceconfigs/deviceconfiglist.h \
     deviceconfigs/devicedefines.h \
-    utility/triple.hpp
+    utility/triple.hpp \
+    comandhandler.h \
+    utility/parser.h \
+    deviceconfigs/commandhadlermodel.h \
+    ui/commandhandlerview.h \
+    command.h \
+    commandhanlerglobal.h
 
 FORMS += \
     ui/mainwindow.ui

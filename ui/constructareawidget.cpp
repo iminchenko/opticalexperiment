@@ -1,4 +1,5 @@
 #include <QMouseEvent>
+#include <memory>
 
 #include "constructareawidget.h"
 #include "shielditem.h"
@@ -7,6 +8,8 @@
 #include "instrumentconfig.h"
 #include "genericitem.h"
 #include "devicemanager.h"
+#include "command.h"
+#include "commandhanlerglobal.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
@@ -30,7 +33,7 @@ void ConstructAreaWidget::mousePressEvent(QMouseEvent *event) {
     auto prop =
             dynamic_cast<Properties *>(scene()->itemAt(mapToScene(event->pos()),
                                                        transform()));
-    // сигнал с nullptr - это ок
+    // сигнал с nullptr - это ок (Я так не считаю)
     emit propertiesItemClicked(prop);
 }
 
@@ -52,28 +55,40 @@ void ConstructAreaWidget::mouseMoveEvent(QMouseEvent *event) {
 void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
-    auto pos = mapToScene(event->pos());
-
-    int type = 0;
-    int id = DEVICE_MANAGER.getMaxId();
-
-    switch (INSTRUMENT_CONFIG.getType()) {
-    case deviceType::TYPE_LASER:
-        scene()->addItem(new LaserItem(pos, id));
+    int type;
+    if (INSTRUMENT_CONFIG.getType() == deviceType::TYPE_LASER)
         type = deviceType::TYPE_LASER;
-        break;
-    case deviceType::TYPE_SHIELD:
-        scene()->addItem(new ShieldItem(pos, id));
+    else if (INSTRUMENT_CONFIG.getType() == deviceType::TYPE_SHIELD)
         type = deviceType::TYPE_SHIELD;
-        break;
-    case deviceType::TYPE_GENERIC:
-        scene()->addItem(new GenericItem(pos, id,
-                                         INSTRUMENT_CONFIG.getTypeId()));
-        type = INSTRUMENT_CONFIG.getTypeId();
-        break;
-    }
+    else type = INSTRUMENT_CONFIG.getTypeId();
+    
+    //auto pos = mapToScene(event->pos());
+    CH_GLOBAL.comandHandler(std::make_unique<Command>
+                            (TypeCommand::ADD,
+                             mapToScene(event->pos()), 
+                             INSTRUMENT_CONFIG.getType(),
+                             type,
+                             DEVICE_MANAGER.getMaxId()));
+//    int type = 0;
+//    int id = DEVICE_MANAGER.getMaxId();
 
-    DEVICE_MANAGER.addDevice(type, id);
+//    switch (INSTRUMENT_CONFIG.getType()) {
+//    case deviceType::TYPE_LASER:
+//        scene()->addItem(new LaserItem(pos, id));
+//        type = deviceType::TYPE_LASER;
+//        break;
+//    case deviceType::TYPE_SHIELD:
+//        scene()->addItem(new ShieldItem(pos, id));
+//        type = deviceType::TYPE_SHIELD;
+//        break;
+//    case deviceType::TYPE_GENERIC:
+//        scene()->addItem(new GenericItem(pos, id,
+//                                         INSTRUMENT_CONFIG.getTypeId()));
+//        type = INSTRUMENT_CONFIG.getTypeId();
+//        break;
+//    }
+
+//    DEVICE_MANAGER.addDevice(type, id);
 
     emit deviceEmplacementChanged();
 }
