@@ -29,6 +29,9 @@ public:
 
     int getId() const;
 
+    OutputVertexItem *getOutput(int number);
+    InputVertexItem *getInput(int number);
+
 protected:
     QRectF boundingRect() const override;
 
@@ -61,4 +64,7 @@ private:
     int _outCount;
     int _inCount;
     int _id;
+
+    QList<InputVertexItem*> _inputs;
+    QList<OutputVertexItem*> _outputs;
 };

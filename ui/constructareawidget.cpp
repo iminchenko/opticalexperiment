@@ -57,7 +57,7 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
     //auto pos = mapToScene(event->pos());
-    CH_GLOBAL.handler(std::make_unique<Command>
+    CH_GLOBAL.handler(std::make_shared<Command>
                       (TypeCommand::CMND_ADD,
                        mapToScene(event->pos()),
                        INSTRUMENT_CONFIG.getTypeId(),
@@ -126,6 +126,15 @@ void ConstructAreaWidget::dropConnectionLine() {
             // нет проверки на нулевые указатели
             DEVICE_MANAGER.addConnection(source->getId(), v1->getNumber(),
                                          dest->getId(), v2->getNumber());
+
+            auto command = std::make_shared<Command>();
+
+            command->setDestId(dest->getId());
+            command->setSourceId(source->getId());
+            command->setSourceOutNum(v1->getNumber());
+            command->setDestInNum(v2->getNumber());
+
+            // emit command
         }
 
         delete _connectionLine;

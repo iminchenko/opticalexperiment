@@ -23,3 +23,35 @@ int Command::typeItemId() const {
 int Command::id() const {
     return _id;
 }
+
+int Command::getSourceId() const {
+    return _sourceId;
+}
+
+int Command::getDestId() const {
+    return _destId;
+}
+
+int Command::getSourceNum() const {
+    return _sourceNum;
+}
+
+int Command::getDestNum() const {
+    return _destNum;
+}
+
+void Command::setSourceId(int id) {
+    _sourceId = id;
+}
+
+void Command::setDestId(int id) {
+    _destId = id;
+}
+
+void Command::setSourceOutNum(int num) {
+    _sourceNum = num;
+}
+
+void Command::setDestInNum(int num) {
+    _destNum = num;
+}

@@ -62,6 +62,14 @@ int ConstructorItem::getId() const {
     return _id;
 }
 
+OutputVertexItem *ConstructorItem::getOutput(int number) {
+    return _outputs[number];
+}
+
+InputVertexItem *ConstructorItem::getInput(int number) {
+    return _inputs[number];
+}
+
 QRectF ConstructorItem::boundingRect() const {
     float halfWidth = _width/2;
     float halfBorderWidth = _borderWidth;
@@ -108,6 +116,8 @@ void ConstructorItem::addOutputVertex(float angle) {
     vertex->setPos(0.75 * getWidth() * cos(angle*M_PI/180),
                    0.75 * getWidth() * sin(angle*M_PI/180));
     vertex->setRotation(angle);
+
+    _outputs.push_back(vertex);
 }
 
 void ConstructorItem::addInputVertex(float angle) {
@@ -117,4 +127,6 @@ void ConstructorItem::addInputVertex(float angle) {
     vertex->setPos(-0.75 * getWidth() * cos(angle*M_PI/180),
                    -0.75 * getWidth() * sin(angle*M_PI/180));
     vertex->setRotation(angle);
+
+    _inputs.push_back(vertex);
 }
