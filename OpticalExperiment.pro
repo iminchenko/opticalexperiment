@@ -81,7 +81,7 @@ HEADERS += \
     deviceconfigs/deviceconfiglist.h \
     deviceconfigs/devicedefines.h \
     utility/triple.hpp \
-    comandhandler.h \
+    commandhandler.h \
     utility/parser.h \
     deviceconfigs/commandhadlermodel.h \
     ui/commandhandlerview.h \
