@@ -1,37 +1,5 @@
 [
 {
-    "name": "Optical grating",
-    "description" : "",
-    "inputs" : 1,
-    "outputs" : 1,
-    "matrix" : [
-        [[1, 0], [0, 0]],
-        [[0, 0], [1, 0]]
-    ],
-    "drawing" : [
-        { 
-            "type" : "size",
-            "coordinates" :  [50, 50]
-        },
-        { 
-            "type" : "line",
-            "coordinates" : [0, -8, 0, -13]
-        },
-        { 
-            "type" : "line",
-            "coordinates" : [0, -3, 0, 3]
-        },
-        { 
-            "type" : "line",
-            "coordinates" : [0, 8, 0, 13]
-        },
-        { 
-            "type" : "text",
-            "data" : "not\nworking"
-        }
-    ]
-},
-{
     "name": "PPZ",
     "description" : "",
     "inputs" : 2,
@@ -231,47 +199,136 @@
     ]
 },
 {
-    "name": "Strange element",
+    "name": "Michelson interferometer",
     "description" : "",
     "inputs" : 1,
     "outputs" : 1,
     "matrix" : [
-        [["M_SQRT1_2", "M_SQRT1_2"], [0, 0]],
-        [[0, 0], ["M_SQRT1_2", "M_SQRT1_2"]],
-        [["-M_SQRT1_2", "-M_SQRT1_2"], [0, 0]],
-        [[0, 0], ["-M_SQRT1_2", "-M_SQRT1_2"]]
+        [[1, 0], [0, 0]],
+        [[0, 0], [1, 0]],
+        [["-cos(Phi)", "-sin(Phi)"], [0, 0]],
+        [[0, 0], ["-cos(Phi)", "-sin(Phi)"]]
     ],
+    "variables" : {
+        "Phi" : 0
+    },
     "drawing" : [
         {
             "type" : "size",
             "coordinates" :  [50, 50]
         },
         {
-            "type" : "text",
-            "data" : "kek1"
+            "type" : "line",
+            "coordinates" : [-5, 5, 5, -5]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [0, 0, 15, 0]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [0, 0, 0, -15]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [-5, -15, 5, -15]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [15, -5, 15, 5]
         }
     ]
 },
 {
-    "name": "Strange element2",
+    "name": "Michelson interferometer 2",
     "description" : "",
     "inputs" : 1,
     "outputs" : 1,
     "matrix" : [
-        [[0, 1], [0, 0]],
-        [[0, 0], [0, 1]],
-        [[0, -1], [0, 0]],
-        [[0, 0], [0, -1]]
+        [[1, 0], [0, 0]],
+        [[0, 0], [1, 0]],
+        [["-cos(Phi)", "-sin(Phi)"], [0, 0]],
+        [[0, 0], ["-cos(Phi)", "-sin(Phi)"]]
     ],
+    "variables" : {
+        "Phi" : 0.785
+    },
     "drawing" : [
         {
             "type" : "size",
             "coordinates" :  [50, 50]
         },
         {
+            "type" : "line",
+            "coordinates" : [-5, 5, 5, -5]
+        },
+        {
             "type" : "text",
-            "data" : "kek2"
+            "data" : "PI/4"
+        },
+        {
+            "type" : "line",
+            "coordinates" : [0, 0, 15, 0]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [0, 0, 0, -15]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [-5, -15, 5, -15]
+        },
+        {
+            "type" : "line",
+            "coordinates" : [15, -5, 15, 5]
+
         }
     ]
-}
+},
+    {
+        "name": "Michelson interferometer 3",
+        "description" : "",
+        "inputs" : 1,
+        "outputs" : 1,
+        "matrix" : [
+            [[1, 0], [0, 0]],
+            [[0, 0], [1, 0]],
+            [["-cos(Phi)", "-sin(Phi)"], [0, 0]],
+            [[0, 0], ["-cos(Phi)", "-sin(Phi)"]]
+        ],
+        "variables" : {
+            "Phi" : 1.57
+        },
+        "drawing" : [
+            {
+                "type" : "size",
+                "coordinates" :  [50, 50]
+            },
+            {
+                "type" : "line",
+                "coordinates" : [-5, 5, 5, -5]
+            },
+            {
+                "type" : "text",
+                "data" : "PI/2"
+            },
+            {
+                "type" : "line",
+                "coordinates" : [0, 0, 15, 0]
+            },
+            {
+                "type" : "line",
+                "coordinates" : [0, 0, 0, -15]
+            },
+            {
+                "type" : "line",
+                "coordinates" : [-5, -15, 5, -15]
+            },
+            {
+                "type" : "line",
+                "coordinates" : [15, -5, 15, 5]
+
+            }
+        ]
+    }
 ]
