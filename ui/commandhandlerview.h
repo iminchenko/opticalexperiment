@@ -2,10 +2,12 @@
 #define COMANDHANDLERVIEW_H
 #include <QGraphicsScene>
 #include <QPointF>
+#include <memory>
 
 #include "utility/singleton.hpp"
 #include "deviceconfigs/devicedefines.h"
 #include "command.h"
+
 
 #define CH_VIEW singleton<CommandHandlerView>()
 
@@ -15,7 +17,7 @@ class CommandHandlerView
     
 public:    
     void setScene(QGraphicsScene *scene);
-    bool addItem(QPointF pos, int type, int typeId, int id);
+    bool addItem(std::shared_ptr<Command> cmnd);
     
 private:
     CommandHandlerView();

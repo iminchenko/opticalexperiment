@@ -7,19 +7,18 @@ CommandHanlerGlobal::CommandHanlerGlobal()
     
 }
 
-bool CommandHanlerGlobal::comandHandler(std::shared_ptr<Command> cmnd)
+bool CommandHanlerGlobal::handler(std::shared_ptr<Command> cmnd)
 {
-    switch (cmnd.get()->typeCommand()) {
-    case TypeCommand::ADD: 
+    switch (cmnd->typeCommand()) {
+    case TypeCommand::CMND_ADD: 
         // Обе функции возвращают bool. Надо будет что-нибудь из обработчиков.
-        CH_MODEL.addItem(cmnd.get()->typeItemId(), cmnd.get()->id());    
-        CH_VIEW.addItem(cmnd.get()->pos(), cmnd.get()->typeItem(),
-                        cmnd.get()->typeItemId(), cmnd.get()->id());        
+        CH_MODEL.addItem(cmnd);    
+        CH_VIEW.addItem(cmnd);        
         break;
-    case TypeCommand::DELETE:
+    case TypeCommand::CMND_DELETE:
         
         break;
-    case TypeCommand::REFRESH:
+    case TypeCommand::CMND_REFRESH:
 
         break;
     default:

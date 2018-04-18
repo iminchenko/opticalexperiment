@@ -15,7 +15,7 @@ public:
     CommandHanlerGlobal();
 
 public slots:
-    bool comandHandler(std::shared_ptr<Command> cmnd) override;
+    bool handler(std::shared_ptr<Command> cmnd) override;
 };
 
 #endif // COMANDHANLERGLOBAL_H

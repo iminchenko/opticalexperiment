@@ -57,12 +57,11 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
     //auto pos = mapToScene(event->pos());
-    CH_GLOBAL.comandHandler(std::make_unique<Command>
-                            (TypeCommand::ADD,
-                             mapToScene(event->pos()),
-                             INSTRUMENT_CONFIG.getTypeId(),
-                             INSTRUMENT_CONFIG.getTypeId(),
-                             DEVICE_MANAGER.getMaxId()));
+    CH_GLOBAL.handler(std::make_unique<Command>
+                      (TypeCommand::CMND_ADD,
+                       mapToScene(event->pos()),
+                       INSTRUMENT_CONFIG.getTypeId(),
+                       DEVICE_MANAGER.getMaxId()));
 //    int type = 0;
 //    int id = DEVICE_MANAGER.getMaxId();
 

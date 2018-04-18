@@ -6,8 +6,8 @@ CommandHadlerModel::CommandHadlerModel()
     
 }
 
-bool CommandHadlerModel::addItem(int type, int id)
+bool CommandHadlerModel::addItem(std::shared_ptr<Command> cmnd)
 {
-    DEVICE_MANAGER.addDevice(type, id);
+    DEVICE_MANAGER.addDevice(cmnd->typeItemId(), cmnd->id());
     return true;
 }

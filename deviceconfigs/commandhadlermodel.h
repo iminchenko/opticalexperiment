@@ -1,5 +1,6 @@
 #ifndef COMANDHADLERMODEL_H
 #define COMANDHADLERMODEL_H
+#include <memory>
 #include "utility/singleton.hpp"
 #include "command.h"
 
@@ -10,7 +11,7 @@ class CommandHadlerModel {
 
 //ToDo: Не думаю, что так нужно делать. Мб переделать на friend class?
 public:
-    bool addItem(int type, int id);
+    bool addItem(std::shared_ptr<Command> cmnd);
     bool deleteItem();
     bool refreshItem();    
     
