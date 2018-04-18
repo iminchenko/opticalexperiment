@@ -9,10 +9,12 @@
 
 class CommandHanlerGlobal : CommandHandler
 {
+    Q_OBJECT
     friend CommandHanlerGlobal &singleton<CommandHanlerGlobal>();
 public:
     CommandHanlerGlobal();
-    
+
+public slots:
     bool comandHandler(std::shared_ptr<Command> cmnd) override;
 };
 
