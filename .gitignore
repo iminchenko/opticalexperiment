@@ -2,6 +2,7 @@
 **/debug
 **/latex
 **/html
+**/article
 *.user
 *.Release
 *.Debug
