@@ -31,6 +31,7 @@ const array<char, 8> delimeters = {',', '.', '(', ')',   // NOLINT
 // операторы с приоритетом
 enum opType {
     OP_PLUS = 0,
+    OP_MINUS_UNARY,
     OP_MINUS,
     OP_MULT,
     OP_DIV,
@@ -40,7 +41,6 @@ enum opType {
     OP_LOG,
     OP_EXP,
     OP_SQRT,
-    OP_MINUS_UNARY,
     OP_UNKNOWN,
 };
 
