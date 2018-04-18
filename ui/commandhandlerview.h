@@ -5,6 +5,7 @@
 
 #include "utility/singleton.hpp"
 #include "deviceconfigs/devicedefines.h"
+#include "command.h"
 
 #define CH_VIEW singleton<CommandHandlerView>()
 

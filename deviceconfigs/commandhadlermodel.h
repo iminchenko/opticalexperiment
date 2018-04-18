@@ -1,6 +1,7 @@
 #ifndef COMANDHADLERMODEL_H
 #define COMANDHADLERMODEL_H
 #include "utility/singleton.hpp"
+#include "command.h"
 
 #define CH_MODEL singleton<CommandHadlerModel>()
 
