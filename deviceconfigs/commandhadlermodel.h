@@ -12,7 +12,7 @@ class CommandHadlerModel : CommandHandler {
 
 //ToDo: Не думаю, что так нужно делать. Мб переделать на friend class?
 public:
-    bool handler(std::shared_ptr<Command> cmnd) override;
+    bool handle(std::shared_ptr<Command> cmnd) override;
 
 private:
     bool addItem(std::shared_ptr<Command> cmnd);

@@ -26,7 +26,7 @@ bool CommandHandlerView::addItem(std::shared_ptr<Command> cmnd) {
 }
 
 //ToDo: В полне возможно, что нужно перенсти этот метод в CommandHandler
-bool CommandHandlerView::handler(std::shared_ptr<Command> cmnd) {
+bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
     switch (cmnd->typeCommand()) {
     case TypeCommand::CMND_ADD: 
         return addItem(cmnd);

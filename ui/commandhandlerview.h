@@ -17,7 +17,7 @@ class CommandHandlerView : CommandHandler {
     
 public: 
     void setScene(QGraphicsScene *scene);    
-    bool handler(std::shared_ptr<Command> cmnd) override;
+    bool handle(std::shared_ptr<Command> cmnd) override;
 
 private:
     bool addItem(std::shared_ptr<Command> cmnd);

@@ -5,7 +5,7 @@ CommandHadlerModel::CommandHadlerModel() {
     
 }
 
-bool CommandHadlerModel::handler(std::shared_ptr<Command> cmnd)
+bool CommandHadlerModel::handle(std::shared_ptr<Command> cmnd)
 {
     switch (cmnd->typeCommand()) {
     case TypeCommand::CMND_ADD: 

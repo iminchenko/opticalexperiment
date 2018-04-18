@@ -15,7 +15,7 @@ public:
 signals:
     
 public slots:
-    virtual bool handler(std::shared_ptr<Command> cmnd) = 0;
+    virtual bool handle(std::shared_ptr<Command> cmnd) = 0;
 };
 
 #endif // COMANDHANDLER_H
