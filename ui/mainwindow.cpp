@@ -108,7 +108,7 @@ void MainWindow::initCharts() {
     _chart->addSeries(new QLineSeries(_chart));
 
     _chart->createDefaultAxes();
-    _chart->axisX()->setRange(-2, 2);
+    _chart->axisX()->setRange(-100, 100);
     _chart->axisY()->setRange(0, 20);
 
     _chart->legend()->hide();
@@ -129,7 +129,7 @@ void MainWindow::onDeviceEmplacementChanged() {
         double maxValue;
         // TODO: избавиться от dynamic_cast
         maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
-                   -2, 2.02, 0.02,
+                   -100, 100, 1,
                    [&disp](double x){return disp->getValue(x).real();});
         _chart->axisY()->setRange(-2, ceil(maxValue) + 1);
     }

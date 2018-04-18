@@ -2,7 +2,7 @@
 #define COMANDHANLERGLOBAL_H
 
 
-#include "comandhandler.h"
+#include "commandhandler.h"
 #include "utility/singleton.hpp"
 
 #define CH_GLOBAL singleton<CommandHanlerGlobal>()   
