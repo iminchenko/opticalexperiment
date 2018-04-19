@@ -34,6 +34,12 @@ void Device::setConnection(int input, std::shared_ptr<Device> source,
     _connections[input] = connection(source, output);
 }
 
+void Device::setVariables(VarList vars) {
+    _concreteVariables = std::move(vars);
+
+    updateMatrix();
+}
+
 bool Device::changed() const {
     if (_changed)
         return true;

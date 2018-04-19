@@ -1,6 +1,7 @@
 #include <exception>
 
 #include "propertyobserver.h"
+#include "command/command.h"
 
 PropertyObserver::PropertyObserver(QTableWidget *propertyWidget,
                                    QObject *parent)
@@ -31,6 +32,18 @@ void PropertyObserver::writeProperties() {
 
     if (_propertyItem) {
         _propertyItem->setProperties(lst);
+
+        // TODO: а вот это костыльный костыль
+        VarList vars;
+
+        for (const auto &key : lst.keys()) {
+            vars.emplace_back(key.toStdString(), lst[key]);
+        }
+
+        emit invoke(Command::ChangeValues(_propertyItem->getId(),
+                                          std::move(vars)));
+        // TODO снова костыль
+        emit changed();
     } else {
         while (_propertyWidget->rowCount()) _propertyWidget->removeRow(0);
     }

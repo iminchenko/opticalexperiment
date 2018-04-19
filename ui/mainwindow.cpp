@@ -54,6 +54,11 @@ MainWindow::MainWindow(QWidget *parent) :
     initCharts();
     initCommandPattern();
 
+    // TODO убрать это отседова
+    connect(p, SIGNAL(invoke(std::shared_ptr<Command>)),
+            &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
+    connect(p, SIGNAL(changed()), this, SLOT(onDeviceEmplacementChanged()));
+
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
     
     // ToDo: Скорее всего эту строчку куда-то нужно перенести

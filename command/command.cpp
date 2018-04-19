@@ -4,7 +4,7 @@ QPointF Command::Data::AddDevice::pos() const {
     return QPointF(x, y);
 }
 
-std::shared_ptr<Command> Command::AddDevice(QPointF pos, int typeItemId, int id) {
+pCommand Command::AddDevice(QPointF pos, int typeItemId, int id) {
     auto cmnd = std::make_shared<Command>();
 
     cmnd->typeCommand = CMND_ADD_DEVICE;
@@ -16,7 +16,7 @@ std::shared_ptr<Command> Command::AddDevice(QPointF pos, int typeItemId, int id)
     return cmnd;
 }
 
-std::shared_ptr<Command> Command::AddConnection(int sourceId, int destId,
+pCommand Command::AddConnection(int sourceId, int destId,
                                                 int sourceNum, int destNum) {
     auto cmnd = std::make_shared<Command>();
 
@@ -38,11 +38,21 @@ std::shared_ptr<Command> Command::DeleteDevice(int id) {
     return cmnd;
 }
 
-std::shared_ptr<Command> Command::DeleteConnection(int sourceId, int destId,
+pCommand Command::DeleteConnection(int sourceId, int destId,
                                                    int sourceNum, int destNum) {
     auto cmnd = AddConnection(sourceId, destId, sourceNum, destNum);
 
     cmnd->typeCommand = CMND_DELETE_CONNECTION;
+
+    return cmnd;
+}
+
+pCommand Command::ChangeValues(int id, VarList values) {
+    auto cmnd = std::make_shared<Command>();
+
+    cmnd->typeCommand = CMND_CHANGE_VARIABLE;
+    cmnd->data.cv.id = id;
+    cmnd->varList = std::move(values);
 
     return cmnd;
 }

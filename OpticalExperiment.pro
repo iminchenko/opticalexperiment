@@ -27,66 +27,63 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-    ui/mainwindow.cpp \
-    ui/constructareawidget.cpp \
-    ui/shielditem.cpp \
-    ui/vertexitem.cpp \
-    ui/constructoritem.cpp \
-    ui/connectionitem.cpp \
-    instrumentconfig.cpp \
-    ui/laseritem.cpp \
-    properties.cpp \
-    propertyobserver.cpp \
+    command/command.cpp \
+    command/commandhandler.cpp \
+    command/commandhanlerglobal.cpp \
+    deviceconfigs/commandhadlermodel.cpp \
     deviceconfigs/device.cpp \
-    ui/genericitem.cpp \
+    deviceconfigs/deviceconfig.cpp \
+    deviceconfigs/deviceconfiglist.cpp \
     deviceconfigs/display.cpp \
     deviceconfigs/laser.cpp \
     deviceconfigs/ordinalfunction.cpp \
-    devicemanager.cpp \
-    deviceconfigs/deviceconfig.cpp \
-    deviceconfigs/deviceconfiglist.cpp \
     deviceconfigs/wave.cpp \
-    utility/parser.cpp \
-    deviceconfigs/commandhadlermodel.cpp \
     ui/commandhandlerview.cpp \
-    command.cpp \
-    commandhandler.cpp \
-    commandhanlerglobal.cpp
+    ui/connectionitem.cpp \
+    ui/constructareawidget.cpp \
+    ui/constructoritem.cpp \
+    ui/genericitem.cpp \
+    ui/laseritem.cpp \
+    ui/mainwindow.cpp \
+    ui/shielditem.cpp \
+    ui/vertexitem.cpp \
+    utility/parser.cpp \
+    devicemanager.cpp \
+    instrumentconfig.cpp \
+    main.cpp \
+    properties.cpp \
+    propertyobserver.cpp
 
 HEADERS += \
-    ui/mainwindow.h \
-    ui/constructareawidget.h \
-    ui/shielditem.h \
-    ui/vertexitem.h \
-    ui/constructoritem.h \
-    ui/connectionitem.h \
-    instrumentconfig.h \
-    properties.h \
-    propertyobserver.h \
-    utility/singleton.hpp \
+    command/command.h \
+    command/commandhandler.h \
+    command/commandhanlerglobal.h \
+    deviceconfigs/commandhadlermodel.h \
     deviceconfigs/device.h \
-    globaldefines.h \
-    ui/genericitem.h \
-    matrix.h \
+    deviceconfigs/deviceconfig.h \
+    deviceconfigs/deviceconfiglist.h \
+    deviceconfigs/devicedefines.h \
     deviceconfigs/display.h \
     deviceconfigs/laser.h \
     deviceconfigs/ordinalfunction.h \
     deviceconfigs/wave.h \
-    globaldefines.h \
-    matrix.h \
-    ui/laseritem.h \
-    devicemanager.h \
-    deviceconfigs/deviceconfig.h \
-    deviceconfigs/deviceconfiglist.h \
-    deviceconfigs/devicedefines.h \
-    utility/triple.hpp \
-    commandhandler.h \
-    utility/parser.h \
-    deviceconfigs/commandhadlermodel.h \
     ui/commandhandlerview.h \
-    command.h \
-    commandhanlerglobal.h
+    ui/connectionitem.h \
+    ui/constructareawidget.h \
+    ui/constructoritem.h \
+    ui/genericitem.h \
+    ui/laseritem.h \
+    ui/mainwindow.h \
+    ui/shielditem.h \
+    ui/vertexitem.h \
+    utility/parser.h \
+    utility/singleton.hpp \
+    devicemanager.h \
+    globaldefines.h \
+    instrumentconfig.h \
+    matrix.h \
+    properties.h \
+    propertyobserver.h
 
 FORMS += \
     ui/mainwindow.ui

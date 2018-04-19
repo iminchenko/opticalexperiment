@@ -5,25 +5,35 @@
 #include <QGraphicsScene>
 #include <memory>
 
+#include "deviceconfigs/devicedefines.h"
+
 enum TypeCommand {
     CMND_ADD_DEVICE = 0,
     CMND_ADD_CONNECTION,
     CMND_DELETE_DEVICE,
     CMND_DELETE_CONNECTION,
+    CMND_CHANGE_VARIABLE,
     CMND_REFRESH_DEVICE        // ToDo: Сделать обновление элемента
 };
 
+class Command;
+
+using pCommand = std::shared_ptr<Command>;
+
 struct Command {
 public:
-    static std::shared_ptr<Command> AddDevice(QPointF pos, int typeItemId, int id = 0);
-    static std::shared_ptr<Command> AddConnection(int sourceId, int destId,
-                                 int sourceNum, int destNum);
-    static std::shared_ptr<Command> DeleteDevice(int id);
-    static std::shared_ptr<Command> DeleteConnection(int sourceId, int destId,
-                                    int sourceNum, int destNum);
+    static pCommand AddDevice(QPointF pos, int typeItemId, int id = 0);
+    static pCommand AddConnection(int sourceId, int destId,
+                                  int sourceNum, int destNum);
+    static pCommand DeleteDevice(int id);
+    static pCommand DeleteConnection(int sourceId, int destId,
+                                     int sourceNum, int destNum);
+    static pCommand ChangeValues(int id, VarList values);
 
     // общее
     TypeCommand typeCommand;
+
+    VarList  varList;
 
     union Data {
     struct AddDevice {
@@ -49,9 +59,10 @@ public:
         int sourceNum;
         int destNum;
     } dc;
-    };
-
-    Data data;
+    struct ChangeValue {
+        int id;
+    } cv;
+    } data;
 };
 
 #endif // COMAND_H

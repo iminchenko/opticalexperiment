@@ -5,7 +5,7 @@ CommandHadlerModel::CommandHadlerModel() {
     
 }
 
-bool CommandHadlerModel::handle(std::shared_ptr<Command> cmnd)
+bool CommandHadlerModel::handle(pCommand cmnd)
 {
     switch (cmnd->typeCommand) {
     case TypeCommand::CMND_ADD_DEVICE:
@@ -17,13 +17,15 @@ bool CommandHadlerModel::handle(std::shared_ptr<Command> cmnd)
     case TypeCommand::CMND_DELETE_CONNECTION:
         return deleteConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
-        return false; 
+        return false;
+    case TypeCommand ::CMND_CHANGE_VARIABLE:
+        return changeVariables(cmnd);
     default:
         return true;
     }
 }
 
-bool CommandHadlerModel::addItem(std::shared_ptr<Command> cmnd) {
+bool CommandHadlerModel::addItem(pCommand cmnd) {
     if (!cmnd->data.ad.id) {
         cmnd->data.ad.id = DEVICE_MANAGER.getMaxId();
     }
@@ -31,7 +33,7 @@ bool CommandHadlerModel::addItem(std::shared_ptr<Command> cmnd) {
     return true;
 }
 
-bool CommandHadlerModel::addConnection(std::shared_ptr<Command> cmnd) {
+bool CommandHadlerModel::addConnection(pCommand cmnd) {
     DEVICE_MANAGER.addConnection(cmnd->data.ac.sourceId,
                                  cmnd->data.ac.sourceNum,
                                  cmnd->data.ac.destId,
@@ -39,12 +41,12 @@ bool CommandHadlerModel::addConnection(std::shared_ptr<Command> cmnd) {
     return true;
 }
 
-bool CommandHadlerModel::deleteItem(std::shared_ptr<Command> cmnd) {
+bool CommandHadlerModel::deleteItem(pCommand cmnd) {
     DEVICE_MANAGER.removeDevice(cmnd->data.dd.id);
     return true;
 }
 
-bool CommandHadlerModel::deleteConnection(std::shared_ptr<Command> cmnd) {
+bool CommandHadlerModel::deleteConnection(pCommand cmnd) {
     DEVICE_MANAGER.removeConnection(cmnd->data.dc.sourceId,
                                     cmnd->data.dc.sourceNum,
                                     cmnd->data.dc.destId,
@@ -52,6 +54,11 @@ bool CommandHadlerModel::deleteConnection(std::shared_ptr<Command> cmnd) {
     return true;
 }
 
-bool CommandHadlerModel::refreshItem(std::shared_ptr<Command> cmnd) {
+bool CommandHadlerModel::changeVariables(pCommand cmnd) {
+    DEVICE_MANAGER.changeVariables(cmnd->data.cv.id, cmnd->varList);
+    return false;
+}
+
+bool CommandHadlerModel::refreshItem(pCommand cmnd) {
     return false;
 }

@@ -32,6 +32,8 @@ public:
 
     void setConnection(int input, std::shared_ptr<Device> source, int output);
 
+    void setVariables(VarList vars);
+
     int getId() const;
 
 protected:

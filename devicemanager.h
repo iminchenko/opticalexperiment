@@ -21,6 +21,7 @@ public:
     void removeDevice(int idDevice);
     void removeConnection(int sourceDevId, int sourceOut,
                           int destDevId, int destInput);
+    void changeVariables(int id, VarList vars);
 
     size_t deviceCount() const;
     int getMaxId() const;

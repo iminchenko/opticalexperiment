@@ -45,6 +45,10 @@ void DeviceManager::removeConnection(int sourceDevId, int sourceOut,
                                        sourceOut);
 }
 
+void DeviceManager::changeVariables(int id, VarList vars) {
+    _devices[id]->setVariables(vars);
+}
+
 size_t DeviceManager::deviceCount() const {
     return (size_t)_matrConn.getRows();
 }
