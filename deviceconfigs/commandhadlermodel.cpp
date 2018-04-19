@@ -14,6 +14,8 @@ bool CommandHadlerModel::handle(std::shared_ptr<Command> cmnd)
         return  addConnection(cmnd);
     case TypeCommand::CMND_DELETE_DEVICE:
         return deleteItem(cmnd);
+    case TypeCommand::CMND_DELETE_CONNECTION:
+        return deleteConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
         return false; 
     default:
@@ -39,6 +41,14 @@ bool CommandHadlerModel::addConnection(std::shared_ptr<Command> cmnd) {
 
 bool CommandHadlerModel::deleteItem(std::shared_ptr<Command> cmnd) {
     DEVICE_MANAGER.removeDevice(cmnd->data.dd.id);
+    return true;
+}
+
+bool CommandHadlerModel::deleteConnection(std::shared_ptr<Command> cmnd) {
+    DEVICE_MANAGER.removeConnection(cmnd->data.dc.sourceId,
+                                    cmnd->data.dc.sourceNum,
+                                    cmnd->data.dc.destId,
+                                    cmnd->data.dc.destNum);
     return true;
 }
 

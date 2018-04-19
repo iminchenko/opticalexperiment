@@ -21,6 +21,8 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
             return addConnection(cmnd);
     case TypeCommand::CMND_DELETE_DEVICE:
             return removeItem(cmnd);
+    case TypeCommand::CMND_DELETE_CONNECTION:
+        return removeConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
         return false; 
     default:
@@ -70,6 +72,20 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
 
     delete *iter;
     _devices.erase(iter);
+}
+
+bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {
+    auto vertex = findItemWithId(cmnd->data.dc.sourceId);
+
+    if (!vertex)
+        // что-то поломалось
+        return false;
+
+    auto out = vertex->getOutput(cmnd->data.dc.sourceNum);
+
+    delete out->getConnection();
+
+    return true;
 }
 
 ConstructorItem *CommandHandlerView::findItemWithId(int id) {

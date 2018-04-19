@@ -18,7 +18,7 @@ class Device {
         int output;
 
         connection() = default;
-        connection(const std::shared_ptr<Device> &dev, int out):
+        connection(std::shared_ptr<Device> dev, int out):
         device(dev), output(out) {}
     };
 
@@ -30,7 +30,7 @@ public:
     // получить волну с заданного выхода
     virtual Waves getWave(int output) const;
 
-    void setConnection(int input, std::shared_ptr<Device> &source, int output);
+    void setConnection(int input, std::shared_ptr<Device> source, int output);
 
     int getId() const;
 

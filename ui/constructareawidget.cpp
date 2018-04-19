@@ -66,10 +66,20 @@ void ConstructAreaWidget::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Delete) {
         auto items = scene()->selectedItems();
 
-        for (auto &item : items) {
+        for (auto item : items) {
             auto device = dynamic_cast<ConstructorItem*>(item);
             if (device) {
-                invoke(Command::DeleteDevice(device->getId()));
+                emit invoke(Command::DeleteDevice(device->getId()));
+            } else {
+                auto connection = dynamic_cast<ConnectionItem *>(item);
+                if (connection) {
+                    // TODO: убрать это страшилу
+                    emit invoke(Command::DeleteConnection(
+                            dynamic_cast<ConstructorItem *>(connection->getSource()->parentItem())->getId(),
+                            dynamic_cast<ConstructorItem *>(connection->getDestination()->parentItem())->getId(),
+                            connection->getSource()->getNumber(),
+                            connection->getDestination()->getNumber()));
+                }
             }
         }
 

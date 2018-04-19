@@ -17,6 +17,8 @@ public:
 
     int getNumber() const;
 
+    ConnectionItem *getConnection();
+
 protected:
     bool isHoverEvent() const;
 

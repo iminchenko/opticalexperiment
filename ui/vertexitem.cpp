@@ -96,6 +96,10 @@ QVariant VertexItem::itemChange(QGraphicsItem::GraphicsItemChange change,
     return QGraphicsItem::itemChange(change, value);
 }
 
+ConnectionItem *VertexItem::getConnection() {
+    return _connection;
+}
+
 OutputVertexItem::OutputVertexItem(ConstructorItem *parent, int number)
     :VertexItem(parent, number) {}
 

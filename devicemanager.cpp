@@ -3,7 +3,9 @@
 #include "deviceconfigs/laser.h"
 #include "deviceconfigs/display.h"
 
-using  std::make_unique;
+using std::shared_ptr;
+using std::make_unique;
+using std::make_shared;
 
 void DeviceManager::addDevice(int type, int id) {
 //    _matrConn.resize(_matrConn.getRows() + 1);
@@ -26,11 +28,6 @@ void DeviceManager::addDevice(int type, int id) {
     }
 }
 
-void DeviceManager::addConnection(int sourceIdDevice,
-                                  int finalDivece, int destIdDevice) {
-    _matrConn[sourceIdDevice][finalDivece] = destIdDevice;
-}
-
 void DeviceManager::addConnection(int sourceDevId, int sourceOut,
                                   int destDevId, int destInput) {
     // 10 - magic number for distance
@@ -40,6 +37,12 @@ void DeviceManager::addConnection(int sourceDevId, int sourceOut,
 
 void DeviceManager::removeDevice(int idDevice) {
     _devices[idDevice].reset();
+}
+
+void DeviceManager::removeConnection(int sourceDevId, int sourceOut,
+                                     int destDevId, int destInput) {
+    _devices[destDevId]->setConnection(destInput, make_shared<Device>(),
+                                       sourceOut);
 }
 
 size_t DeviceManager::deviceCount() const {
@@ -61,4 +64,3 @@ Display *DeviceManager::getDisplay() const {
 
     return nullptr;
 }
-

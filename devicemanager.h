@@ -15,11 +15,12 @@ public:
     friend DeviceManager& singleton<DeviceManager>();
 
     void addDevice(int type, int id);
-    void addConnection(int sourceIdDevice, int finalDivece, int destIdDevice);
     void addConnection(int sourceDevId, int sourceOut,
                        int destDevId, int destInput);
     // в разработке
     void removeDevice(int idDevice);
+    void removeConnection(int sourceDevId, int sourceOut,
+                          int destDevId, int destInput);
 
     size_t deviceCount() const;
     int getMaxId() const;
