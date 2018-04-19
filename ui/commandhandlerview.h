@@ -4,10 +4,10 @@
 #include <QPointF>
 #include <memory>
 
-#include "commandhandler.h"
+#include "command/commandhandler.h"
 #include "utility/singleton.hpp"
 #include "deviceconfigs/devicedefines.h"
-#include "command.h"
+#include "command/command.h"
 
 
 #define CH_VIEW singleton<CommandHandlerView>()

@@ -17,7 +17,8 @@ file(GLOB helloworld_SRC
         "*.qrc"
         "deviceconfigs/*"
         "ui/*"
-        "utility/*"
+        "utility/*",
+        "command/*"
         )
 
 set(SOURCE_FILES main.cpp)

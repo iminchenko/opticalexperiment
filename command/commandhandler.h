@@ -2,7 +2,7 @@
 #define COMANDHANDLER_H
 
 #include <QObject>
-#include "command.h"
+#include "command/command.h"
 #include <memory>
 
 // ToDo: Переименовать его в CommandHandlerBase или CommandHandlerInterface

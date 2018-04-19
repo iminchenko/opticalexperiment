@@ -9,8 +9,8 @@
 #include "instrumentconfig.h"
 #include "genericitem.h"
 #include "devicemanager.h"
-#include "command.h"
-#include "commandhanlerglobal.h"
+#include "command/command.h"
+#include "command/commandhanlerglobal.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
@@ -61,26 +61,6 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
                              (mapToScene(event->pos()),
                               INSTRUMENT_CONFIG.getTypeId(),
                               DEVICE_MANAGER.getMaxId()));
-//    int type = 0;
-//    int id = DEVICE_MANAGER.getMaxId();
-
-//    switch (INSTRUMENT_CONFIG.getType()) {
-//    case deviceType::TYPE_LASER:
-//        scene()->addItem(new LaserItem(pos, id));
-//        type = deviceType::TYPE_LASER;
-//        break;
-//    case deviceType::TYPE_SHIELD:
-//        scene()->addItem(new ShieldItem(pos, id));
-//        type = deviceType::TYPE_SHIELD;
-//        break;
-//    case deviceType::TYPE_GENERIC:
-//        scene()->addItem(new GenericItem(pos, id,
-//                                         INSTRUMENT_CONFIG.getTypeId()));
-//        type = INSTRUMENT_CONFIG.getTypeId();
-//        break;
-//    }
-
-//    DEVICE_MANAGER.addDevice(type, id);
 
     emit deviceEmplacementChanged();
 }

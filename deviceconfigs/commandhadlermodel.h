@@ -2,9 +2,9 @@
 #define COMANDHADLERMODEL_H
 #include <memory>
 
-#include "commandhandler.h"
+#include "command/commandhandler.h"
 #include "utility/singleton.hpp"
-#include "command.h"
+#include "command/command.h"
 
 #define CH_MODEL singleton<CommandHadlerModel>()
 
