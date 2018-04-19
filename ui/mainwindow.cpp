@@ -134,13 +134,13 @@ void MainWindow::onDeviceEmplacementChanged() {
                    -100, 100, 1,
                    [&disp](double x){return disp->getValue(x).real();});
         _chart->axisY()->setRange(-2, ceil(maxValue) + 1);
-    }
+    } else {
+        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
+                   -100, 100, 1, [](double x){return 0;});
 #ifdef _DEBUG
-    else {
-
         qDebug() << "null disp";
-    }
 #endif
+    }
 }
 
 void MainWindow::showInfoWindow() {

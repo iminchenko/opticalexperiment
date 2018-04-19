@@ -15,12 +15,11 @@ using std::size_t;
 class Device {
     struct connection {
         std::weak_ptr<const Device> device;
-        double distance;
         int output;
 
         connection() = default;
-        connection(const std::shared_ptr<Device> &dev, double dist, int out):
-        device(dev), distance(dist), output(out) {}
+        connection(const std::shared_ptr<Device> &dev, int out):
+        device(dev), output(out) {}
     };
 
 public:
@@ -31,8 +30,9 @@ public:
     // получить волну с заданного выхода
     virtual Waves getWave(int output) const;
 
-    void setConnection(int input, std::shared_ptr<Device> &source,
-                       double distance, int output);
+    void setConnection(int input, std::shared_ptr<Device> &source, int output);
+
+    int getId() const;
 
 protected:
     // был ли путь изменен => надо ли пересчитывать кэш
@@ -57,4 +57,5 @@ private:
     // для кэширования
     mutable bool _changed = true;
     mutable std::vector<Waves> _waveCache;
+    mutable std::vector<bool> _connectionCache;
 };

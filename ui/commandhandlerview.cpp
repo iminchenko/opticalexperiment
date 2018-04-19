@@ -20,7 +20,7 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
         case TypeCommand::CMND_ADD_CONNECTION:
             return addConnection(cmnd);
     case TypeCommand::CMND_DELETE_DEVICE:
-        return false;
+            return removeItem(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
         return false; 
     default:
@@ -58,6 +58,18 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
     auto v2 = dest->getInput(cmnd->data.ac.destNum);
 
     _scene->addItem(new ConnectionItem(v1, v2));
+}
+
+bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
+    auto iter = std::find_if(_devices.begin(), _devices.end(),
+                             [cmnd](ConstructorItem *item)
+                             { return item->getId() == cmnd->data.dd.id; });
+
+    if (iter == _devices.end())
+        return false;
+
+    delete *iter;
+    _devices.erase(iter);
 }
 
 ConstructorItem *CommandHandlerView::findItemWithId(int id) {

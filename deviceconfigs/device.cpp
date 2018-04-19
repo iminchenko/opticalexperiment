@@ -5,11 +5,12 @@
 using  std::vector;
 
 Device::Device(int type, int id) :_type(type), _id(id),
-    _connections(DEVICECONFIG_LIST[type].getInputCount(), {nullptr, 0, 0}),
+    _connections(DEVICECONFIG_LIST[type].getInputCount(), {nullptr, 0}),
     _waveCache(DEVICECONFIG_LIST[type].getOutputCount()),
     _concreteMatrix(DEVICECONFIG_LIST[type].getExprMatrix().getRows(),
                     DEVICECONFIG_LIST[type].getExprMatrix().getColumns()),
-    _concreteVariables(DEVICECONFIG_LIST[type].getVariables()) {
+    _concreteVariables(DEVICECONFIG_LIST[type].getVariables()),
+    _connectionCache(DEVICECONFIG_LIST[type].getInputCount(), false) {
     updateMatrix();
 }
 
@@ -28,17 +29,19 @@ Waves Device::getWave(int output) const {
 }
 
 void Device::setConnection(int input, std::shared_ptr<Device> &source,
-                           double distance, int output) {
+                           int output) {
     _changed = true;
-    _connections[input] = connection(source, distance, output);
+    _connections[input] = connection(source, output);
 }
 
 bool Device::changed() const {
     if (_changed)
         return true;
 
+    int j = 0;
     for (const auto &i : _connections) {
-        if (!i.device.expired() && i.device.lock()->changed()) {
+        if (!i.device.expired() && i.device.lock()->changed()
+            || (i.device.expired() && _connectionCache[j++])) {
             _changed = true;
             return true;
         }
@@ -54,10 +57,13 @@ void Device::updateWaveChache() const {
 
     vector<Waves> inputWaves;
 
+    int j = 0;
     for (const auto& connection : _connections) {
         if (!connection.device.expired()) {
+            _connectionCache[j++] = true;
             inputWaves.push_back(connection.device.lock()->getWave(connection.output));
         } else {
+            _connectionCache[j++] = false;
             inputWaves.emplace_back();
         }
     }
@@ -108,4 +114,8 @@ void Device::updateMatrix() {
             );
         }
     }
+}
+
+int Device::getId() const {
+    return _id;
 }

@@ -55,14 +55,27 @@ void ConstructAreaWidget::mouseMoveEvent(QMouseEvent *event) {
 void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
-    invoke(std::make_shared<Command>(mapToScene(event->pos()),
-                                     INSTRUMENT_CONFIG.getTypeId()));
+    invoke(Command::AddDevice(mapToScene(event->pos()), INSTRUMENT_CONFIG.getTypeId()));
 
     emit deviceEmplacementChanged();
 }
 
 void ConstructAreaWidget::keyPressEvent(QKeyEvent *event) {
     QGraphicsView::keyPressEvent(event);
+
+    if (event->key() == Qt::Key_Delete) {
+        auto items = scene()->selectedItems();
+
+        for (auto &item : items) {
+            auto device = dynamic_cast<ConstructorItem*>(item);
+            if (device) {
+                invoke(Command::DeleteDevice(device->getId()));
+            }
+        }
+
+        emit deviceEmplacementChanged();
+    }
+
     // отмена выбранного объекта со свойствами
     emit propertiesItemClicked(nullptr);
 }
@@ -98,10 +111,8 @@ void ConstructAreaWidget::dropConnectionLine() {
             auto source = dynamic_cast<ConstructorItem *>(v1->parentItem());
             auto dest = dynamic_cast<ConstructorItem *>(v2->parentItem());
 
-            emit invoke(std::make_shared<Command>(source->getId(),
-                                                  dest->getId(),
-                                                  v1->getNumber(),
-                                                  v2->getNumber()));
+            emit invoke(Command::AddConnection(source->getId(), dest->getId(),
+                                               v1->getNumber(), v2->getNumber()));
         }
 
         delete _connectionLine;

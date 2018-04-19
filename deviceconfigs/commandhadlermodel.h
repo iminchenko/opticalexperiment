@@ -18,8 +18,8 @@ public:
 private:
     bool addItem(std::shared_ptr<Command> cmnd);
     bool addConnection(std::shared_ptr<Command> cmnd);
-    bool deleteItem();
-    bool refreshItem();    
+    bool deleteItem(std::shared_ptr<Command> cmnd);
+    bool refreshItem(std::shared_ptr<Command> cmnd);
     
 private:
     CommandHadlerModel();

@@ -3,6 +3,7 @@
 
 #include <QPointF>
 #include <QGraphicsScene>
+#include <memory>
 
 enum TypeCommand {
     CMND_ADD_DEVICE = 0,
@@ -14,8 +15,12 @@ enum TypeCommand {
 
 struct Command {
 public:
-    Command(QPointF pos, int typeItemId);
-    Command(int sourceId, int destId, int sourceNum, int destNum);
+    static std::shared_ptr<Command> AddDevice(QPointF pos, int typeItemId, int id = 0);
+    static std::shared_ptr<Command> AddConnection(int sourceId, int destId,
+                                 int sourceNum, int destNum);
+    static std::shared_ptr<Command> DeleteDevice(int id);
+    static std::shared_ptr<Command> DeleteConnection(int sourceId, int destId,
+                                    int sourceNum, int destNum);
 
     // общее
     TypeCommand typeCommand;
@@ -35,6 +40,15 @@ public:
         int sourceNum;
         int destNum;
     } ac;
+    struct DeleteDevice {
+        int id;
+    } dd;
+    struct DeleteConnection {
+        int sourceId;
+        int destId;
+        int sourceNum;
+        int destNum;
+    } dc;
     };
 
     Data data;

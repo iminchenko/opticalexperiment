@@ -35,14 +35,11 @@ void DeviceManager::addConnection(int sourceDevId, int sourceOut,
                                   int destDevId, int destInput) {
     // 10 - magic number for distance
     _devices[destDevId]->setConnection(destInput, _devices[sourceDevId],
-                                      10, sourceOut);
+                                       sourceOut);
 }
 
 void DeviceManager::removeDevice(int idDevice) {
-    for (int i = 0; i < _matrConn.getRows(); i++)
-        _matrConn[idDevice][i] = 0;
-
-    _matrConn.removeAt(idDevice);
+    _devices[idDevice].reset();
 }
 
 size_t DeviceManager::deviceCount() const {
