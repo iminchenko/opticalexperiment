@@ -7,11 +7,11 @@
 
 #define CH_GLOBAL singleton<CommandHanlerGlobal>()   
 
-class CommandHanlerGlobal : CommandHandler
+class CommandHanlerGlobal : public CommandHandler
 {
-    Q_OBJECT
     friend CommandHanlerGlobal &singleton<CommandHanlerGlobal>();
 public:
+Q_OBJECT
     CommandHanlerGlobal();
 
 public slots:

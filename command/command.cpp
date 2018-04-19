@@ -1,11 +1,10 @@
 #include "command.h"
 
-Command::Command(QPointF pos, int typeItemId, int id)
+Command::Command(QPointF pos, int typeItemId)
     :typeCommand(CMND_ADD_DEVICE) {
     data.ad.x = pos.x();
     data.ad.y = pos.y();
     data.ad.typeItemId = typeItemId;
-    data.ad.id = id;
 }
 
 Command::Command(int sourceId, int destId, int sourceNum, int destNum)

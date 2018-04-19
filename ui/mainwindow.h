@@ -24,6 +24,7 @@ private slots:
 private:
     void initDevices();
     void initCharts();
+    void initCommandPattern();
 
     Ui::MainWindow *ui;
     QActionGroup *_grInstruments;

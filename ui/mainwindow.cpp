@@ -9,6 +9,7 @@
 #include "deviceconfigs/deviceconfiglist.h"
 #include "devicemanager.h"
 #include "commandhandlerview.h"
+#include "command/commandhanlerglobal.h"
 
 // TODO: найти куда вынести
 double fillSeries(QXYSeries *series, double min, double max,
@@ -51,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initDevices();
     initCharts();
+    initCommandPattern();
 
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
     
@@ -153,4 +155,9 @@ void MainWindow::showInfoWindow() {
                    "<li>Evgeniy Kiktenko - research supervisor</li></ul>");
     mesbox.setTextFormat(Qt::RichText);
     mesbox.exec();
+}
+
+void MainWindow::initCommandPattern() {
+    connect(ui->graphicsView, SIGNAL(invoke(std::shared_ptr<Command>)),
+            &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
 }

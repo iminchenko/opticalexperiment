@@ -1,8 +1,10 @@
 #pragma once
 
 #include <QGraphicsView>
+#include <memory>
 
 class Properties;
+class Command;
 
 class ConstructAreaWidget : public QGraphicsView {
     Q_OBJECT
@@ -12,6 +14,7 @@ public:
 signals:
     void propertiesItemClicked(Properties *);
     void deviceEmplacementChanged();
+    void invoke(std::shared_ptr<Command> cmd);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

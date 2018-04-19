@@ -20,6 +20,7 @@ bool CommandHadlerModel::handle(std::shared_ptr<Command> cmnd)
 }
 
 bool CommandHadlerModel::addItem(std::shared_ptr<Command> cmnd) {
+    cmnd->data.ad.id = DEVICE_MANAGER.getMaxId();
     DEVICE_MANAGER.addDevice(cmnd->data.ad.typeItemId, cmnd->data.ad.id);
     return true;
 }

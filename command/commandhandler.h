@@ -12,7 +12,7 @@ class CommandHandler : public QObject
 public:
     explicit CommandHandler(QObject *parent = nullptr);
     
-signals:
+//signals:
     
 public slots:
     virtual bool handle(std::shared_ptr<Command> cmnd) = 0;

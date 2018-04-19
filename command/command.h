@@ -14,7 +14,7 @@ enum TypeCommand {
 
 struct Command {
 public:
-    Command(QPointF pos, int typeItemId, int id);
+    Command(QPointF pos, int typeItemId);
     Command(int sourceId, int destId, int sourceNum, int destNum);
 
     // общее

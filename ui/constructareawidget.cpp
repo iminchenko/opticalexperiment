@@ -56,11 +56,8 @@ void ConstructAreaWidget::mouseMoveEvent(QMouseEvent *event) {
 void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
-    //auto pos = mapToScene(event->pos());
-    CH_GLOBAL.handle(std::make_shared<Command>
-                             (mapToScene(event->pos()),
-                              INSTRUMENT_CONFIG.getTypeId(),
-                              DEVICE_MANAGER.getMaxId()));
+    invoke(std::make_shared<Command>(mapToScene(event->pos()),
+                                     INSTRUMENT_CONFIG.getTypeId()));
 
     emit deviceEmplacementChanged();
 }
