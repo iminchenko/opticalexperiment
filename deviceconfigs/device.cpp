@@ -37,6 +37,8 @@ void Device::setConnection(int input, std::shared_ptr<Device> source,
 void Device::setVariables(VarList vars) {
     _concreteVariables = std::move(vars);
 
+    _changed = true;
+
     updateMatrix();
 }
 
