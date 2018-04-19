@@ -8,7 +8,6 @@
 #include "connectionitem.h"
 #include "instrumentconfig.h"
 #include "genericitem.h"
-#include "devicemanager.h"
 #include "command/command.h"
 #include "command/commandhanlerglobal.h"
 
@@ -95,20 +94,14 @@ void ConstructAreaWidget::dropConnectionLine() {
         auto v2 = dynamic_cast<InputVertexItem *>(scene()->itemAt(_connectionLine->line().p2(),
                                                                 transform()));
 
-        if (v1 && v2 && v1->canConnect(v2)) {
-            scene()->addItem(new ConnectionItem(v1, v2));
+        if (v1 && v2) {
             auto source = dynamic_cast<ConstructorItem *>(v1->parentItem());
             auto dest = dynamic_cast<ConstructorItem *>(v2->parentItem());
-            // нет проверки на нулевые указатели
-            DEVICE_MANAGER.addConnection(source->getId(), v1->getNumber(),
-                                         dest->getId(), v2->getNumber());
 
-            auto command = std::make_shared<Command>(source->getId(),
-                                                     dest->getId(),
-                                                     v1->getNumber(),
-                                                     v2->getNumber());
-
-            // emit command
+            emit invoke(std::make_shared<Command>(source->getId(),
+                                                  dest->getId(),
+                                                  v1->getNumber(),
+                                                  v2->getNumber()));
         }
 
         delete _connectionLine;

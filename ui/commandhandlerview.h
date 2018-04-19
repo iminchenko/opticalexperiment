@@ -1,16 +1,18 @@
 #ifndef COMANDHANDLERVIEW_H
 #define COMANDHANDLERVIEW_H
+#include <memory>
 #include <QGraphicsScene>
 #include <QPointF>
-#include <memory>
+#include <QList>
 
 #include "command/commandhandler.h"
 #include "utility/singleton.hpp"
 #include "deviceconfigs/devicedefines.h"
 #include "command/command.h"
 
-
 #define CH_VIEW singleton<CommandHandlerView>()
+
+class ConstructorItem;
 
 class CommandHandlerView : CommandHandler {
     friend CommandHandlerView& singleton<CommandHandlerView>();
@@ -21,10 +23,14 @@ public:
 
 private:
     bool addItem(std::shared_ptr<Command> cmnd);
+    bool addConnection(std::shared_ptr<Command> cmnd);
+    ConstructorItem *findItemWithId(int id);
 
 private:
     CommandHandlerView();
-    QGraphicsScene  *_scene; 
+    QGraphicsScene  *_scene;
+
+    QList<ConstructorItem *> _devices;
 };
 
 #endif // COMANDHANDLERVIEW_H
