@@ -58,8 +58,7 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
 
     //auto pos = mapToScene(event->pos());
     CH_GLOBAL.handle(std::make_shared<Command>
-                             (TypeCommand::CMND_ADD,
-                              mapToScene(event->pos()),
+                             (mapToScene(event->pos()),
                               INSTRUMENT_CONFIG.getTypeId(),
                               DEVICE_MANAGER.getMaxId()));
 //    int type = 0;
@@ -127,12 +126,10 @@ void ConstructAreaWidget::dropConnectionLine() {
             DEVICE_MANAGER.addConnection(source->getId(), v1->getNumber(),
                                          dest->getId(), v2->getNumber());
 
-            auto command = std::make_shared<Command>();
-
-            command->setDestId(dest->getId());
-            command->setSourceId(source->getId());
-            command->setSourceOutNum(v1->getNumber());
-            command->setDestInNum(v2->getNumber());
+            auto command = std::make_shared<Command>(source->getId(),
+                                                     dest->getId(),
+                                                     v1->getNumber(),
+                                                     v2->getNumber());
 
             // emit command
         }

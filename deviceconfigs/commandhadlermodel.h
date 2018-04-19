@@ -1,6 +1,7 @@
 #ifndef COMANDHADLERMODEL_H
 #define COMANDHADLERMODEL_H
 #include <memory>
+
 #include "commandhandler.h"
 #include "utility/singleton.hpp"
 #include "command.h"

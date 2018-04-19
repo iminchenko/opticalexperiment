@@ -1,57 +1,21 @@
 #include "command.h"
 
-Command::Command(TypeCommand typeCommand, QPointF pos, int typeItemId, int id)
-    : _typeCommand(typeCommand), 
-      _pos(pos),
-      _typeItemId(typeItemId),
-      _id(id) {
-    
+Command::Command(QPointF pos, int typeItemId, int id)
+    :typeCommand(CMND_ADD_DEVICE) {
+    data.ad.x = pos.x();
+    data.ad.y = pos.y();
+    data.ad.typeItemId = typeItemId;
+    data.ad.id = id;
 }
 
-TypeCommand Command::typeCommand() const {
-    return _typeCommand;
+Command::Command(int sourceId, int destId, int sourceNum, int destNum)
+    :typeCommand(CMND_ADD_CONNECTION) {
+    data.ac.sourceId = sourceId;
+    data.ac.destId = destId;
+    data.ac.sourceNum = sourceNum;
+    data.ac.destNum = destNum;
 }
 
-QPointF Command::pos() const {
-    return _pos;
-}
-
-int Command::typeItemId() const {
-    return _typeItemId;
-}
-
-int Command::id() const {
-    return _id;
-}
-
-int Command::getSourceId() const {
-    return _sourceId;
-}
-
-int Command::getDestId() const {
-    return _destId;
-}
-
-int Command::getSourceNum() const {
-    return _sourceNum;
-}
-
-int Command::getDestNum() const {
-    return _destNum;
-}
-
-void Command::setSourceId(int id) {
-    _sourceId = id;
-}
-
-void Command::setDestId(int id) {
-    _destId = id;
-}
-
-void Command::setSourceOutNum(int num) {
-    _sourceNum = num;
-}
-
-void Command::setDestInNum(int num) {
-    _destNum = num;
+QPointF Command::Data::AddDevice::pos() const {
+    return QPointF(x, y);
 }

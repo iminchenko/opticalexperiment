@@ -5,46 +5,39 @@
 #include <QGraphicsScene>
 
 enum TypeCommand {
-    CMND_ADD = 0,
-    CMND_DELETE,
-    CMND_REFRESH        // ToDo: Сделать обновление элемента    
+    CMND_ADD_DEVICE = 0,
+    CMND_ADD_CONNECTION,
+    CMND_DELETE_DEVICE,
+    CMND_DELETE_CONNECTION,
+    CMND_REFRESH_DEVICE        // ToDo: Сделать обновление элемента
 };
 
-class Command {
+struct Command {
 public:
-    Command() = default;
-    Command(TypeCommand typeCommand, QPointF pos, int typeItemId, int id);
-    
-    TypeCommand typeCommand() const;
-    QPointF pos() const;
-    int typeItemId() const;
-    int id() const;
+    Command(QPointF pos, int typeItemId, int id);
+    Command(int sourceId, int destId, int sourceNum, int destNum);
 
-    int getSourceId() const;
-    int getDestId() const;
-    int getSourceNum() const;
-    int getDestNum() const;
-
-    void setSourceId(int id);
-    void setDestId(int id);
-
-    void setSourceOutNum(int num);
-    void setDestInNum(int num);
-
-private:
     // общее
-    TypeCommand _typeCommand;
+    TypeCommand typeCommand;
 
-    // для вектора
-    QPointF _pos;
-    int _typeItemId;
-    int _id;
+    union Data {
+    struct AddDevice {
+        QPointF pos() const;
+        // для вертекса
+        double x;
+        double y;
+        int typeItemId;
+        int id;
+    } ad;
+    struct AddConnection {
+        int sourceId;
+        int destId;
+        int sourceNum;
+        int destNum;
+    } ac;
+    };
 
-    // для ребра
-    int _sourceId;
-    int _destId;
-    int _sourceNum;
-    int _destNum;
+    Data data;
 };
 
 #endif // COMAND_H
