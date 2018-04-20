@@ -13,6 +13,8 @@ public:
 
     Waves getWave(int output) const override;
 
+    void setVariables(VarList vars) override ;
+
 private:
     std::complex<double> I(const std::vector<Wave>& ws, double x) const;
 

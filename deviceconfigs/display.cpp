@@ -51,3 +51,13 @@ Waves Display::getWave(int) const {
 
     return Waves();
 }
+
+void Display::setVariables(VarList vars) {
+    for (const auto& iter : vars) {
+        if (iter.first == "K") {
+            K_ = iter.second;
+        } else if (iter.first == "deltaK") {
+            deltaK_ = iter.second;
+        }
+    }
+}

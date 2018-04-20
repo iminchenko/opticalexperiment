@@ -32,7 +32,7 @@ public:
 
     void setConnection(int input, std::shared_ptr<Device> source, int output);
 
-    void setVariables(VarList vars);
+    virtual void setVariables(VarList vars);
 
     int getId() const;
 
@@ -40,10 +40,9 @@ protected:
     // был ли путь изменен => надо ли пересчитывать кэш
     bool changed() const;
 
-    // графовая инфа
-    // double - расстояние
-    // int - id выхода
     std::vector<connection> _connections;
+
+    mutable bool _changed = true;
 
 private:
     void updateWaveChache() const;
@@ -57,7 +56,6 @@ private:
     VarList _concreteVariables;
 
     // для кэширования
-    mutable bool _changed = true;
     mutable std::vector<Waves> _waveCache;
     mutable std::vector<bool> _connectionCache;
 };

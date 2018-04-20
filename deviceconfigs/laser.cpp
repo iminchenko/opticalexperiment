@@ -13,6 +13,7 @@ Laser::Laser(int id) :
 {}
 
 Waves Laser::getWave(int) const {
+    _changed = false;
     return Waves{_wave};
 }
 
@@ -31,5 +32,23 @@ void Laser::setEy(std::complex<double> ey) {
 }
 
 std::complex<double> Laser::getEy() {
-    return _ey; 
+    return _ey;
+}
+
+void Laser::setVariables(VarList vars) {
+    for (const auto &iter : vars) {
+        if (iter.first == "Ex") {
+            _ex.real(iter.second * 48635.7);
+        } else if (iter.first == "Exi") {
+            _ex.imag(iter.second * 48635.7);
+        } else if (iter.first == "Ey") {
+            _ey.real(iter.second * 48635.7);
+        } else if (iter.first == "Eyi") {
+            _ey.imag(iter.second * 48635.7);
+        }
+    }
+    _wave.setEx(_ex);
+    _wave.setEy(_ey);
+
+    _changed = true;
 }

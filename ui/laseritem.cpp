@@ -1,19 +1,17 @@
 #include "laseritem.h"
 
 LaserItem::LaserItem(QPointF pos, int id, QGraphicsItem *parent)
-    :ConstructorItem(pos, id, parent), _frequency(0) {
+    :ConstructorItem(pos, id, parent) {
     addOutputVertex();
-}
 
-Properties::map LaserItem::getProperties() const {
-    Properties::map prop;
-    prop.insert("frequency", _frequency);
-    return prop;
-}
+    map properties;
 
-void LaserItem::setProperties(const Properties::map &properties) {
-    if (properties.contains("frequency"))
-        _frequency = properties["frequency"];
+    properties["Ex"] = 1;
+    properties["Exi"] = 1;
+    properties["Ey"] = 1;
+    properties["Eyi"] = 1;
+
+    setProperties(properties);
 }
 
 void LaserItem::paint(QPainter *painter,

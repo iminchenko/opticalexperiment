@@ -18,6 +18,8 @@ public:
     void setEy(std::complex<double> ey);
     std::complex<double> getEy();
 
+    void setVariables(VarList vars) override;
+
 private:
     std::complex<double> _ex;
     std::complex<double> _ey;
