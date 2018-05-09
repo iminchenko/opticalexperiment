@@ -11,17 +11,29 @@
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 
+const static double xMinus = -50;
+const static double xPlus = 50;
+
+// TODO: найти куда вынести
+double gaussian(double x) {
+    double sigma = 18;
+    double mu = 0;
+    
+    return (1 / (sqrt(2 * M_PI) * sigma)) * 
+            exp(-pow(x - mu, 2) / (2 * sigma * sigma));
+}
+
 // TODO: найти куда вынести
 double fillSeries(QXYSeries *series, double min, double max,
                 double step, const std::function<double(double)> &func) {
-    double maxValue = 1;
+    double maxValue = 1e-7;
     if (!series)
         return maxValue;
 
     series->clear();
 
     for (double i = min; i <= max; i += step) {
-        double value = func(i);
+        double value = func(i) * gaussian(i);
         series->append(i, value);
         maxValue = std::max(value, maxValue);
     }
@@ -115,8 +127,8 @@ void MainWindow::initCharts() {
     _chart->addSeries(new QLineSeries(_chart));
 
     _chart->createDefaultAxes();
-    _chart->axisX()->setRange(-100, 100);
-    _chart->axisY()->setRange(0, 20);
+    _chart->axisX()->setRange(xMinus, xPlus);
+    _chart->axisY()->setRange(0, 0.01);
 
     _chart->legend()->hide();
 
@@ -136,16 +148,16 @@ void MainWindow::onDeviceEmplacementChanged() {
         double maxValue;
         // TODO: избавиться от dynamic_cast
         maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
-                   -100, 100, 1,
+                   xMinus, xPlus, xPlus / 100,
                    [&disp](double x){return disp->getValue(x).real();});
-        _chart->axisY()->setRange(-2, ceil(maxValue) + 1);
+        _chart->axisY()->setRange(-maxValue * 1.2, maxValue * 1.2);
     } else {
         fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
-                   -100, 100, 1, [](double x){return 0;});
+                xMinus, xPlus, xPlus / 100, [](double x){return 0;});
 #ifdef _DEBUG
         qDebug() << "null disp";
 #endif
-    }
+    }    
 }
 
 void MainWindow::showInfoWindow() {

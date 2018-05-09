@@ -13,7 +13,7 @@ enum TypeCommand {
     CMND_DELETE_DEVICE,
     CMND_DELETE_CONNECTION,
     CMND_CHANGE_VARIABLE,
-    CMND_REFRESH_DEVICE        // ToDo: Сделать обновление элемента
+    CMND_REFRESH_DEVICE      
 };
 
 class Command;

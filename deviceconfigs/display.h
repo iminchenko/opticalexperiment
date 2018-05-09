@@ -18,6 +18,6 @@ public:
 private:
     std::complex<double> I(const std::vector<Wave>& ws, double x) const;
 
-    double K_ = M_PI / 20;
+    double K_ = M_PI / 5;
     double deltaK_ = 1*K_;
 };
