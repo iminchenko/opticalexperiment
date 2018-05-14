@@ -42,7 +42,7 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
         Iy += ws[k].getEy()*(std::conj(ws[k].getEy()));
     }
     
-    return 1.057e-10*(Ix + Iy);
+    return 1.057e-7*(Ix + Iy);
 }
 
 Waves Display::getWave(int) const {

@@ -11,16 +11,16 @@
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 
-const static double xMinus = -50;
-const static double xPlus = 50;
+constexpr double xMinus = -50;
+constexpr double xPlus = 50;
+constexpr short int sizeDiscretization = 500;
 
 // TODO: найти куда вынести
 double gaussian(double x) {
-    double sigma = 18;
+    double sigma = 25;
     double mu = 0;
     
-    return (1 / (sqrt(2 * M_PI) * sigma)) * 
-            exp(-pow(x - mu, 2) / (2 * sigma * sigma));
+    return (exp(-pow(x - mu, 2) / (sigma * sigma))) / (25 * sqrt(M_PI));
 }
 
 // TODO: найти куда вынести
@@ -148,12 +148,12 @@ void MainWindow::onDeviceEmplacementChanged() {
         double maxValue;
         // TODO: избавиться от dynamic_cast
         maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
-                   xMinus, xPlus, xPlus / 100,
+                   xMinus, xPlus, xPlus / sizeDiscretization,
                    [&disp](double x){return disp->getValue(x).real();});
-        _chart->axisY()->setRange(-maxValue * 1.2, maxValue * 1.2);
+        _chart->axisY()->setRange(0, maxValue * 1.2);
     } else {
-        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
-                xMinus, xPlus, xPlus / 100, [](double x){return 0;});
+        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), xMinus, xPlus,
+                xPlus / sizeDiscretization, [](double x){return 0;});
 #ifdef _DEBUG
         qDebug() << "null disp";
 #endif
