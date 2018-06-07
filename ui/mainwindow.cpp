@@ -16,14 +16,6 @@ constexpr double xPlus = 50;
 constexpr short int sizeDiscretization = 500;
 
 // TODO: найти куда вынести
-double gaussian(double x) {
-    double sigma = 25;
-    double mu = 0;
-    
-    return (exp(-pow(x - mu, 2) / (sigma * sigma))) / (25 * sqrt(M_PI));
-}
-
-// TODO: найти куда вынести
 double fillSeries(QXYSeries *series, double min, double max,
                 double step, const std::function<double(double)> &func) {
     double maxValue = 1e-7;
@@ -123,7 +115,6 @@ void MainWindow::initCharts() {
     _chart = new QChart();
     _chart->setTitle("Shield chart");
 
-    // 2 серии - для реальной и мнимой части
     _chart->addSeries(new QLineSeries(_chart));
 
     _chart->createDefaultAxes();

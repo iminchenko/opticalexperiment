@@ -24,6 +24,13 @@ std::complex<double> Display::getValue(double x) const {
     return I(getWave(0), x);
 }
 
+double Display::gaussian(double x) const {
+    double sigma = 25;
+    double mu = 0;
+    
+    return (exp(-pow(x - mu, 2) / (sigma * sigma))) / (25 * sqrt(M_PI));
+}
+
 std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     std::complex<double> Ix(0, 0), Iy(0, 0), a(0, 0);
     
@@ -42,7 +49,7 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
         Iy += ws[k].getEy()*(std::conj(ws[k].getEy()));
     }
     
-    return 1.057e-7*(Ix + Iy);
+    return 1.057e-7*(Ix + Iy)*gaussian(x);
 }
 
 Waves Display::getWave(int) const {
