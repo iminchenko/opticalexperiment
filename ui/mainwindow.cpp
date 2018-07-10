@@ -25,7 +25,7 @@ double fillSeries(QXYSeries *series, double min, double max,
     series->clear();
 
     for (double i = min; i <= max; i += step) {
-        double value = func(i) * gaussian(i);
+        double value = func(i);
         series->append(i, value);
         maxValue = std::max(value, maxValue);
     }
