@@ -9,7 +9,6 @@ CommandHanlerGlobal::CommandHanlerGlobal()
 
 bool CommandHanlerGlobal::handle(std::shared_ptr<Command> cmnd)
 {
-    CH_MODEL.handle(cmnd);
-    CH_VIEW.handle(cmnd);
-    
+    /* ToDo: Cпорное решение. Не уверен, что так должно быть */
+    return CH_MODEL.handle(cmnd) && CH_VIEW.handle(cmnd);
 }

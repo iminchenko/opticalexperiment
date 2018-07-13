@@ -8,9 +8,9 @@ using std::make_unique;
 using std::make_shared;
 
 void DeviceManager::addDevice(int type, int id) {
-//    _matrConn.resize(_matrConn.getRows() + 1);
+//    _matrConn.resize(_matrConn.rows() + 1);
 //    _types.push_back(type);
-    if (_devices.size() <= id) {
+    if (_devices.size() <= (size_t)id) {
         ++_maxId;
         _devices.resize(_maxId);
     }
@@ -41,6 +41,9 @@ void DeviceManager::removeDevice(int idDevice) {
 
 void DeviceManager::removeConnection(int sourceDevId, int sourceOut,
                                      int destDevId, int destInput) {
+    Q_UNUSED(sourceDevId);
+    /* ToDoI: С этой функцией что-то не так? Или я наркоман? Как минимум, 
+       тут нужно что-то сделать с sourceDevId */
     _devices[destDevId]->setConnection(destInput, make_shared<Device>(),
                                        sourceOut);
 }
@@ -50,7 +53,7 @@ void DeviceManager::changeVariables(int id, VarList vars) {
 }
 
 size_t DeviceManager::deviceCount() const {
-    return (size_t)_matrConn.getRows();
+    return (size_t)_matrConn.rows();
 }
 
 int DeviceManager::getMaxId() const {

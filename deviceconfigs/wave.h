@@ -14,10 +14,10 @@ public:
     Wave(const std::complex<double> &ex, const std::complex<double> &ey);
     Wave(double reEx, double imEx, double reEy, double imEy);
 
-    std::complex<double> getEx() const;
+    const std::complex<double> &ex() const;
     void setEx(const std::complex<double> &ex);
 
-    std::complex<double> getEy() const;
+    const std::complex<double> &ey() const;
     void setEy(const std::complex<double> &ey);
 
     bool operator==(const Wave &wave);

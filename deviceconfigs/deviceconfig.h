@@ -13,7 +13,7 @@
 #include "devicedefines.h"
 
 struct DrawingConfig {
-    enum drawingType {
+    enum DrawingType {
         TYPE_SIZE = 0,
         TYPE_LINE,
         TYPE_RECT,
@@ -23,7 +23,7 @@ struct DrawingConfig {
     };
 
     // TODO: возможно стоит отсюда перенести
-    static drawingType toType(const std::string &type) {
+    static DrawingType toType(const std::string &type) {
         if (type == "size")
             return TYPE_SIZE;
         if (type == "line")
@@ -43,7 +43,7 @@ struct DrawingConfig {
     }
 
     std::string text;
-    drawingType type;
+    DrawingType type;
     std::vector<int> coordinates;
 };
 
@@ -66,7 +66,7 @@ public:
     int getInputCount() const;
     int getOutputCount() const;
 
-    const ExprMatrix &getExprMatrix() const;
+    const ExprMatrix &exprMatrix() const;
     const std::list<std::pair<std::string, double>> &getVariables() const;
 
     void draw(QPainter *painter, bool selected = false) const;

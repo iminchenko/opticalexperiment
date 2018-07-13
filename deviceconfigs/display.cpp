@@ -36,17 +36,17 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
     
     for (size_t k = 0; k < ws.size(); k++) {
         for (size_t p = 0; p < k; p++) {
-            a = ws[k].getEx()*(std::conj(ws[p].getEx()));
+            a = ws[k].ex()*(std::conj(ws[p].ex()));
             Ix += 2*(a.real()*cos((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x)
                    - a.imag()*sin((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x));
 
-            a = ws[k].getEy()*(std::conj(ws[p].getEy()));
+            a = ws[k].ey()*(std::conj(ws[p].ey()));
             Iy += 2*(a.real()*cos((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x)
                     - a.imag()*sin((m(k + 1, ws.size()) - m(p + 1, ws.size()))*deltaK_*x));
         }
 
-        Ix += ws[k].getEx()*(std::conj(ws[k].getEx()));
-        Iy += ws[k].getEy()*(std::conj(ws[k].getEy()));
+        Ix += ws[k].ex()*(std::conj(ws[k].ex()));
+        Iy += ws[k].ey()*(std::conj(ws[k].ey()));
     }
     
     return 1.057e-7*(Ix + Iy)*gaussian(x);

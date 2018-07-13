@@ -14,7 +14,7 @@ Wave::Wave(double reEx, double imEx, double reEy, double imEy)
     , _ey(std::complex<double>(reEy, imEy))
 {}
 
-std::complex<double> Wave::getEx() const {
+const std::complex<double> &Wave::ex() const {
     return _ex;
 }
 
@@ -22,7 +22,7 @@ void Wave::setEx(const std::complex<double> &ex)  {
     _ex = ex;
 }
 
-std::complex<double> Wave::getEy() const {
+const std::complex<double> &Wave::ey() const {
     return _ey;
 }
 
@@ -36,28 +36,28 @@ bool Wave::operator==(const Wave &wave) {
 
 Wave operator*(const TransMatrix &m, const Wave &w) {
     /* В волне всегда два компонента */
-    if (m.getColumns() != 2)
+    if (m.columns() != 2)
         throw "Количество столбцов матрицы не равно 2";
 
     Wave newW;
 
-    newW.setEx(m[0][0]*w.getEx() + m[0][1]*w.getEy());
-    newW.setEy(m[1][0]*w.getEx() + m[1][1]*w.getEy());
+    newW.setEx(m[0][0]*w.ex() + m[0][1]*w.ey());
+    newW.setEy(m[1][0]*w.ex() + m[1][1]*w.ey());
 
     return newW;
 }
 
 Waves operator*(const TransMatrix &m, const Waves &ws) {
-    if (m.getColumns() != ws.size() * 2)
+    if (m.columns() != ws.size() * 2)
         throw "Умножение невозможно";
 
-    Waves newWs((size_t)(m.getRows() / 2));
-    for (size_t i = 0; i < m.getRows(); ++i) {
+    Waves newWs((size_t)(m.rows() / 2));
+    for (size_t i = 0; i < m.rows(); ++i) {
         std::complex<double> accum(0, 0);
 
-        for (int j = 0; j < ws.size(); ++j) {
-            accum += ws[j].getEx() * m[i][2 * j];
-            accum += ws[j].getEy() * m[i][2 * j + 1];
+        for (size_t j = 0; j < ws.size(); ++j) {
+            accum += ws[j].ex() * m[i][2 * j];
+            accum += ws[j].ey() * m[i][2 * j + 1];
         }
 
         if (i & 1) { // NOLINT

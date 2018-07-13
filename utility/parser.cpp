@@ -305,6 +305,9 @@ double calculate(string::const_iterator begin, string::const_iterator end) {
 
         return calculate(calculate(begin, start), calculate(pos, end), op);
     }
+    
+    /* ToDoI: Точно ли надо такое значение возвращать? */
+    return 0;
 }
 
 double evaluateExprassion(string expr,

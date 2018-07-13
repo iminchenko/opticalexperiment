@@ -7,58 +7,64 @@ template<class T>
 class Matrix {
 public:
     Matrix();
-    Matrix(int rows, int columns);
-    Matrix(int rows, int columns, T element);
+    Matrix(size_t rows, size_t columns);
+    Matrix(size_t rows, size_t columns, T element);
     Matrix(Matrix<T> &&m) noexcept;
     Matrix(const Matrix<T> &m) = default;
 
     ~Matrix<T>() = default;
 
-    int getRows() const;
-    int getColumns() const;
+    size_t  rows() const;
+    size_t columns() const;
     void setMatrix(const std::vector<std::vector<T>>& matrix);
-    void removeAt(int index);
-    void insert(int index);
-    void resize(int size);
+    void removeAt(size_t index);
+    void insert(size_t index);
+    void resize(size_t size);
 
     std::vector<std::vector<T>>& getMatrix();
 
-    std::vector<T>& operator[](int index);
-    
-    const std::vector<T>& operator[](int index) const;
+    std::vector<T>& operator[](size_t index);
+    const std::vector<T>& operator[](size_t index) const;
 
     Matrix<T>& operator=(const Matrix<T> &m);
+    
 
 private:
+    size_t _rows;
+    size_t _columns;
     std::vector<std::vector<T>> _matrix;
-    int _rows, _columns;
 };
 
 template<class T>
-Matrix<T>::Matrix() : _rows(0), _columns(0) {}
+Matrix<T>::Matrix() : 
+    _rows(0), 
+    _columns(0)
+{}
 
 template<class T>
-Matrix<T>::Matrix(int rows, int columns)
-        : _rows(rows), _columns(columns)
-        , _matrix((size_t)rows
-        ,  std::vector<T>((size_t)columns)) {}
+Matrix<T>::Matrix(size_t rows, size_t columns):
+    _rows(rows),
+    _columns(columns),
+    _matrix(_rows, std::vector<T>(_columns)) 
+{}
 
 template<class T>
-Matrix<T>::Matrix(int rows, int columns, T element)
-        : _rows(rows), _columns(columns)
+Matrix<T>::Matrix(size_t rows, size_t columns, T element) :
+    _rows(rows), 
+    _columns(columns)
 {
-    for (int row = 0; row < rows; row++) {
+    for (size_t row = 0; row < rows; ++row) {
         _matrix.push_back(std::vector<T>());
-        for (int column = 0; column < columns; column++)
+        for (size_t column = 0; column < columns; ++column)
             _matrix[row].push_back(element);
     }
 }
 
 template<class T>
-Matrix<T>::Matrix(Matrix<T>&& m) noexcept
-    : _matrix(std::move(m.getMatrix()))
-    , _rows(m.getRows())
-    , _columns(m.getColumns())
+Matrix<T>::Matrix(Matrix<T>&& m) noexcept :
+    _rows(m.rows()),
+    _columns(m.columns()),
+    _matrix(m.getMatrix())
 {
     m._rows = 0;
     m._columns = 0;
@@ -67,12 +73,12 @@ Matrix<T>::Matrix(Matrix<T>&& m) noexcept
 template<class T>
 void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix) {
     _matrix = matrix;
-    _rows = (int)matrix.size();
+    _rows = matrix.size();
     _rows > 0 ? _columns = matrix[0].size() : _columns = 0;
 }
 
 template<class T>
-void Matrix<T>::removeAt(int index) {
+void Matrix<T>::removeAt(size_t index) {
     if (index > _rows || index > _columns)
         throw "Не верный индекс";
 
@@ -80,7 +86,7 @@ void Matrix<T>::removeAt(int index) {
 }
 
 template<class T>
-void Matrix<T>::resize(int size) {
+void Matrix<T>::resize(size_t size) {
     if (_rows < size) {
         _matrix.reserve((size_t)size);
         for (int i = size - _rows; i > 0; i--)
@@ -109,17 +115,17 @@ std::vector<std::vector<T>>& Matrix<T>::getMatrix() {
 }
 
 template<class T>
-int Matrix<T>::getColumns() const {
+size_t Matrix<T>::columns() const {
    return _columns;
 }
 
 template<class T>
-int Matrix<T>::getRows() const {
+size_t Matrix<T>::rows() const {
     return _rows;
 }
 
 template<class T>
-std::vector<T> &Matrix<T>::operator[](int index) {
+std::vector<T> &Matrix<T>::operator[](size_t index) {
     if (index < 0 || index > _rows)
         throw "Выход за границы матрицы";
 
@@ -127,7 +133,7 @@ std::vector<T> &Matrix<T>::operator[](int index) {
 }
 
 template<class T>
-const std::vector<T> &Matrix<T>::operator[](int index) const {
+const std::vector<T> &Matrix<T>::operator[](size_t index) const {
     if (index < 0 || index > _rows)
         throw "Выход за границы матрицы";
 

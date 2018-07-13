@@ -22,7 +22,7 @@ void Laser::setEx(std::complex<double> ex) {
     _wave.setEx(_ex);
 }
 
-std::complex<double> Laser::getEx() {
+const std::complex<double> &Laser::ex() const {
     return _ex; 
 }
 
@@ -31,7 +31,7 @@ void Laser::setEy(std::complex<double> ey) {
     _wave.setEy(_ey); 
 }
 
-std::complex<double> Laser::getEy() {
+const std::complex<double> &Laser::ey() const {
     return _ey;
 }
 

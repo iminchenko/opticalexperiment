@@ -61,7 +61,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
             for (const auto &item : drawArray) {
                 QJsonObject drawObj = item.toObject();
                 DrawingConfig oneDrawing;
-                DrawingConfig::drawingType type =
+                DrawingConfig::DrawingType type =
                         DrawingConfig::toType(drawObj["type"].toString().toStdString());
 
                 oneDrawing.type = type;
@@ -124,7 +124,7 @@ size_t DeviceConfigList::count() const {
     return _devList.size();
 }
 
-const DeviceConfig &DeviceConfigList::operator[](size_t id) const {
+const DeviceConfig &DeviceConfigList::operator[](int id) const {
     // позже добавить нормальную проверку на лазер и экран
     if (id == deviceType::TYPE_LASER || id == deviceType::TYPE_SHIELD)
         return _dummyDevice;

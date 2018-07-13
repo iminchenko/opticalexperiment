@@ -60,6 +60,9 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
     auto v2 = dest->getInput(cmnd->data.ac.destNum);
 
     _scene->addItem(new ConnectionItem(v1, v2));
+    
+    /* ToDoI: Точно ли так надо возвращать?*/
+    return true;
 }
 
 bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
@@ -72,6 +75,9 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
 
     delete *iter;
     _devices.erase(iter);
+    
+    /* ToDoI: Точно ли так надо писать? */
+    return true;
 }
 
 bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {

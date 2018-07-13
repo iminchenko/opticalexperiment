@@ -23,7 +23,7 @@ class Device {
     };
 
 public:
-    Device() = default;
+    Device();
     Device(int type, int id);
     virtual ~Device() = default;
 
@@ -48,6 +48,7 @@ private:
     void updateWaveChache() const;
     void updateMatrix();
 
+private:
     // базовая инфа об устройстве
     int _type = 0;
     int _id = -1;

@@ -13,7 +13,7 @@ public:
     void loadDevices(std::string filename);
     size_t count() const;
 
-    const DeviceConfig &operator[](size_t id) const;
+    const DeviceConfig &operator[](int id) const;
 
 protected:
     DeviceConfigList() = default;

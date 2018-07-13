@@ -7,18 +7,19 @@ class OrdinalFunction {
 public:
     OrdinalFunction() = default;
 
-    QVector<int> path();
-    QVector<int> path(const Matrix<int> &inc);
+    QVector<size_t> path();
+    QVector<size_t> path(const Matrix<size_t> &inc);
 
 private:
-    Matrix<int> inc_;
-    QVector<int> notUsedNode_;
-    QVector<QVector<int>> highLvls_;
-
     void createNullLlv();
-    void deleteUsedNode(const int lvl);
-    void createNotUsedNode(const int N);
-    void checkOnCoherency(const int lvl);
+    void deleteUsedNode(size_t lvl);
+    void createNotUsedNode(size_t N);
+    void checkOnCoherency(size_t lvl);
     void createHierarchyLvls();
-    void allClear(); //Зачистка всех векторов
+    void allClear();                        //Зачистка всех векторов
+    
+private:
+    Matrix<size_t> _inc;
+    QVector<size_t> _notUsedNode;
+    QVector<QVector<size_t>> _highLvls;
 };

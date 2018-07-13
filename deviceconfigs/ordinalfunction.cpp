@@ -1,87 +1,88 @@
 #include "ordinalfunction.h"
 
-QVector<int> OrdinalFunction::path() {
-    createNotUsedNode(inc_.getRows());
+QVector<size_t> OrdinalFunction::path() {
+    createNotUsedNode(_inc.rows());
     createHierarchyLvls();
 
-    QVector<int> qv;
-    for (int i = 0; i < highLvls_.size(); i++)
-        for (int j = 0; j < highLvls_[i].size(); j++)
-            qv.append(highLvls_[i][j]);
+    QVector<size_t> qv;
+    for (int i = 0; i < _highLvls.size(); ++i)
+        for (int j = 0; j < _highLvls[i].size(); ++j)
+            qv.append(_highLvls[i][j]);
 
     allClear();
     return std::move(qv);
 }
 
-QVector<int> OrdinalFunction::path(const Matrix<int> &inc) {
-    inc_ = inc;
+QVector<size_t> OrdinalFunction::path(const Matrix<size_t> &inc) {
+    _inc = inc;
     return path();
 }
 
 void OrdinalFunction::createNullLlv() {
-    int row, column;
-    highLvls_.push_back(QVector<int>());
+    _highLvls.push_back(QVector<size_t>());
     bool check;
-    for (column = 0; column < inc_.getColumns(); column++)
+    
+    for (size_t column = 0; column < _inc.columns(); ++column)
     {
         check = true;
-        for (row = 0; row < inc_.getRows(); row++) {
-            if (inc_[row][column] != 0) {
+        for (size_t row = 0; row < _inc.rows(); ++row) {
+            if (_inc[row][column] != 0) {
                 check = false;
                 break;
             }
         }
 
         if (check) {
-            highLvls_[0].append(column);
-            notUsedNode_.removeOne(column);
+            _highLvls[0].append(column);
+            _notUsedNode.removeOne(column);
         }
     }
 }
 
-void OrdinalFunction::createNotUsedNode(const int N) {
-    for (int i = 0; i < N; i++)
-        notUsedNode_.push_back(i);
+void OrdinalFunction::createNotUsedNode(size_t N) {
+    for (size_t i = 0; i < N; ++i)
+        _notUsedNode.push_back(i);
 }
 
-void OrdinalFunction::checkOnCoherency(const int lvl) {
+void OrdinalFunction::checkOnCoherency(size_t lvl) {
     int swap;
-    for (int i = 0; i < highLvls_[lvl].size() - 1; i++)
-        for (int j = i + 1; j < highLvls_[lvl].size(); j++)
-            if (inc_[highLvls_[lvl][i]][highLvls_[lvl][j]] != 0) {
-                swap = highLvls_[lvl][j];
-                highLvls_[lvl][j] = highLvls_[lvl][i];
-                highLvls_[lvl][i] = swap;
+    for (int i = 0; i < _highLvls[lvl].size() - 1; ++i)
+        for (int j = i + 1; j < _highLvls[lvl].size(); ++j)
+            if (_inc[_highLvls[lvl][i]][_highLvls[lvl][j]] != 0) {
+                swap = _highLvls[lvl][j];
+                _highLvls[lvl][j] = _highLvls[lvl][i];
+                _highLvls[lvl][i] = swap;
             }
 }
 
 void OrdinalFunction::createHierarchyLvls() {
-    int currLvl = 1, indexNode, count, column, row;
-
     createNullLlv();
-    if (highLvls_[0].size() == 0)
+    if (_highLvls[0].size() == 0)
         throw "Не удалось создать первый уровень";
 
-    while(notUsedNode_.size() != 0) {
-        highLvls_.append(QVector<int>());
-        for (count = 0; count < highLvls_[currLvl - 1].size(); count++) {
-            row = highLvls_[currLvl - 1][count];
-            for (column = 0; column < inc_.getColumns(); column++)
-                if (inc_[row][column] != 0
-                        && (indexNode = notUsedNode_.indexOf(column)) != -1) {
-                    notUsedNode_.removeAt(indexNode);
-                    highLvls_[currLvl].append(column);
+    size_t currLvl = 1, row = 0;
+    int  indexNode = 0;
+    
+    while(_notUsedNode.size() != 0) {
+        _highLvls.append(QVector<size_t>());
+        for (int count = 0; count < _highLvls[currLvl - 1].size(); ++row) {
+            row = _highLvls[currLvl - 1][count];
+            for (size_t column = 0; column < _inc.columns(); ++column)
+                if (_inc[row][column] != 0
+                        && (indexNode = _notUsedNode.indexOf(column)) != -1) {
+                    _notUsedNode.removeAt(indexNode);
+                    _highLvls[currLvl].append(column);
                 }
         }
         
         checkOnCoherency(currLvl);
-        currLvl++;
+        ++currLvl;
     }    
 }
 
 void OrdinalFunction::allClear() {
-    highLvls_.clear();
-    notUsedNode_.clear();
+    _highLvls.clear();
+    _notUsedNode.clear();
 }
 
 

@@ -13,10 +13,10 @@ public:
     Waves getWave(int output) const override;
     
     void setEx(std::complex<double> ex);
-    std::complex<double> getEx();
+    const std::complex<double> &ex() const;
     
     void setEy(std::complex<double> ey);
-    std::complex<double> getEy();
+    const std::complex<double> &ey() const;
 
     void setVariables(VarList vars) override;
 

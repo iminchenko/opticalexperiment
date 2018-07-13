@@ -144,7 +144,7 @@ void MainWindow::onDeviceEmplacementChanged() {
         _chart->axisY()->setRange(0, maxValue * 1.2);
     } else {
         fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), xMinus, xPlus,
-                xPlus / sizeDiscretization, [](double x){return 0;});
+                xPlus / sizeDiscretization, [](double x){ Q_UNUSED(x); return 0;});
 #ifdef _DEBUG
         qDebug() << "null disp";
 #endif

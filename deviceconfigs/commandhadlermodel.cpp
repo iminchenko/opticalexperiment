@@ -60,5 +60,6 @@ bool CommandHadlerModel::changeVariables(pCommand cmnd) {
 }
 
 bool CommandHadlerModel::refreshItem(pCommand cmnd) {
+    Q_UNUSED(cmnd);
     return false;
 }

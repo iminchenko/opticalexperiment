@@ -4,12 +4,21 @@
 
 using  std::vector;
 
-Device::Device(int type, int id) :_type(type), _id(id),
+Device::Device() :
+    _changed(true),
+    _type(0),
+    _id(-1)
+{}
+
+Device::Device(int type, int id) :
     _connections(DEVICECONFIG_LIST[type].getInputCount(), {nullptr, 0}),
-    _waveCache(DEVICECONFIG_LIST[type].getOutputCount()),
-    _concreteMatrix(DEVICECONFIG_LIST[type].getExprMatrix().getRows(),
-                    DEVICECONFIG_LIST[type].getExprMatrix().getColumns()),
+    _changed(true),
+    _type(type), 
+    _id(id),    
+    _concreteMatrix(DEVICECONFIG_LIST[type].exprMatrix().rows(),
+                    DEVICECONFIG_LIST[type].exprMatrix().columns()),
     _concreteVariables(DEVICECONFIG_LIST[type].getVariables()),
+    _waveCache(DEVICECONFIG_LIST[type].getOutputCount()),
     _connectionCache(DEVICECONFIG_LIST[type].getInputCount(), false) {
     updateMatrix();
 }
@@ -48,6 +57,7 @@ bool Device::changed() const {
 
     int j = 0;
     for (const auto &i : _connections) {
+        // ToDoI: Что ты хотел сказать этим условием?
         if (!i.device.expired() && i.device.lock()->changed()
             || (i.device.expired() && _connectionCache[j++])) {
             _changed = true;
@@ -88,7 +98,7 @@ void Device::updateWaveChache() const {
         // одна "порция" волн
         Waves portion;
 
-        for (int i = 0; i < inputWaves.size(); ++i) {
+        for (std::size_t i = 0; i < inputWaves.size(); ++i) {
             if (iters[i] != inputWaves[i].cend()) {
                 portion.push_back(*iters[i]);
                 ++iters[i];
@@ -101,8 +111,8 @@ void Device::updateWaveChache() const {
         auto outWaves = (_concreteMatrix * portion);
 
         size_t ratio = outWaves.size() / _waveCache.size();
-        for (int i = 0; i < _waveCache.size(); ++i) {
-            for (int j = 0; j < ratio; ++j) {
+        for (size_t i = 0; i < _waveCache.size(); ++i) {
+            for (size_t j = 0; j < ratio; ++j) {
                 _waveCache[i].push_back(outWaves[ratio * i + j]);
             }
         }
@@ -110,14 +120,14 @@ void Device::updateWaveChache() const {
 }
 
 void Device::updateMatrix() {
-    for (size_t i = 0; i < _concreteMatrix.getRows(); ++i) {
-        for (size_t j = 0; j < _concreteMatrix.getColumns(); ++j) {
+    for (size_t i = 0; i < _concreteMatrix.rows(); ++i) {
+        for (size_t j = 0; j < _concreteMatrix.columns(); ++j) {
             _concreteMatrix[i][j].real(
-                            evaluateExprassion(DEVICECONFIG_LIST[_type].getExprMatrix()[i][j].first,
+                            evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].first,
                                                _concreteVariables)
             );
             _concreteMatrix[i][j].imag(
-                    evaluateExprassion(DEVICECONFIG_LIST[_type].getExprMatrix()[i][j].second,
+                    evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].second,
                                        _concreteVariables)
             );
         }

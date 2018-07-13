@@ -4,10 +4,14 @@ DeviceConfig::DeviceConfig(int inputCount, int outputCount,
                         const std::string &name, const std::string &descrption,
                         const std::list<DrawingConfig> &drawing,
                         const VarList &variables,
-                        const ExprMatrix &matr)
-    :_inputs(inputCount), _outputs(outputCount), _sourceMatrix(matr),
-     _name(name), _defaultVariables(variables),  _description(descrption),
-                                                            _drawings(drawing) {
+                        const ExprMatrix &matr) :
+    _inputs(inputCount), 
+    _outputs(outputCount), 
+    _name(name), 
+    _description(descrption),
+    _drawings(drawing),
+    _sourceMatrix(matr),
+    _defaultVariables(variables) {
     auto iter = _drawings.begin();
 
     while (iter != _drawings.end()) {
@@ -92,7 +96,7 @@ void DeviceConfig::draw(QPainter *painter, bool selected) const {
     }
 }
 
-const ExprMatrix &DeviceConfig::getExprMatrix() const {
+const ExprMatrix &DeviceConfig::exprMatrix() const {
     return _sourceMatrix;
 }
 
