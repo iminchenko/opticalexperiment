@@ -52,7 +52,8 @@ SOURCES += \
     instrumentconfig.cpp \
     main.cpp \
     properties.cpp \
-    propertyobserver.cpp
+    propertyobserver.cpp \
+    utility/idgenerator.cpp
 
 HEADERS += \
     command/command.h \
@@ -83,7 +84,8 @@ HEADERS += \
     instrumentconfig.h \
     matrix.h \
     properties.h \
-    propertyobserver.h
+    propertyobserver.h \
+    utility/idgenerator.h
 
 FORMS += \
     ui/mainwindow.ui

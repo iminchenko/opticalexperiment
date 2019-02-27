@@ -61,7 +61,7 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
 
     _scene->addItem(new ConnectionItem(v1, v2));
     
-    /* ToDoI: Точно ли так надо возвращать?*/
+    /* ToDo: Точно ли так надо возвращать?*/
     return true;
 }
 

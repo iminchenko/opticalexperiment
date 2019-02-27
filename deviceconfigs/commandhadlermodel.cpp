@@ -1,5 +1,6 @@
 #include "commandhadlermodel.h"
 #include "devicemanager.h"
+#include "utility/idgenerator.h"
 
 CommandHadlerModel::CommandHadlerModel() {
     
@@ -27,7 +28,7 @@ bool CommandHadlerModel::handle(pCommand cmnd)
 
 bool CommandHadlerModel::addItem(pCommand cmnd) {
     if (!cmnd->data.ad.id) {
-        cmnd->data.ad.id = DEVICE_MANAGER.getMaxId();
+        cmnd->data.ad.id = DEVICE_ID_GEN.getId();
     }
     DEVICE_MANAGER.addDevice(cmnd->data.ad.typeItemId, cmnd->data.ad.id);
     return true;

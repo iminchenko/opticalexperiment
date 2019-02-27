@@ -31,11 +31,12 @@ public:
     virtual Waves getWave(int output) const;
 
     void setConnection(int input, std::shared_ptr<Device> source, int output);
+    connection getConnection(int input);
 
     virtual void setVariables(VarList vars);
 
+    int getType() const;
     int getId() const;
-
 protected:
     // был ли путь изменен => надо ли пересчитывать кэш
     bool changed() const;

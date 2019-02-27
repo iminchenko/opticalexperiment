@@ -134,6 +134,10 @@ void Device::updateMatrix() {
     }
 }
 
+int Device::getType() const {
+    return _type;
+}
+
 int Device::getId() const {
     return _id;
 }

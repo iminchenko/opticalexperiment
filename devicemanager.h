@@ -28,7 +28,7 @@ public:
 
     // костыльный костыль
     Display *getDisplay() const;
-
+    std::shared_ptr<Device> getDeviceById(int id);
 protected:
     DeviceManager();
 
