@@ -12,15 +12,15 @@ void CommandHandlerView::setScene(QGraphicsScene *scene) {
     _scene = scene;
 }
 
-//ToDo: Вполне возможно, что нужно перенсти этот метод в CommandHandler
+//ToDo: Вполне возможно, что нужно перенести этот метод в CommandHandler
 bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
     switch (cmnd->typeCommand) {
     case TypeCommand::CMND_ADD_DEVICE:
         return addItem(cmnd);
-        case TypeCommand::CMND_ADD_CONNECTION:
-            return addConnection(cmnd);
+    case TypeCommand::CMND_ADD_CONNECTION:
+        return addConnection(cmnd);
     case TypeCommand::CMND_DELETE_DEVICE:
-            return removeItem(cmnd);
+        return removeItem(cmnd);
     case TypeCommand::CMND_DELETE_CONNECTION:
         return removeConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
