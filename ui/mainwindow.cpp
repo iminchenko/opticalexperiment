@@ -17,8 +17,11 @@
 //constexpr double xMinus = -50;
 
 // TODO: найти куда вынести
-double fillSeries(QXYSeries *series, double min, double max,
-                double step, const std::function<double(double)> &func) {
+double fillSeries(QXYSeries *series,
+                  double min,
+                  double max,
+                  double step,
+                  const std::function<double(double)> &func) {
     double maxValue = 1e-7;
     if (!series)
         return maxValue;

@@ -1,10 +1,16 @@
 #include "deviceconfig.h"
 
-DeviceConfig::DeviceConfig(int inputCount, int outputCount,
-                        const std::string &name, const std::string &descrption,
-                        const std::list<DrawingConfig> &drawing,
-                        const VarList &variables,
-                        const ExprMatrix &matr) :
+using std::list;
+using std::pair;
+using std::string;
+
+DeviceConfig::DeviceConfig(int inputCount,
+                           int outputCount,
+                           const string &name,
+                           const string &descrption,
+                           const list<DrawingConfig> &drawing,
+                           const VarList &variables,
+                           const ExprMatrix &matr) :
     _inputs(inputCount), 
     _outputs(outputCount), 
     _name(name), 
@@ -100,6 +106,6 @@ const ExprMatrix &DeviceConfig::exprMatrix() const {
     return _sourceMatrix;
 }
 
-const std::list<std::pair<std::string, double>> &DeviceConfig::getVariables() const {
+const list<pair<string, double>> &DeviceConfig::getVariables() const {
     return _defaultVariables;
 }

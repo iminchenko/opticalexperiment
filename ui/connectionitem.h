@@ -11,7 +11,8 @@ class OutputVertexItem;
 class ConnectionItem : public QGraphicsItem {
 friend class VertexItem;
 public:
-    ConnectionItem(OutputVertexItem *source, InputVertexItem *destination,
+    ConnectionItem(OutputVertexItem *source,
+                   InputVertexItem *destination,
                    QGraphicsItem *parent = nullptr);
     ~ConnectionItem() override;
 
@@ -21,7 +22,8 @@ public:
 protected:
     QRectF boundingRect() const override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option,
                QWidget *widget) override;
 
     QPainterPath shape() const override;

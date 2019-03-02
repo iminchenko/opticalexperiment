@@ -15,14 +15,19 @@ public:
     ChartView(int id, QLayout *layout);
     ~ChartView();
 
-    void update(double min, double max,
-                           double step, const std::function<double(double)> &func);
+    void update(double min,
+                double max,
+                double step,
+                const std::function<double(double)> &func);
 
     int getId();
 
 private:
-    double fillSeries(QXYSeries *series, double min, double max,
-                double step, const std::function<double(double)> &func);
+    double fillSeries(QXYSeries *series,
+                      double min,
+                      double max,
+                      double step,
+                      const std::function<double(double)> &func);
 
     int _id;
     QLayout *_layout;

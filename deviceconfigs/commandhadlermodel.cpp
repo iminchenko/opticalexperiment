@@ -2,12 +2,9 @@
 #include "devicemanager.h"
 #include "utility/idgenerator.h"
 
-CommandHadlerModel::CommandHadlerModel() {
-    
-}
+CommandHadlerModel::CommandHadlerModel() {}
 
-bool CommandHadlerModel::handle(pCommand cmnd)
-{
+bool CommandHadlerModel::handle(pCommand cmnd) {
     switch (cmnd->typeCommand) {
     case TypeCommand::CMND_ADD_DEVICE:
         return addItem(cmnd);

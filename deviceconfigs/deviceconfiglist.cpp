@@ -109,14 +109,18 @@ void DeviceConfigList::loadDevices(std::string filename) {
         if (obj.contains("variables")) {
             QJsonObject varObj = obj["variables"].toObject();
             for (const auto& key : varObj.keys()) {
-                variables.emplace_back(key.toStdString(), varObj[key].toDouble());
+                variables.emplace_back(key.toStdString(),
+                                       varObj[key].toDouble());
             }
         }
 
-        _devList.emplace_back(inputCount, outputCount,
-                        obj["name"].toString().toStdString(),
-                        obj["description"].toString().toStdString(), drawing,
-                        variables, matr);
+        _devList.emplace_back(inputCount,
+                              outputCount,
+                              obj["name"].toString().toStdString(),
+                              obj["description"].toString().toStdString(),
+                              drawing,
+                              variables,
+                              matr);
     }
 }
 

@@ -123,12 +123,12 @@ void Device::updateMatrix() {
     for (size_t i = 0; i < _concreteMatrix.rows(); ++i) {
         for (size_t j = 0; j < _concreteMatrix.columns(); ++j) {
             _concreteMatrix[i][j].real(
-                            evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].first,
-                                               _concreteVariables)
+                evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].first,
+                                   _concreteVariables)
             );
             _concreteMatrix[i][j].imag(
-                    evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].second,
-                                       _concreteVariables)
+                evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].second,
+                                   _concreteVariables)
             );
         }
     }

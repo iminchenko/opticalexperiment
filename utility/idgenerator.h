@@ -5,8 +5,7 @@
 
 #define DEVICE_ID_GEN singleton<IdGenerator>()
 
-class IdGenerator
-{
+class IdGenerator {
 public:
     IdGenerator();
     IdGenerator(int startValue);

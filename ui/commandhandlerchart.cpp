@@ -1,10 +1,7 @@
 #include "commandhandlerchart.h"
 #include "devicemanager.h"
 
-CommandHandlerChart::CommandHandlerChart()
-{
-
-}
+CommandHandlerChart::CommandHandlerChart() {}
 
 void CommandHandlerChart::setLayout(QLayout *layout) {
     _layout = layout;

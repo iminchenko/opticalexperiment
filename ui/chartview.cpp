@@ -28,15 +28,24 @@ ChartView::~ChartView() {
     delete _chartView;
 }
 
-void ChartView::update(double min, double max,
-                       double step, const std::function<double(double)> &func) {
-    double maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), min, max, step, func);
+void ChartView::update(double min,
+                       double max,
+                       double step,
+                       const std::function<double(double)> &func) {
+    double maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
+                                 min,
+                                 max,
+                                 step,
+                                 func);
 
     _chart->axisY()->setRange(0, maxValue * 1.2);
 }
 
-double ChartView::fillSeries(QXYSeries *series, double min, double max,
-            double step, const std::function<double(double)> &func) {
+double ChartView::fillSeries(QXYSeries *series,
+                             double min,
+                             double max,
+                             double step,
+                             const std::function<double(double)> &func) {
 
     double maxValue = 1e-7;
     if (!series)

@@ -59,8 +59,9 @@ void VertexItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
 InputVertexItem::InputVertexItem(ConstructorItem *parent, int number)
     :VertexItem(parent, number) {}
 
-void InputVertexItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*,
-                             QWidget*) {
+void InputVertexItem::paint(QPainter *painter,
+                            const QStyleOptionGraphicsItem*,
+                            QWidget*) {
     if (isHoverEvent())
         drawAim(painter);
 
@@ -103,7 +104,8 @@ ConnectionItem *VertexItem::getConnection() {
 OutputVertexItem::OutputVertexItem(ConstructorItem *parent, int number)
     :VertexItem(parent, number) {}
 
-void OutputVertexItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*,
+void OutputVertexItem::paint(QPainter *painter,
+                             const QStyleOptionGraphicsItem*,
                              QWidget*) {
     if (isHoverEvent())
         drawAim(painter);

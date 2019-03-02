@@ -3,7 +3,9 @@
 
 #include "shielditem.h"
 
-ShieldItem::ShieldItem(QPointF pos, int id, QGraphicsItem *parent)
+ShieldItem::ShieldItem(QPointF pos,
+                       int id,
+                       QGraphicsItem *parent)
     :ConstructorItem(pos, id, parent) {
     addInputVertex();
 
@@ -15,8 +17,9 @@ ShieldItem::ShieldItem(QPointF pos, int id, QGraphicsItem *parent)
     setProperties(properties);
 }
 
-void ShieldItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*,
-                          QWidget*) {
+void ShieldItem::paint(QPainter *painter,
+                       const QStyleOptionGraphicsItem*,
+                       QWidget*) {
     drawBox(painter);
 
     painter->setPen(QPen(getBorderColor(), getBorderWidth()));

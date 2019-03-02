@@ -21,8 +21,10 @@ void DeviceManager::addDevice(int type, int id) {
     }
 }
 
-void DeviceManager::addConnection(int sourceDevId, int sourceOut,
-                                  int destDevId, int destInput) {
+void DeviceManager::addConnection(int sourceDevId,
+                                  int sourceOut,
+                                  int destDevId,
+                                  int destInput) {
     // 10 - magic number for distance
     getDeviceById(destDevId)->setConnection(
                 destInput,getDeviceById(sourceDevId),sourceOut);
@@ -39,10 +41,12 @@ void DeviceManager::removeDevice(int idDevice) {
     }
 }
 
-void DeviceManager::removeConnection(int sourceDevId, int sourceOut,
-                                     int destDevId, int destInput) {
+void DeviceManager::removeConnection(int sourceDevId,
+                                     int sourceOut,
+                                     int destDevId,
+                                     int destInput) {
     Q_UNUSED(sourceDevId);
-    /* ToDoI: С этой функцией что-то не так? Или я наркоман? Как минимум, 
+    /* ToDo: С этой функцией что-то не так? Или я наркоман? Как минимум,
        тут нужно что-то сделать с sourceDevId */
     getDeviceById(destDevId)->setConnection(destInput, make_shared<Device>(),
                                        sourceOut);

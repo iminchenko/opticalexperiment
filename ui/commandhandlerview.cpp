@@ -4,9 +4,7 @@
 #include "genericitem.h"
 #include "connectionitem.h"
 
-CommandHandlerView::CommandHandlerView() {
-    
-}
+CommandHandlerView::CommandHandlerView() {}
 
 void CommandHandlerView::setScene(QGraphicsScene *scene) {
     _scene = scene;
