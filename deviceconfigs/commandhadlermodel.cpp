@@ -54,10 +54,10 @@ bool CommandHadlerModel::deleteConnection(pCommand cmnd) {
 
 bool CommandHadlerModel::changeVariables(pCommand cmnd) {
     DEVICE_MANAGER.changeVariables(cmnd->data.cv.id, cmnd->varList);
-    return false;
+    return true;
 }
 
 bool CommandHadlerModel::refreshItem(pCommand cmnd) {
     Q_UNUSED(cmnd);
-    return false;
+    return true;
 }
