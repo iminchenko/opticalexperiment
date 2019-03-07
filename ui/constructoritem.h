@@ -27,7 +27,7 @@ public:
     float getBorderWidth() const;
     float getWidth() const;
 
-    int getId() const override;
+    int getId() const;
 
     OutputVertexItem *getOutput(int number);
     InputVertexItem *getInput(int number);

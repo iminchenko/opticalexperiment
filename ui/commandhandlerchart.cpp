@@ -1,7 +1,10 @@
 #include "commandhandlerchart.h"
 #include "devicemanager.h"
 
-CommandHandlerChart::CommandHandlerChart() {}
+CommandHandlerChart::CommandHandlerChart()
+{
+
+}
 
 void CommandHandlerChart::setLayout(QLayout *layout) {
     _layout = layout;
@@ -51,9 +54,12 @@ bool CommandHandlerChart::update() {
         auto shield = dynamic_cast<Display*>(DEVICE_MANAGER.getDeviceById((*chart)->getId()).get());
         (*chart)->update(xMinus, xPlus, xPlus / sizeDiscretization,
                 [&shield](double x){return shield->getValue(x).real();});
+        (*chart)->update3d([&shield](){return shield->getWave();});
     }
     return true;
 }
+
+
 
 ChartView* CommandHandlerChart::findItemWithId(int id) {
     auto iter = _charts.begin();

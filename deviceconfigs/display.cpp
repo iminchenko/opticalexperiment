@@ -59,6 +59,13 @@ Waves Display::getWave(int) const {
     return Waves();
 }
 
+Waves Display::getWave() const {
+    if (!_connections[0].device.expired())
+        return _connections[0].device.lock()->getWave(_connections[0].output);
+
+    return Waves();
+}
+
 void Display::setVariables(VarList vars) {
     for (const auto& iter : vars) {
         if (iter.first == "K") {

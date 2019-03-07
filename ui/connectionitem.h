@@ -11,8 +11,7 @@ class OutputVertexItem;
 class ConnectionItem : public QGraphicsItem {
 friend class VertexItem;
 public:
-    ConnectionItem(OutputVertexItem *source,
-                   InputVertexItem *destination,
+    ConnectionItem(OutputVertexItem *source, InputVertexItem *destination,
                    QGraphicsItem *parent = nullptr);
     ~ConnectionItem() override;
 
