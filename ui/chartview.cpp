@@ -72,44 +72,41 @@ void ChartView::initChart3D(QLayout *layout) {
 
     _surfaceW->setReflection(false);
 
-    _theme = new Q3DTheme();
-    _theme->setType(Q3DTheme::ThemePrimaryColors);
-    _theme->setAmbientLightStrength(0.8f);
-    _theme->setLightStrength(0.8f);
+    //setting of pallete of colours
     QLinearGradient gr;
-    gr.setColorAt(0.0, Qt::black);
-    gr.setColorAt(0.3, Qt::blue);
-    gr.setColorAt(0.6, Qt::red);
-    gr.setColorAt(1.0, Qt::yellow);
+    gr.setColorAt(0.0, Qt::blue);
+    gr.setColorAt(0.33, QColor(Qt::green).darker(100));
+    gr.setColorAt(0.66, Qt::yellow);
+    gr.setColorAt(1, Qt::red);
 
     _surfaceW->seriesList().at(0)->setBaseGradient(gr);
     _surfaceW->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 
-
-    _theme->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
-    _surfaceW->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
-    //init data
+    //init graph with data
     QSurfaceDataArray *dataArray = getDefaultChart();
     _3dProxyFunc->resetArray(dataArray);
-    _surfaceW->show();
 
+    //creating container
     _surfaceContainer = QWidget::createWindowContainer(_surfaceW);
     _surfaceContainer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
     _surfaceContainer->setMinimumHeight(600);
     _surfaceW->setOrthoProjection(true);
     _surfaceW->setFlipHorizontalGrid(true);
+
+    //adding container element into layout
     layout->addWidget(_surfaceContainer);
 }
 
-
 ChartView::~ChartView() {
+    delete _surfaceContainer;
+    delete _chartView;
     _layout->removeWidget(_container);
-//    delete _chartView;
-//    delete _surfaceContainer;
+
 }
 
 QSurfaceDataArray* ChartView::getDefaultChart() {
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
+
     QSurfaceDataRow *newRow = new QSurfaceDataRow();
     newRow->push_back(QSurfaceDataItem(QVector3D( minX, 0 , minY)));
     newRow->push_back(QSurfaceDataItem(QVector3D( maxX, 0 , minY)));
@@ -119,12 +116,15 @@ QSurfaceDataArray* ChartView::getDefaultChart() {
     newRow->push_back(QSurfaceDataItem(QVector3D( minX, 0 , maxY)));
     newRow->push_back(QSurfaceDataItem(QVector3D( maxX, 0 , maxY)));
     *dataArray << newRow;
+
     return dataArray;
 }
 
-void ChartView::update(double min, double max,
-                       double step, const std::function<double(double)> &func) {
-    double maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), min, max, step, func);
+void ChartView::update(double min,
+                       double max,
+                       double step,
+                       const std::function<double(double)> &func) {
+    double maxValue = fill2DSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), min, max, step, func);
     _chart->axisY()->setRange(0, maxValue * 1.2);
 }
 
@@ -133,95 +133,87 @@ void ChartView::update3d(const std::function<std::vector<Wave>()> &func) {
     _3dProxyFunc->resetArray(newArray);
 }
 
-QPointF ChartView::getSourcePosition(int sourceId, bool parity) {
+QPointF ChartView::getSourcePosition(size_t sourceId, bool parity) {
+    QPointF sourceCoord(0,0);
     if (!parity) {
-        // even number of sources
-        if (sourceId&1) {
-            return QPointF(0, (- (0.5 + (sourceId << 1))) *  MATH_D);
-        }
-        return QPointF(0, (0.5 + (sourceId << 1)) *  MATH_D);
+        // sequence for even number of sources
+        sourceCoord.ry() = (-(0.5 + (sourceId << 1))) * MATH_D;
+    } else {
+        // sequence for odd number of sources
+        sourceCoord.ry() = ((sourceId + 1) << 1) * MATH_D;
     }
-    // odd number of sources
-    if (sourceId&1) {
-        return QPointF(0, (((sourceId + 1) << 1) >> 1) *  MATH_D);
-    }
-    return QPointF(0, -(((sourceId + 1) << 1) >> 1) *  MATH_D);
-
+    //for odd sources - invert the sign
+    sourceCoord.ry() *= sourceId & 1 ? -1 : 1;
+    return sourceCoord;
 }
 
 QSurfaceDataArray* ChartView::fill3DSeries(const std::function<std::vector<Wave>()> &func) {
     std::vector<Wave> waves = func();
     if (waves.size() == 0)
         return getDefaultChart();
+
+    // result matrix of intencivity
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
-    qDebug() << "alpha:" << MATH_ALPHA;
-    qDebug() << "K':" << MATH_K_1;
-    qDebug() << "K:" << MATH_K;
+    dataArray->reserve(stepsY);
+    // parity of sources number
     bool parity = !(waves.size()&1);
-    bool error = false;
+    // max value of intencivity
     double max = 0;
-    if (func) {
-        dataArray->reserve(stepsY);
-        QPointF currentPoint = QPointF(minY, minX);
-        for (; currentPoint.y() <= maxY; currentPoint.ry() += stepY) {
-            // y-line
-            QSurfaceDataRow *newRow = new QSurfaceDataRow();
-            currentPoint.rx() = minX;
-            for(; currentPoint.x() <= maxX; currentPoint.rx() += stepX) {
-                // x-line
-                std::complex<double>
-                    // x-projection's multiplies of intencivity:
-                    sum_x_1 = std::complex<double>(0,0),
-                    sum_x_2 = std::complex<double>(0,0),
-                    // y-projection's multiplies of intencivity:
-                    sum_y_1 = std::complex<double>(0,0),
-                    sum_y_2 = std::complex<double>(0,0);
+    // Coordinates of calculated current point
+    QPointF currentPoint = QPointF(minY, minX);
 
-                for(size_t i = 0; i < waves.size(); i++) {
-                    // calculation summ for each source
-                    QPointF currentPointCopy = currentPoint;
-                    std::complex<double> exp_power = std::complex<double>(
-                         0,
-                         MATH_K_1 * pow((currentPoint - getSourcePosition(i, parity)).manhattanLength(),2)
-                    );
+    // y-row cycle
+    for (; currentPoint.y() <= maxY; currentPoint.ry() += stepY) {
+        QSurfaceDataRow *newRow = new QSurfaceDataRow();
+        //setting current point at the begining of calculation area
+        currentPoint.rx() = minX;
+        // x-row cycle
+        for(; currentPoint.x() <= maxX; currentPoint.rx() += stepX) {
+            // x-projection of intencivity:
+            std::complex<double> sum_x = std::complex<double>(0,0);
+            // y-projection of intencivity:
+            std::complex<double> sum_y = std::complex<double>(0,0);
 
-                    sum_x_1 += waves[i].ex() * std::exp(exp_power);
-                    sum_x_2 += std::conj(waves[i].ex()) * std::exp(-exp_power);
-
-                    sum_y_1 += waves[i].ey() * std::exp(exp_power);
-                    sum_y_2 += std::conj(waves[i].ey()) * std::exp(-exp_power);
-                }
-                // Result intencivity projections:
-                if ((sum_x_1 * sum_x_2).imag() != 0) {
-                    error = true;
-                }
-                double I_x = abs((sum_x_1 * std::conj(sum_x_1)).real());
-                double I_y = abs((sum_y_1 * std::conj(sum_y_1)).real());
-                //result
-                newRow->push_back(
-                     QSurfaceDataItem(
-                         QVector3D(
-                             currentPoint.x(),
-                             (I_x + I_y)* MATH_ALPHA * SCALE,
-                             currentPoint.y()
-                         )
-                     )
+            // calculation summ for each source
+            for(size_t i = 0; i < waves.size(); i++) {
+                // degree of exponent - distance to source * k'
+                std::complex<double> exp_power = std::complex<double>(
+                     0,
+                     MATH_K_1 * pow((currentPoint - getSourcePosition(i, parity)).manhattanLength(), 2)
                 );
-                if (((I_x + I_y)* MATH_ALPHA * SCALE) > max) {
-                   max = (I_x + I_y)* MATH_ALPHA * SCALE;
-                }
+                sum_x += waves[i].ex() * std::exp(exp_power);
+                sum_y += waves[i].ey() * std::exp(exp_power);
             }
+            // result intencivity's projections:
+            double I_x = std::abs((sum_x * std::conj(sum_x)).real());
+            double I_y = std::abs((sum_y * std::conj(sum_y)).real());
 
-            *dataArray << newRow;
+            // result intencivity
+            double I = (I_x + I_y)* MATH_ALPHA * SCALE;
+
+            // result coordinates of point
+            newRow->push_back(
+                 QSurfaceDataItem(
+                     QVector3D(
+                         (float) currentPoint.x(),
+                         (float) I,
+                         (float) currentPoint.y()
+                     )
+                 )
+            );
+            // calculating max intensivity
+            max = I > max ? I : max;
         }
+        // inserting x-row in matrix
+        *dataArray << newRow;
     }
-    if (error)
-        qDebug() << "error!";
+    // ToDo: resizing of chart by maximum value
     qDebug() << "I max:" << max;
+
     return dataArray;
 }
 
-double ChartView::fillSeries(QXYSeries *series, double min, double max,
+double ChartView::fill2DSeries(QXYSeries *series, double min, double max,
     double step, const std::function<double(double)> &func) {
 
     double maxValue = 1e-7;
