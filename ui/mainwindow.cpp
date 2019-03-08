@@ -79,6 +79,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->scrollArea->setWidget(inner);
 
     CH_CHART.setLayout(layout);
+    
+    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle");
 }
 
 MainWindow::~MainWindow() {

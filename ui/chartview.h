@@ -11,7 +11,7 @@
 constexpr double xMinus = -50;
 constexpr double xPlus = 50;
 constexpr short int sizeDiscretization = 500;
-constexpr int discritezationsStep = 1000;
+constexpr int discritezationsStep = 1e+3;
 constexpr int CHART_MINIMUM_HEIGHT = 175;
 
 constexpr double maxX = 1e-4, minX = -1e-4, stepX = std::abs(maxX - minX) / discritezationsStep;
@@ -28,6 +28,12 @@ constexpr double MATH_K = 2 * M_PI / MATH_LAMBDA;
 constexpr double MATH_K_1 = M_PI / (MATH_LAMBDA * MATH_L);
 constexpr double MATH_D = 1e-3;
 constexpr double MATH_ALPHA = ( MATH_EPSILON_0 * MATH_C) / (8 * M_PI);
+
+enum SourcePositionMode {
+    OnlyX,
+    OnlyY,
+    OnCircle
+};
 
 using namespace QtDataVisualization;
 
@@ -48,8 +54,13 @@ private:
     void initChart3D(QLayout *layout);
 
     QSurfaceDataArray* getDefaultChart();
-     QPointF getSourcePosition(size_t sourceId, bool parity);
-
+    QPointF getSourcePosition(size_t sourceId, size_t sourceCount) const;
+    QPointF getSourcePositionY(size_t sourceId, bool parity) const;
+    QPointF getSourcePositionX(size_t sourceId, bool parity) const;
+    QPointF getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
+    QPointF getSourcePositionInCircle(size_t sourceId, size_t) const;
+    
+    
     QSurfaceDataArray* fill3DSeries(const std::function<std::vector<Wave>()> &func);
     double fill2DSeries(
             QXYSeries *series,
