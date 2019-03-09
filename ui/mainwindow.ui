@@ -82,8 +82,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>436</width>
-             <height>430</height>
+             <width>438</width>
+             <height>431</height>
             </rect>
            </property>
           </widget>
@@ -101,7 +101,7 @@
      <x>0</x>
      <y>0</y>
      <width>964</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -110,7 +110,16 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoad"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QToolBar" name="instrumentToolBar">
    <property name="orientation">
@@ -171,6 +180,16 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Load</string>
    </property>
   </action>
  </widget>

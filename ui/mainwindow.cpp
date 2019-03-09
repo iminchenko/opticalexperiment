@@ -141,3 +141,11 @@ void MainWindow::initCommandPattern() {
     connect(ui->graphicsView, SIGNAL(invoke(std::shared_ptr<Command>)),
             &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
 }
+
+void MainWindow::on_actionSave_triggered(){
+
+}
+
+void MainWindow::on_actionLoad_triggered(){
+
+}
