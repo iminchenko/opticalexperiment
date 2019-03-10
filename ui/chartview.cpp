@@ -120,21 +120,22 @@ QSurfaceDataArray* ChartView::getDefaultChart() {
     return dataArray;
 }
 
-QPointF ChartView::getSourcePosition(size_t sourceId, size_t sourceCount) const
-{
+QPointF ChartView::sourcePosition(size_t sourceId, size_t sourceCount) const {
     SourcePositionMode mod = SourcePositionMode::OnlyX;
     // parity of sources number
     bool parity = !(sourceCount&1); 
     
     switch (mod) {
     case SourcePositionMode::OnlyX:
-        return getSourcePositionX(sourceId, parity);
+        return sourcePositionX(sourceId, parity);
     case SourcePositionMode::OnlyY: 
-        return getSourcePositionY(sourceId, parity);
+        return sourcePositionY(sourceId, parity);
     case SourcePositionMode::OnCircle:
-        return getSourcePositionOnCircle(sourceId, sourceCount);
+        return sourcePositionOnCircle(sourceId, sourceCount);
+    case SourcePositionMode::InCircle:
+        return sourcePositionInCircle();
     default:
-        return getSourcePositionX(sourceId, parity);
+        return sourcePositionX(sourceId, parity);
     }
 }
 
@@ -151,37 +152,47 @@ void ChartView::update3d(const std::function<std::vector<Wave>()> &func) {
     _3dProxyFunc->resetArray(newArray);
 }
 
-QPointF ChartView::getSourcePositionY(size_t sourceId, bool parity) const {
-    QPointF sourceCoord(0,0);
+QPointF ChartView::sourcePositionY(size_t sourceId, bool parity) const {
+    QPointF srcCoord(0,0);
     if (!parity) {
         // sequence for even number of sources
-        sourceCoord.ry() = (-(0.5 + (sourceId << 1))) * MATH_D;
+        srcCoord.ry() = (-(0.5 + (sourceId << 1))) * MATH_D;
     } else {
         // sequence for odd number of sources
-        sourceCoord.ry() = ((sourceId + 1) << 1) * MATH_D;
+        srcCoord.ry() = ((sourceId + 1) << 1) * MATH_D;
     }
     //for odd sources - invert the sign
-    sourceCoord.ry() *= sourceId & 1 ? -1 : 1;
-    return sourceCoord;
+    srcCoord.ry() *= sourceId & 1 ? -1 : 1;
+    return srcCoord;
 }
 
-QPointF ChartView::getSourcePositionX(size_t sourceId, bool parity) const
-{
-    QPointF sourceCoord(getSourcePositionY(sourceId, parity));
-    sourceCoord.setX(sourceCoord.ry());    
-    sourceCoord.setY(0.);    
-    return sourceCoord;
+QPointF ChartView::sourcePositionX(size_t sourceId, bool parity) const {
+    QPointF srcCoord(sourcePositionY(sourceId, parity));
+    srcCoord.setX(srcCoord.y());    
+    srcCoord.setY(0.);    
+    return srcCoord;
 }
 
-QPointF ChartView::getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const
-{
+QPointF ChartView::sourcePositionOnCircle(size_t sourceId, size_t sourceCount) const {
     return QPointF(MATH_D * std::cos(2 * M_PI * sourceId / sourceCount),
                    MATH_D * std::sin(2 * M_PI * sourceId / sourceCount));
 }
 
-QPointF ChartView::getSourcePositionInCircle(size_t sourceId, size_t) const
-{
-   
+QPointF ChartView::sourcePositionInCircle() const {
+    QPointF srcCoord(randomDouble(MATH_D), randomDouble(MATH_D));
+    int count = 1e+4;
+    while ((pow(srcCoord.x(), 2) + pow(srcCoord.y(), 2) >= pow(MATH_D, 2)) &&
+           --count >= 0) {
+        srcCoord.rx() = randomDouble(MATH_D);
+        srcCoord.ry() = randomDouble(MATH_D);
+    }
+    
+    return srcCoord;
+}
+
+double ChartView::randomDouble(double max) const {
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    return (double)(qrand()) / RAND_MAX * max;
 }
 
 QSurfaceDataArray* ChartView::fill3DSeries(const std::function<std::vector<Wave>()> &func) {
@@ -214,7 +225,7 @@ QSurfaceDataArray* ChartView::fill3DSeries(const std::function<std::vector<Wave>
                 // degree of exponent - distance to source * k'
                 std::complex<double> exp_power = std::complex<double>(
                      0,
-                     MATH_K_1 * pow((currentPoint - getSourcePosition(i, waves.size())).manhattanLength(), 2)
+                     MATH_K_1 * pow((currentPoint - sourcePosition(i, waves.size())).manhattanLength(), 2)
                 );
                 sum_x += waves[i].ex() * std::exp(exp_power);
                 sum_y += waves[i].ey() * std::exp(exp_power);

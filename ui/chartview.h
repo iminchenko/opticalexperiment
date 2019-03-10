@@ -32,7 +32,8 @@ constexpr double MATH_ALPHA = ( MATH_EPSILON_0 * MATH_C) / (8 * M_PI);
 enum SourcePositionMode {
     OnlyX,
     OnlyY,
-    OnCircle
+    OnCircle,
+    InCircle
 };
 
 using namespace QtDataVisualization;
@@ -54,12 +55,13 @@ private:
     void initChart3D(QLayout *layout);
 
     QSurfaceDataArray* getDefaultChart();
-    QPointF getSourcePosition(size_t sourceId, size_t sourceCount) const;
-    QPointF getSourcePositionY(size_t sourceId, bool parity) const;
-    QPointF getSourcePositionX(size_t sourceId, bool parity) const;
-    QPointF getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
-    QPointF getSourcePositionInCircle(size_t sourceId, size_t) const;
     
+    QPointF sourcePosition(size_t sourceId, size_t sourceCount) const;
+    QPointF sourcePositionY(size_t sourceId, bool parity) const;
+    QPointF sourcePositionX(size_t sourceId, bool parity) const;
+    QPointF sourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
+    QPointF sourcePositionInCircle() const;
+    inline double randomDouble(double max) const;    
     
     QSurfaceDataArray* fill3DSeries(const std::function<std::vector<Wave>()> &func);
     double fill2DSeries(

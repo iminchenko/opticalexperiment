@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     CH_CHART.setLayout(layout);
     
-    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle");
+    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle" << "In Circle");
 }
 
 MainWindow::~MainWindow() {
