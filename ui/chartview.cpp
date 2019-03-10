@@ -13,6 +13,9 @@ ChartView::ChartView(int id, QLayout *layout)
     _container->setLayout(containerLayout);
 
     _layout->addWidget(_container);
+    
+    //  Для функции randomDouble
+    qsrand(QTime::currentTime().second());
 }
 
 void ChartView::initChart2D(QLayout *layout) {
@@ -120,8 +123,8 @@ QSurfaceDataArray* ChartView::getDefaultChart() {
     return dataArray;
 }
 
-QPointF ChartView::sourcePosition(size_t sourceId, size_t sourceCount) const {
-    SourcePositionMode mod = SourcePositionMode::OnlyX;
+QPointF ChartView::sourcePosition(size_t sourceId, size_t sourceCount, int mod) const {
+//    SourcePositionMode mod = SourcePositionMode::OnlyX;
     // parity of sources number
     bool parity = !(sourceCount&1); 
     
@@ -147,8 +150,8 @@ void ChartView::update(double min,
     _chart->axisY()->setRange(0, maxValue * 1.2);
 }
 
-void ChartView::update3d(const std::function<std::vector<Wave>()> &func) {
-    QSurfaceDataArray *newArray = fill3DSeries(func);
+void ChartView::update3d(const std::function<std::vector<Wave>()> &func, int mod) {
+    QSurfaceDataArray *newArray = fill3DSeries(func, mod);
     _3dProxyFunc->resetArray(newArray);
 }
 
@@ -191,11 +194,10 @@ QPointF ChartView::sourcePositionInCircle() const {
 }
 
 double ChartView::randomDouble(double max) const {
-    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     return (double)(qrand()) / RAND_MAX * max;
 }
 
-QSurfaceDataArray* ChartView::fill3DSeries(const std::function<std::vector<Wave>()> &func) {
+QSurfaceDataArray* ChartView::fill3DSeries(const std::function<std::vector<Wave>()> &func, int mod) {
     std::vector<Wave> waves = func();
     if (waves.size() == 0)
         return getDefaultChart();
@@ -225,7 +227,7 @@ QSurfaceDataArray* ChartView::fill3DSeries(const std::function<std::vector<Wave>
                 // degree of exponent - distance to source * k'
                 std::complex<double> exp_power = std::complex<double>(
                      0,
-                     MATH_K_1 * pow((currentPoint - sourcePosition(i, waves.size())).manhattanLength(), 2)
+                     MATH_K_1 * pow((currentPoint - sourcePosition(i, waves.size(), mod)).manhattanLength(), 2)
                 );
                 sum_x += waves[i].ex() * std::exp(exp_power);
                 sum_y += waves[i].ey() * std::exp(exp_power);

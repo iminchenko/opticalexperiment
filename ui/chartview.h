@@ -47,7 +47,7 @@ public:
     void update(double min, double max,
                            double step, const std::function<double(double)> &func);
 
-    void update3d(const std::function<std::vector<Wave>()> &func);
+    void update3d(const std::function<std::vector<Wave>()> &func, int mod);
     int getId();
 
 private:
@@ -56,14 +56,14 @@ private:
 
     QSurfaceDataArray* getDefaultChart();
     
-    QPointF sourcePosition(size_t sourceId, size_t sourceCount) const;
+    QPointF sourcePosition(size_t sourceId, size_t sourceCount, int mod) const;
     QPointF sourcePositionY(size_t sourceId, bool parity) const;
     QPointF sourcePositionX(size_t sourceId, bool parity) const;
     QPointF sourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
     QPointF sourcePositionInCircle() const;
     inline double randomDouble(double max) const;    
     
-    QSurfaceDataArray* fill3DSeries(const std::function<std::vector<Wave>()> &func);
+    QSurfaceDataArray* fill3DSeries(const std::function<std::vector<Wave>()> &func, int mod);
     double fill2DSeries(
             QXYSeries *series,
             double min,

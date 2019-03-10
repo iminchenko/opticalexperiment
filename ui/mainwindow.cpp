@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CH_CHART.setLayout(layout);
     
     ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle" << "In Circle");
+    connect(ui->cbMode, SIGNAL(currentIndexChanged(int)), this, SLOT(setMod(int)));
 }
 
 MainWindow::~MainWindow() {
@@ -110,6 +111,19 @@ void MainWindow::showInfoWindow() {
                    "<li>Evgeniy Kiktenko - research supervisor</li></ul>");
     mesbox.setTextFormat(Qt::RichText);
     mesbox.exec();
+}
+
+void MainWindow::setMod(int mod)
+{
+    CH_CHART.setMod(mod);
+    
+    auto cmnd = std::make_shared<Command>();
+    cmnd->typeCommand = CMND_DELETE_CONNECTION;
+    cmnd->data.ad.x = -1;
+    cmnd->data.ad.y = -1;
+    cmnd->data.ad.typeItemId = -1;
+    cmnd->data.ad.id = -1;    
+    CH_CHART.handle(cmnd);
 }
 
 void MainWindow::initCommandPattern() {

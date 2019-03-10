@@ -18,6 +18,9 @@ public:
 public slots:
     void showInfoWindow();
 
+private slots:
+    void setMod(int mod);
+
 private:
     void initDevices();
     void initCommandPattern();

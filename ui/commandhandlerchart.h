@@ -17,7 +17,9 @@ class CommandHandlerChart: CommandHandler {
 public:
     void setLayout(QLayout *layout);
     bool handle(std::shared_ptr<Command> cmnd) override;
-
+    
+    void setMod(int mod);
+    
 private:
     CommandHandlerChart();
 
@@ -27,6 +29,8 @@ private:
     bool removeShield(std::shared_ptr<Command> cmnd);
     bool update();
 
+    int _mod;
+    
     QLayout *_layout;
     QList<ChartView *> _charts;
 };

@@ -30,6 +30,11 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
     }
 }
 
+void CommandHandlerChart::setMod(int mod)
+{
+    _mod = mod;
+}
+
 bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd){
     auto chart = new ChartView(cmnd->data.ad.id, _layout);
     chart->update(xMinus, xPlus, xPlus / sizeDiscretization, [](double x){return 0;});
@@ -54,7 +59,7 @@ bool CommandHandlerChart::update() {
         auto shield = dynamic_cast<Display*>(DEVICE_MANAGER.getDeviceById((*chart)->getId()).get());
         (*chart)->update(xMinus, xPlus, xPlus / sizeDiscretization,
                 [&shield](double x){return shield->getValue(x).real();});
-        (*chart)->update3d([&shield](){return shield->getWave();});
+        (*chart)->update3d([&shield](){return shield->getWave();}, _mod);
     }
     return true;
 }
