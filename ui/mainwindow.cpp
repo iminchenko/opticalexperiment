@@ -12,31 +12,6 @@
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
 
-//constexpr double xPlus = 50;
-//constexpr short int sizeDiscretization = 500;
-//constexpr double xMinus = -50;
-
-// TODO: найти куда вынести
-double fillSeries(QXYSeries *series,
-                  double min,
-                  double max,
-                  double step,
-                  const std::function<double(double)> &func) {
-    double maxValue = 1e-7;
-    if (!series)
-        return maxValue;
-
-    series->clear();
-
-    for (double i = min; i <= max; i += step) {
-        double value = func(i);
-        series->append(i, value);
-        maxValue = std::max(value, maxValue);
-    }
-
-    return maxValue;
-}
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
