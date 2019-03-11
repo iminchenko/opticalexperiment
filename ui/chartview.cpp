@@ -212,12 +212,12 @@ SourcePositionMode ChartView::getSourcePositionMode() const {
 QPointF ChartView::getSourcePosition(size_t sourceId, size_t sourceCount) const {
     SourcePositionMode mod = getSourcePositionMode();
     // parity of sources number
-    bool parity = !(sourceCount&1); 
-    
+    bool parity = !(sourceCount&1);
+
     switch (mod) {
     case SourcePositionMode::OnlyX:
         return getSourcePositionX(sourceId, parity);
-    case SourcePositionMode::OnlyY: 
+    case SourcePositionMode::OnlyY:
         return getSourcePositionY(sourceId, parity);
     case SourcePositionMode::OnCircle:
         return getSourcePositionOnCircle(sourceId, sourceCount);
@@ -293,8 +293,8 @@ QPointF ChartView::getSourcePositionY(size_t sourceId, bool parity) const {
 QPointF ChartView::getSourcePositionX(size_t sourceId, bool parity) const
 {
     QPointF sourceCoord(getSourcePositionY(sourceId, parity));
-    sourceCoord.setX(sourceCoord.ry());    
-    sourceCoord.setY(0.);    
+    sourceCoord.setX(sourceCoord.ry());
+    sourceCoord.setY(0.);
     return sourceCoord;
 }
 

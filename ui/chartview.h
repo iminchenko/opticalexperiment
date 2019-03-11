@@ -69,7 +69,7 @@ private:
     QPointF getSourcePositionX(size_t sourceId, bool parity) const;
     QPointF getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
     QPointF getSourcePositionInCircle(size_t sourceId, size_t) const;
-    
+
     SourcePositionMode getSourcePositionMode() const;
 
     QSurfaceDataArray* fill3DSeriesFirstAlgo();
