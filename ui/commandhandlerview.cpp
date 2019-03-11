@@ -22,7 +22,7 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
     case TypeCommand::CMND_DELETE_CONNECTION:
         return removeConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
-        return false; 
+        return true;
     default:
         return true;
     }

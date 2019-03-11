@@ -11,6 +11,9 @@
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
+#include "ui/parametersmanager.h"
+
+#include "qcombobox.h"
 
 //constexpr double xPlus = 50;
 //constexpr short int sizeDiscretization = 500;
@@ -57,6 +60,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->graphicsView, SIGNAL(propertiesItemClicked(Properties*)),
             p, SLOT(loadProperties(Properties*)));
+    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle");
+    connect( ui->cbMode, SIGNAL(currentIndexChanged(int)),
+            &PARAM_MANAGER, SLOT(setSourcePositionMode(int)));
 
     initDevices();
     initCommandPattern();
@@ -69,18 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     
     // ToDo: Скорее всего эту строчку куда-то нужно перенести
     CH_VIEW.setScene(ui->graphicsView->scene()); 
-    QVBoxLayout *layout = new QVBoxLayout();
-    ui->scrollArea->setLayout(layout);
-    ui->scrollArea->setWidgetResizable(true);
-
-    QWidget* inner = new QFrame(ui->scrollArea);
-    inner->setLayout(layout);
-
-    ui->scrollArea->setWidget(inner);
-
-    CH_CHART.setLayout(layout);
-    
-    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle");
+    CH_CHART.setTabWidget(ui->tabWidget);
 }
 
 MainWindow::~MainWindow() {

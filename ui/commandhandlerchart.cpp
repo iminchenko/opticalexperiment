@@ -1,13 +1,13 @@
 #include "commandhandlerchart.h"
 #include "devicemanager.h"
-
+#include <QTabBar>
 CommandHandlerChart::CommandHandlerChart()
 {
 
 }
 
-void CommandHandlerChart::setLayout(QLayout *layout) {
-    _layout = layout;
+void CommandHandlerChart::setTabWidget(QTabWidget *tabWidget) {
+    _tabWidget = tabWidget;
 }
 
 bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
@@ -23,6 +23,7 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
         }
     case TypeCommand::CMND_ADD_CONNECTION:
     case TypeCommand::CMND_REFRESH_DEVICE:
+    case TypeCommand::CMND_CHANGE_VARIABLE:
     case TypeCommand::CMND_DELETE_CONNECTION:
         return update();
     default:
@@ -31,7 +32,7 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
 }
 
 bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd){
-    auto chart = new ChartView(cmnd->data.ad.id, _layout);
+    auto chart = new ChartView(cmnd->data.ad.id, _tabWidget);
     chart->update(xMinus, xPlus, xPlus / sizeDiscretization, [](double x){return 0;});
     _charts.push_back(chart);
     return true;
@@ -42,16 +43,23 @@ bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
     while (iter != _charts.end() && (*iter)->getId() != cmnd->data.dd.id) {
          iter++;
     }
+
     if(iter != _charts.end()) {
-        delete (*iter);
+        int tabIdx = (*iter)->getTabIndex();
         _charts.erase(iter);
+        delete (*iter);
+
+        for(iter = _charts.begin(); iter != _charts.end(); iter++) {
+            (*iter)->updateTabIndexAfterRemovingTab(tabIdx);
+        }
     }
     return true;
 }
 
 bool CommandHandlerChart::update() {
     for(auto chart = _charts.begin(); chart != _charts.end(); chart++) {
-        auto shield = dynamic_cast<Display*>(DEVICE_MANAGER.getDeviceById((*chart)->getId()).get());
+        auto rawDevice = (DEVICE_MANAGER.getDeviceById((*chart)->getId()).get());
+        auto shield = dynamic_cast<Display*>(rawDevice);
         (*chart)->update(xMinus, xPlus, xPlus / sizeDiscretization,
                 [&shield](double x){return shield->getValue(x).real();});
         (*chart)->update3d([&shield](){return shield->getWave();});

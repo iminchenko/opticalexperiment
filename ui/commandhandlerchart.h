@@ -15,7 +15,7 @@ class CommandHandlerChart: CommandHandler {
     friend CommandHandlerChart& singleton<CommandHandlerChart>();
 
 public:
-    void setLayout(QLayout *layout);
+    void setTabWidget(QTabWidget *tabWidget);
     bool handle(std::shared_ptr<Command> cmnd) override;
 
 private:
@@ -27,7 +27,7 @@ private:
     bool removeShield(std::shared_ptr<Command> cmnd);
     bool update();
 
-    QLayout *_layout;
+    QTabWidget* _tabWidget;
     QList<ChartView *> _charts;
 };
 

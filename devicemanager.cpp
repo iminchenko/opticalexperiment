@@ -53,6 +53,7 @@ void DeviceManager::removeConnection(int sourceDevId,
 }
 
 void DeviceManager::changeVariables(int id, VarList vars) {
+    if(id == -1) return;
     getDeviceById(id)->setVariables(vars);
 }
 
