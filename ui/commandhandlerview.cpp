@@ -74,7 +74,6 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
     delete *iter;
     _devices.erase(iter);
     
-    /* ToDoI: Точно ли так надо писать? */
     return true;
 }
 
