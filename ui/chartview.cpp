@@ -82,6 +82,9 @@ ChartView::ChartView(int id, QTabWidget *tabWidget)
 
     _tabIdx = _tabWidget->addTab(_scrollArea,"Shield chart #" + QString::number(_id));
 
+    //  Для функции randomDouble
+    qsrand(QTime::currentTime().second());
+
 }
 
 void ChartView::initChart2D(QLayout *layout) {
@@ -221,6 +224,8 @@ QPointF ChartView::getSourcePosition(size_t sourceId, size_t sourceCount) const 
         return getSourcePositionY(sourceId, parity);
     case SourcePositionMode::OnCircle:
         return getSourcePositionOnCircle(sourceId, sourceCount);
+    case SourcePositionMode::InCircle:
+        return getSourcePositionInCircle();
     default:
         return getSourcePositionX(sourceId, parity);
     }
@@ -304,8 +309,21 @@ QPointF ChartView::getSourcePositionOnCircle(size_t sourceId, size_t sourceCount
                    MATH_D * std::sin(2 * M_PI * sourceId / sourceCount));
 }
 
-QPointF ChartView::getSourcePositionInCircle(size_t sourceId, size_t) const
-{}
+QPointF ChartView::getSourcePositionInCircle() const {
+    QPointF srcCoord(randomDouble(MATH_L), randomDouble(MATH_L));
+    int count = 1e+4;
+    while ((pow(srcCoord.x(), 2) + pow(srcCoord.y(), 2) >= pow(MATH_L, 2)) &&
+           --count >= 0) {
+        srcCoord.rx() = randomDouble(MATH_L);
+        srcCoord.ry() = randomDouble(MATH_L);
+    }
+
+    return srcCoord;
+}
+
+double ChartView::randomDouble(double max) const {
+    return (double)(qrand()) / RAND_MAX * max;
+}
 
 QSurfaceDataArray* ChartView::fill3DSeriesFirstAlgo() {
     if (_waves.size() == 0)
@@ -318,7 +336,22 @@ QSurfaceDataArray* ChartView::fill3DSeriesFirstAlgo() {
     _max = 0;
     // Coordinates of calculated current point
     QPointF currentPoint = QPointF(_minY, _minX);
-
+    // Sources positions array
+    std::vector<QPointF> sources = std::vector<QPointF>();
+    if(getSourcePositionMode() == SourcePositionMode::InCircle) {
+        if (_sourcesForRand.size() < _waves.size()) {
+            for(size_t i = _sourcesForRand.size(); i < _waves.size(); i++) {
+                _sourcesForRand.push_back(getSourcePosition(i, _waves.size()));
+            }
+        }
+        for(size_t i = 0; i < _waves.size(); i++) {
+            sources.push_back(_sourcesForRand[i]);
+        }
+    } else {
+        for(size_t i = 0; i < _waves.size(); i++) {
+            sources.push_back(getSourcePosition(i, _waves.size()));
+        }
+    }
     // y-row cycle
     for (; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
         QSurfaceDataRow *newRow = new QSurfaceDataRow();
@@ -336,7 +369,7 @@ QSurfaceDataArray* ChartView::fill3DSeriesFirstAlgo() {
                 // degree of exponent - distance to source * k'
                 std::complex<double> exp_power = std::complex<double>(
                      0,
-                     MATH_K_1 * pow((currentPoint - getSourcePosition(i, _waves.size())).manhattanLength(), 2)
+                     MATH_K_1 * pow((currentPoint - sources[i]).manhattanLength(), 2)
                 );
                 sum_x += _waves[i].ex() * std::exp(exp_power);
                 sum_y += _waves[i].ey() * std::exp(exp_power);
@@ -379,7 +412,23 @@ QSurfaceDataArray* ChartView::fill3DSeriesSecondAlgo() {
     _max = 0;
     // Coordinates of calculated current point
     QPointF currentPoint = QPointF(_minY, _minX);
-
+    // Sources positions array
+    // Sources positions array
+    std::vector<QPointF> sources = std::vector<QPointF>();
+    if(getSourcePositionMode() == SourcePositionMode::InCircle) {
+        if (_sourcesForRand.size() < _waves.size()) {
+            for(size_t i = _sourcesForRand.size(); i < _waves.size(); i++) {
+                _sourcesForRand.push_back(getSourcePosition(i, _waves.size()));
+            }
+        }
+        for(size_t i = 0; i < _waves.size(); i++) {
+            sources.push_back(_sourcesForRand[i]);
+        }
+    } else {
+        for(size_t i = 0; i < _waves.size(); i++) {
+            sources.push_back(getSourcePosition(i, _waves.size()));
+        }
+    }
     // y-row cycle
     for (; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
         QSurfaceDataRow *newRow = new QSurfaceDataRow();
@@ -393,17 +442,15 @@ QSurfaceDataArray* ChartView::fill3DSeriesSecondAlgo() {
             std::complex<double> sum_y = std::complex<double>(0,0);
             // calculation summ for each source
             for(size_t i = 0; i < _waves.size(); i++) {
-                //source position
-                QPointF sourceCoord = getSourcePosition(i, _waves.size());
                 // po - distance from source to shield:
                 double po =
                     (
-                        sourceCoord.x() * currentPoint.x() +
-                        sourceCoord.y() * currentPoint.y() +
+                        sources[i].x() * currentPoint.x() +
+                        sources[i].y() * currentPoint.y() +
                         MATH_L * MATH_L
                     ) / sqrt(
-                        pow(sourceCoord.x(), 2) +
-                        pow(sourceCoord.y(), 2) +
+                        pow(sources[i].x(), 2) +
+                        pow(sources[i].y(), 2) +
                         pow(MATH_L, 2)
                     );
                 // degree of exponent - distance to source * k'

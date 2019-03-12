@@ -10,7 +10,8 @@
 enum SourcePositionMode {
     OnlyX = 0,
     OnlyY,
-    OnCircle
+    OnCircle,
+    InCircle
 };
 
 class ParametersManager: public QObject {

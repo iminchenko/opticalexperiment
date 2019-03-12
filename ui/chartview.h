@@ -68,12 +68,14 @@ private:
     QPointF getSourcePositionY(size_t sourceId, bool parity) const;
     QPointF getSourcePositionX(size_t sourceId, bool parity) const;
     QPointF getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
-    QPointF getSourcePositionInCircle(size_t sourceId, size_t) const;
+    QPointF getSourcePositionInCircle() const;
 
     SourcePositionMode getSourcePositionMode() const;
 
     QSurfaceDataArray* fill3DSeriesFirstAlgo();
     QSurfaceDataArray* fill3DSeriesSecondAlgo();
+
+    double randomDouble(double max) const;
 
     double fill2DSeries(
             QXYSeries *series,
@@ -89,6 +91,9 @@ private:
     QScrollArea *_scrollArea;
     int _tabIdx;
     AlgorithmType _algoType = AlgorithmType::first;
+
+    //warning! kostil is here:)
+    std::vector<QPointF> _sourcesForRand = std::vector<QPointF>();
 
     double _maxX = 1e-4, _minX = -1e-4, _stepX = std::abs(_maxX - _minX) / discritezationsStep;
     double _maxY = 1e-4, _minY = -1e-4, _stepY = std::abs(_maxY - _minY) / discritezationsStep;

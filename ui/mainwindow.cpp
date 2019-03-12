@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->graphicsView, SIGNAL(propertiesItemClicked(Properties*)),
             p, SLOT(loadProperties(Properties*)));
-    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle");
+    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle" << "In Circle");
     connect( ui->cbMode, SIGNAL(currentIndexChanged(int)),
             &PARAM_MANAGER, SLOT(setSourcePositionMode(int)));
 
