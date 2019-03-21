@@ -28,7 +28,7 @@ public:
     virtual ~Device() = default;
 
     // получить волну с заданного выхода
-    virtual Waves getWave(int output) const;
+    virtual Waves getWave(int output = 0) const;
 
     void setConnection(int input, std::shared_ptr<Device> source, int output);
     connection getConnection(int input);

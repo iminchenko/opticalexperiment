@@ -20,7 +20,8 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
     case TypeCommand::CMND_REFRESH_DEVICE:
     case TypeCommand::CMND_CHANGE_VARIABLE:
     case TypeCommand::CMND_DELETE_CONNECTION:
-        return update();
+        update();
+        return true;
     default:
         return true;
     }
@@ -48,15 +49,14 @@ bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
     return true;
 }
 
-bool CommandHandlerChart::update() {
-    for(auto chart = _charts.begin(); chart != _charts.end(); chart++) {
-        auto rawDevice = (DEVICE_MANAGER.getDeviceById((*chart)->getId()).get());
+void CommandHandlerChart::update() {
+    for (auto &chart : _charts) {
+        auto rawDevice = (DEVICE_MANAGER.getDeviceById(chart->getId()).get());
         auto shield = dynamic_cast<Display*>(rawDevice);
-        (*chart)->update(xMinus, xPlus, xPlus / sizeDiscretization,
+        chart->update(xMinus, xPlus, xPlus / sizeDiscretization,
                 [&shield](double x){return shield->getValue(x).real();});
-        (*chart)->update3d([&shield](){return shield->getWave();});
+        chart->update3d([&shield](){return shield->getWave();});
     }
-    return true;
 }
 
 std::shared_ptr<ChartView> CommandHandlerChart::findItemWithId(int id) {

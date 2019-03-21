@@ -26,7 +26,7 @@ private:
 
     bool createShield(std::shared_ptr<Command> cmnd);
     bool removeShield(std::shared_ptr<Command> cmnd);
-    bool update();
+    void update();
 
     QTabWidget* _tabWidget;
     QList<std::shared_ptr<ChartView>> _charts;

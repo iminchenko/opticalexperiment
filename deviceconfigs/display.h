@@ -11,8 +11,7 @@ public:
 
     std::complex<double> getValue(double x) const;
 
-    Waves getWave(int output) const override;
-    Waves getWave() const;
+    Waves getWave(int output = 0) const override;
 
     void setVariables(VarList vars) override ;
     double gaussian(double x) const;
