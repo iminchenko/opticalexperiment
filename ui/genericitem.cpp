@@ -9,8 +9,9 @@ GenericItem::GenericItem(QPointF pos,
     // как-то некрасиво, надо переписать
     int count = DEVICECONFIG_LIST[_itemId].getInputCount();
     if (count > 1) {
-        for (int i = 0; i < count; ++i)
+        for (int i = 0; i < count; ++i) {
             addInputVertex((float)i / (count - 1) * 90);
+        }
     } else {
         addInputVertex();
     }
@@ -18,8 +19,9 @@ GenericItem::GenericItem(QPointF pos,
     count = DEVICECONFIG_LIST[_itemId].getOutputCount();
 
     addOutputVertex();
-    for (int i = 1; i < count; ++i)
+    for (int i = 1; i < count; ++i) {
         addOutputVertex(((float)i / (count - 1)) * 90);
+    }
 
     const auto& vars =  DEVICECONFIG_LIST[_itemId].getVariables();
     QMap<QString, double> properties;

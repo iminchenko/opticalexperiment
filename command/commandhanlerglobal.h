@@ -7,8 +7,7 @@
 
 #define CH_GLOBAL singleton<CommandHanlerGlobal>()   
 
-class CommandHanlerGlobal : public CommandHandler
-{
+class CommandHanlerGlobal : public CommandHandler {
     friend CommandHanlerGlobal &singleton<CommandHanlerGlobal>();
 public:
 Q_OBJECT

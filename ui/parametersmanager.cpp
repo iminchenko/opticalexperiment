@@ -2,8 +2,7 @@
 #include "command/commandhanlerglobal.h"
 
 ParametersManager::ParametersManager()
-    : _positionMode(SourcePositionMode::OnlyX)
-{
+    : _positionMode(SourcePositionMode::OnlyX) {
     connect(this, SIGNAL(invoke(std::shared_ptr<Command>)),
             &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
 }

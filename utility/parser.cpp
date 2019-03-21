@@ -199,7 +199,7 @@ string::const_iterator lessPriorityOperator(const string::const_iterator &begin,
     }
 
     return iterLesser;
-};
+}
 
 // находится ли строка в скобках
 bool inBrackets(const string::const_iterator &begin,

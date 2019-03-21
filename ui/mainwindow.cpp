@@ -89,8 +89,8 @@ void MainWindow::initDevices() {
         pix.convertFromImage(img);
         act->setIcon(QIcon(pix));
     }
-    ui->instrumentToolBar->insertSeparator(ui->actionShield);
 
+    ui->instrumentToolBar->insertSeparator(ui->actionShield);
 }
 
 void MainWindow::showInfoWindow() {

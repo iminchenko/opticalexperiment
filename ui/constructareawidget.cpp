@@ -34,7 +34,7 @@ void ConstructAreaWidget::mousePressEvent(QMouseEvent *event) {
     auto prop =
             dynamic_cast<Properties *>(scene()->itemAt(mapToScene(event->pos()),
                                                        transform()));
-    // сигнал с nullptr - это ок (Я так не считаю) (приемники все обработают, норм)
+
     emit propertiesItemClicked(prop);
 }
 

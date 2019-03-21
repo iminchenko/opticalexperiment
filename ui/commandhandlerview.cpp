@@ -95,8 +95,5 @@ ConstructorItem *CommandHandlerView::findItemWithId(int id) {
     auto iter = std::find_if(_devices.begin(), _devices.end(),
                           [id](ConstructorItem *item){ return item->getId() == id; });
 
-    if (iter == _devices.end())
-        return nullptr;
-
-    return *iter;
+    return iter != _devices.end() ? *iter : nullptr;
 }

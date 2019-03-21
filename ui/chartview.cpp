@@ -6,8 +6,7 @@
 #include  "math.h"
 ChartView::ChartView(int id, QTabWidget *tabWidget)
     : _id(id),
-      _tabWidget(tabWidget)
-{
+      _tabWidget(tabWidget) {
     QLayout *containerLayout = new QVBoxLayout();
 
     //adding algorithm type controlls
@@ -15,7 +14,6 @@ ChartView::ChartView(int id, QTabWidget *tabWidget)
     _algorithmSelector->addItems(QStringList() << "First algorithm" << "Second algorithm");
     connect( _algorithmSelector, SIGNAL(currentIndexChanged(int)),
             this, SLOT(changeAlgorithm(int)));
-
 
     QFormLayout *algoLayout = new QFormLayout();
     algoLayout->addRow("Algorithm type:", _algorithmSelector);
@@ -84,7 +82,6 @@ ChartView::ChartView(int id, QTabWidget *tabWidget)
 
     //  Для функции randomDouble
     qsrand(QTime::currentTime().second());
-
 }
 
 void ChartView::initChart2D(QLayout *layout) {
@@ -295,16 +292,15 @@ QPointF ChartView::getSourcePositionY(size_t sourceId, bool parity) const {
     return sourceCoord;
 }
 
-QPointF ChartView::getSourcePositionX(size_t sourceId, bool parity) const
-{
+QPointF ChartView::getSourcePositionX(size_t sourceId, bool parity) const {
     QPointF sourceCoord(getSourcePositionY(sourceId, parity));
     sourceCoord.setX(sourceCoord.ry());
     sourceCoord.setY(0.);
     return sourceCoord;
 }
 
-QPointF ChartView::getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const
-{
+QPointF ChartView::getSourcePositionOnCircle(size_t sourceId,
+                                             size_t sourceCount) const {
     return QPointF(MATH_D * std::cos(2 * M_PI * sourceId / sourceCount),
                    MATH_D * std::sin(2 * M_PI * sourceId / sourceCount));
 }

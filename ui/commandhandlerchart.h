@@ -21,14 +21,15 @@ public:
 private:
     CommandHandlerChart();
 
-    ChartView *findItemWithId(int id);
+    std::shared_ptr<ChartView> findItemWithId(int id);
+    QList<std::shared_ptr<ChartView>>::iterator findIterWithId(int id);
 
     bool createShield(std::shared_ptr<Command> cmnd);
     bool removeShield(std::shared_ptr<Command> cmnd);
     bool update();
 
     QTabWidget* _tabWidget;
-    QList<ChartView *> _charts;
+    QList<std::shared_ptr<ChartView>> _charts;
 };
 
 #endif // COMMANDHANDLERCHART_H

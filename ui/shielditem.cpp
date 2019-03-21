@@ -11,7 +11,6 @@ ShieldItem::ShieldItem(QPointF pos,
 
     map properties;
 
-//    properties["K"] = M_PI / 20;
     properties["deltaK"] = M_PI / 20;
 
     setProperties(properties);

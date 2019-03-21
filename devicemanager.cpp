@@ -31,12 +31,9 @@ void DeviceManager::addConnection(int sourceDevId,
 }
 
 void DeviceManager::removeDevice(int idDevice) {
-    auto iter = _devices.begin();
-    while (iter != _devices.end() && iter->get()->getId() != idDevice) {
-         iter++;
-    }
-    if(iter != _devices.end()) {
-        iter->reset();
+    auto iter = getDeviceIterById(idDevice);
+
+    if (iter != _devices.end()) {
         _devices.erase(iter);
     }
 }
@@ -46,14 +43,15 @@ void DeviceManager::removeConnection(int sourceDevId,
                                      int destDevId,
                                      int destInput) {
     Q_UNUSED(sourceDevId);
-    /* ToDo: С этой функцией что-то не так? Или я наркоман? Как минимум,
-       тут нужно что-то сделать с sourceDevId */
-    getDeviceById(destDevId)->setConnection(destInput, make_shared<Device>(),
-                                       sourceOut);
+
+    getDeviceById(destDevId)->setConnection(destInput,
+                                            make_shared<Device>(),
+                                            sourceOut);
 }
 
 void DeviceManager::changeVariables(int id, VarList vars) {
-    if(id == -1) return;
+    if (id == -1)
+        return;
     getDeviceById(id)->setVariables(vars);
 }
 
@@ -67,22 +65,16 @@ int DeviceManager::getMaxId() const {
 
 DeviceManager::DeviceManager() :_maxId(0) {}
 
-Display *DeviceManager::getDisplay() const {
-    for (auto &i : _devices){
-        if (i.get()->getType() == deviceType::TYPE_SHIELD) {
-            auto disp = dynamic_cast<Display*>(i.get());
-            if (disp)
-                return disp;
-        }
-    }
-    return nullptr;
+std::vector<std::shared_ptr<Device>>::iterator DeviceManager::getDeviceIterById(int id) {
+    return std::find_if(_devices.begin(),
+                        _devices.end(),
+                        [id](auto device) {
+                            return device->getId() == id;
+                        });
 }
 
 std::shared_ptr<Device> DeviceManager::getDeviceById(int id) {
-    for (auto i : _devices){
-        if (i.get()->getId() == id) {
-             return i;
-        }
-    }
-    return nullptr;
+    auto iter = getDeviceIterById(id);
+
+    return iter != _devices.end() ? *iter : nullptr;
 }

@@ -37,7 +37,8 @@ Waves Device::getWave(int output) const {
     return _waveCache[output];
 }
 
-void Device::setConnection(int input, std::shared_ptr<Device> source,
+void Device::setConnection(int input,
+                           std::shared_ptr<Device> source,
                            int output) {
     _changed = true;
     _connections[input] = connection(source, output);

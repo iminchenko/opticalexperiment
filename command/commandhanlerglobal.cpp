@@ -5,8 +5,7 @@
 
 CommandHanlerGlobal::CommandHanlerGlobal() {}
 
-bool CommandHanlerGlobal::handle(std::shared_ptr<Command> cmnd)
-{
+bool CommandHanlerGlobal::handle(std::shared_ptr<Command> cmnd) {
     /* ToDo: Cпорное решение. Не уверен, что так должно быть */
     bool success = true;
     if(!CH_MODEL.handle(cmnd)) {

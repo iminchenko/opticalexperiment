@@ -1,10 +1,7 @@
 #include "commandhandlerchart.h"
 #include "devicemanager.h"
 #include <QTabBar>
-CommandHandlerChart::CommandHandlerChart()
-{
-
-}
+CommandHandlerChart::CommandHandlerChart() {}
 
 void CommandHandlerChart::setTabWidget(QTabWidget *tabWidget) {
     _tabWidget = tabWidget;
@@ -18,9 +15,7 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
         }
         return true;
     case TypeCommand::CMND_DELETE_DEVICE:
-        if (findItemWithId(cmnd->data.dd.id)) {
-             return removeShield(cmnd);
-        }
+        return removeShield(cmnd);
     case TypeCommand::CMND_ADD_CONNECTION:
     case TypeCommand::CMND_REFRESH_DEVICE:
     case TypeCommand::CMND_CHANGE_VARIABLE:
@@ -31,28 +26,25 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
     }
 }
 
-bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd){
-    auto chart = new ChartView(cmnd->data.ad.id, _tabWidget);
+bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd) {
+    auto chart = std::make_shared<ChartView>(cmnd->data.ad.id, _tabWidget);
     chart->update(xMinus, xPlus, xPlus / sizeDiscretization, [](double x){return 0;});
     _charts.push_back(chart);
     return true;
 }
 
 bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
-    auto iter = _charts.begin();
-    while (iter != _charts.end() && (*iter)->getId() != cmnd->data.dd.id) {
-         iter++;
-    }
+    auto iter = findIterWithId(cmnd->data.dd.id);
 
-    if(iter != _charts.end()) {
+    if (iter != _charts.end()) {
         int tabIdx = (*iter)->getTabIndex();
         _charts.erase(iter);
-        delete (*iter);
 
-        for(iter = _charts.begin(); iter != _charts.end(); iter++) {
-            (*iter)->updateTabIndexAfterRemovingTab(tabIdx);
+        for (auto &chart : _charts) {
+            chart->updateTabIndexAfterRemovingTab(tabIdx);
         }
     }
+
     return true;
 }
 
@@ -67,12 +59,14 @@ bool CommandHandlerChart::update() {
     return true;
 }
 
+std::shared_ptr<ChartView> CommandHandlerChart::findItemWithId(int id) {
+    return *findIterWithId(id);
+}
 
-
-ChartView* CommandHandlerChart::findItemWithId(int id) {
-    auto iter = _charts.begin();
-    while (iter != _charts.end() && (*iter)->getId() != id) {
-         iter++;
-    }
-    return *iter;
+QList<std::shared_ptr<ChartView>>::iterator CommandHandlerChart::findIterWithId(int id) {
+    return std::find_if(_charts.begin(),
+                        _charts.end(),
+                        [id](auto cw) {
+                            return cw->getId() == id;
+                        });
 }

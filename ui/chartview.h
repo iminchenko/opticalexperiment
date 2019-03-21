@@ -95,10 +95,12 @@ private:
     //warning! kostil is here:)
     std::vector<QPointF> _sourcesForRand = std::vector<QPointF>();
 
-    double _maxX = 1e-4, _minX = -1e-4, _stepX = std::abs(_maxX - _minX) / discritezationsStep;
-    double _maxY = 1e-4, _minY = -1e-4, _stepY = std::abs(_maxY - _minY) / discritezationsStep;
-    int _stepsX = (int) (_maxX - _minX)/_stepX;
-    int _stepsY = (int) (_maxY - _minY)/_stepY;
+    double _maxX = 1e-4, _minX = -1e-4;
+    double _stepX = std::abs(_maxX - _minX) / discritezationsStep;
+    double _maxY = 1e-4, _minY = -1e-4;
+    double _stepY = std::abs(_maxY - _minY) / discritezationsStep;
+    int _stepsX = static_cast<int>((_maxX - _minX)/_stepX);
+    int _stepsY = static_cast<int>((_maxY - _minY)/_stepY);
 
     QTabWidget *_tabWidget;
     QTab *_tab;

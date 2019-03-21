@@ -17,7 +17,6 @@ ConnectionItem::ConnectionItem(OutputVertexItem *source,
     _dest->addConnection(this);
     setPos(0, 0);
     setFlag(ItemIsSelectable);
-//    setFlag(ItemIsFocusable);
     setFlag(ItemClipsToShape);
 }
 
