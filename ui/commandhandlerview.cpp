@@ -4,27 +4,25 @@
 #include "genericitem.h"
 #include "connectionitem.h"
 
-CommandHandlerView::CommandHandlerView() {
-    
-}
+CommandHandlerView::CommandHandlerView() {}
 
 void CommandHandlerView::setScene(QGraphicsScene *scene) {
     _scene = scene;
 }
 
-//ToDo: Вполне возможно, что нужно перенсти этот метод в CommandHandler
+//ToDo: Вполне возможно, что нужно перенести этот метод в CommandHandler
 bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
     switch (cmnd->typeCommand) {
     case TypeCommand::CMND_ADD_DEVICE:
         return addItem(cmnd);
-        case TypeCommand::CMND_ADD_CONNECTION:
-            return addConnection(cmnd);
+    case TypeCommand::CMND_ADD_CONNECTION:
+        return addConnection(cmnd);
     case TypeCommand::CMND_DELETE_DEVICE:
-            return removeItem(cmnd);
+        return removeItem(cmnd);
     case TypeCommand::CMND_DELETE_CONNECTION:
         return removeConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
-        return false; 
+        return true;
     default:
         return true;
     }
@@ -61,7 +59,7 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
 
     _scene->addItem(new ConnectionItem(v1, v2));
     
-    /* ToDoI: Точно ли так надо возвращать?*/
+    /* ToDo: Точно ли так надо возвращать?*/
     return true;
 }
 
@@ -76,7 +74,6 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
     delete *iter;
     _devices.erase(iter);
     
-    /* ToDoI: Точно ли так надо писать? */
     return true;
 }
 
@@ -98,8 +95,5 @@ ConstructorItem *CommandHandlerView::findItemWithId(int id) {
     auto iter = std::find_if(_devices.begin(), _devices.end(),
                           [id](ConstructorItem *item){ return item->getId() == id; });
 
-    if (iter == _devices.end())
-        return nullptr;
-
-    return *iter;
+    return iter != _devices.end() ? *iter : nullptr;
 }

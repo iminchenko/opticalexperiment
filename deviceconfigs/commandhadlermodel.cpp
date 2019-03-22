@@ -1,12 +1,10 @@
 #include "commandhadlermodel.h"
 #include "devicemanager.h"
+#include "utility/idgenerator.h"
 
-CommandHadlerModel::CommandHadlerModel() {
-    
-}
+CommandHadlerModel::CommandHadlerModel() {}
 
-bool CommandHadlerModel::handle(pCommand cmnd)
-{
+bool CommandHadlerModel::handle(pCommand cmnd) {
     switch (cmnd->typeCommand) {
     case TypeCommand::CMND_ADD_DEVICE:
         return addItem(cmnd);
@@ -27,7 +25,7 @@ bool CommandHadlerModel::handle(pCommand cmnd)
 
 bool CommandHadlerModel::addItem(pCommand cmnd) {
     if (!cmnd->data.ad.id) {
-        cmnd->data.ad.id = DEVICE_MANAGER.getMaxId();
+        cmnd->data.ad.id = DEVICE_ID_GEN.getId();
     }
     DEVICE_MANAGER.addDevice(cmnd->data.ad.typeItemId, cmnd->data.ad.id);
     return true;
@@ -56,10 +54,10 @@ bool CommandHadlerModel::deleteConnection(pCommand cmnd) {
 
 bool CommandHadlerModel::changeVariables(pCommand cmnd) {
     DEVICE_MANAGER.changeVariables(cmnd->data.cv.id, cmnd->varList);
-    return false;
+    return true;
 }
 
 bool CommandHadlerModel::refreshItem(pCommand cmnd) {
     Q_UNUSED(cmnd);
-    return false;
+    return true;
 }

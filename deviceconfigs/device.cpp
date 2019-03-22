@@ -37,7 +37,8 @@ Waves Device::getWave(int output) const {
     return _waveCache[output];
 }
 
-void Device::setConnection(int input, std::shared_ptr<Device> source,
+void Device::setConnection(int input,
+                           std::shared_ptr<Device> source,
                            int output) {
     _changed = true;
     _connections[input] = connection(source, output);
@@ -57,8 +58,7 @@ bool Device::changed() const {
 
     int j = 0;
     for (const auto &i : _connections) {
-        // ToDoI: Что ты хотел сказать этим условием?
-        if (!i.device.expired() && i.device.lock()->changed()
+        if ((!i.device.expired() && i.device.lock()->changed())
             || (i.device.expired() && _connectionCache[j++])) {
             _changed = true;
             return true;
@@ -123,15 +123,19 @@ void Device::updateMatrix() {
     for (size_t i = 0; i < _concreteMatrix.rows(); ++i) {
         for (size_t j = 0; j < _concreteMatrix.columns(); ++j) {
             _concreteMatrix[i][j].real(
-                            evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].first,
-                                               _concreteVariables)
+                evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].first,
+                                   _concreteVariables)
             );
             _concreteMatrix[i][j].imag(
-                    evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].second,
-                                       _concreteVariables)
+                evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].second,
+                                   _concreteVariables)
             );
         }
     }
+}
+
+int Device::getType() const {
+    return _type;
 }
 
 int Device::getId() const {

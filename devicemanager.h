@@ -26,13 +26,13 @@ public:
     size_t deviceCount() const;
     int getMaxId() const;
 
-    // костыльный костыль
-    Display *getDisplay() const;
-
+    std::shared_ptr<Device> getDeviceById(int id);
 protected:
     DeviceManager();
 
 private:
+    std::vector<std::shared_ptr<Device>>::iterator getDeviceIterById(int id);
+
     Matrix<int> _matrConn;
     std::vector<int> _types;
 

@@ -10,28 +10,10 @@
 #include "devicemanager.h"
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
+#include "ui/commandhandlerchart.h"
+#include "ui/parametersmanager.h"
 
-constexpr double xMinus = -50;
-constexpr double xPlus = 50;
-constexpr short int sizeDiscretization = 500;
-
-// TODO: найти куда вынести
-double fillSeries(QXYSeries *series, double min, double max,
-                double step, const std::function<double(double)> &func) {
-    double maxValue = 1e-7;
-    if (!series)
-        return maxValue;
-
-    series->clear();
-
-    for (double i = min; i <= max; i += step) {
-        double value = func(i);
-        series->append(i, value);
-        maxValue = std::max(value, maxValue);
-    }
-
-    return maxValue;
-}
+#include "qcombobox.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,20 +35,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->graphicsView, SIGNAL(propertiesItemClicked(Properties*)),
             p, SLOT(loadProperties(Properties*)));
+    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle" << "In Circle");
+    connect( ui->cbMode, SIGNAL(currentIndexChanged(int)),
+            &PARAM_MANAGER, SLOT(setSourcePositionMode(int)));
 
     initDevices();
-    initCharts();
     initCommandPattern();
 
     // TODO убрать это отседова
     connect(p, SIGNAL(invoke(std::shared_ptr<Command>)),
             &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
-    connect(p, SIGNAL(changed()), this, SLOT(onDeviceEmplacementChanged()));
 
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
     
     // ToDo: Скорее всего эту строчку куда-то нужно перенести
     CH_VIEW.setScene(ui->graphicsView->scene()); 
+    CH_CHART.setTabWidget(ui->tabWidget);
 }
 
 MainWindow::~MainWindow() {
@@ -105,50 +89,8 @@ void MainWindow::initDevices() {
         pix.convertFromImage(img);
         act->setIcon(QIcon(pix));
     }
+
     ui->instrumentToolBar->insertSeparator(ui->actionShield);
-
-    connect(ui->graphicsView, SIGNAL(deviceEmplacementChanged()),
-            this, SLOT(onDeviceEmplacementChanged()));
-}
-
-void MainWindow::initCharts() {
-    _chart = new QChart();
-    _chart->setTitle("Shield chart");
-
-    _chart->addSeries(new QLineSeries(_chart));
-
-    _chart->createDefaultAxes();
-    _chart->axisX()->setRange(xMinus, xPlus);
-    _chart->axisY()->setRange(0, 0.01);
-
-    _chart->legend()->hide();
-
-    _chart->setAnimationOptions(QChart::SeriesAnimations);
-
-    auto chartView = new QChartView(_chart);
-    chartView->setRenderHint(QPainter::Antialiasing, true);
-
-    ui->leftLayout->insertWidget(1, chartView);
-}
-
-void MainWindow::onDeviceEmplacementChanged() {
-    // TODO: должно быть не в этой функции и по графику на дисплей
-    auto disp = DEVICE_MANAGER.getDisplay();
-
-    if (disp) {
-        double maxValue;
-        // TODO: избавиться от dynamic_cast
-        maxValue = fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]),
-                   xMinus, xPlus, xPlus / sizeDiscretization,
-                   [&disp](double x){return disp->getValue(x).real();});
-        _chart->axisY()->setRange(0, maxValue * 1.2);
-    } else {
-        fillSeries(dynamic_cast<QXYSeries*>(_chart->series()[0]), xMinus, xPlus,
-                xPlus / sizeDiscretization, [](double x){ Q_UNUSED(x); return 0;});
-#ifdef _DEBUG
-        qDebug() << "null disp";
-#endif
-    }    
 }
 
 void MainWindow::showInfoWindow() {

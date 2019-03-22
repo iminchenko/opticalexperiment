@@ -6,8 +6,7 @@
 #include <memory>
 
 // ToDo: Переименовать его в CommandHandlerBase или CommandHandlerInterface
-class CommandHandler : public QObject
-{
+class CommandHandler : public QObject {
     Q_OBJECT
 public:
     explicit CommandHandler(QObject *parent = nullptr);

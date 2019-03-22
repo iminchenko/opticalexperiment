@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += charts
+QT += datavisualization
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -52,7 +53,11 @@ SOURCES += \
     instrumentconfig.cpp \
     main.cpp \
     properties.cpp \
-    propertyobserver.cpp
+    propertyobserver.cpp \
+    utility/idgenerator.cpp \
+    ui/commandhandlerchart.cpp \
+    ui/chartview.cpp \
+    ui/parametersmanager.cpp
 
 HEADERS += \
     command/command.h \
@@ -83,10 +88,16 @@ HEADERS += \
     instrumentconfig.h \
     matrix.h \
     properties.h \
-    propertyobserver.h
+    propertyobserver.h \
+    utility/idgenerator.h \
+    ui/commandhandlerchart.h \
+    ui/chartview.h \
+    ui/parametersmanager.h
 
 FORMS += \
     ui/mainwindow.ui
 
 RESOURCES += \
     recource.qrc
+
+win32: LIBS += -lopengl32

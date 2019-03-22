@@ -20,7 +20,7 @@ class Command;
 
 using pCommand = std::shared_ptr<Command>;
 
-struct Command {
+class Command {
 public:
     static pCommand AddDevice(QPointF pos, int typeItemId, int id = 0);
     static pCommand AddConnection(int sourceId, int destId,

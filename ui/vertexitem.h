@@ -49,14 +49,16 @@ public:
     InputVertexItem(ConstructorItem *parent, int number);
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option,
                QWidget *widget) override;
 };
 
-class OutputVertexItem: public VertexItem{
+class OutputVertexItem: public VertexItem {
 public:
     OutputVertexItem(ConstructorItem *parent, int number);
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+    void paint(QPainter *painter,
+               const QStyleOptionGraphicsItem *option,
                QWidget *widget) override;
 };

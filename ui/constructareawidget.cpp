@@ -10,6 +10,7 @@
 #include "genericitem.h"
 #include "command/command.h"
 #include "command/commandhanlerglobal.h"
+#include "utility/idgenerator.h"
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
@@ -33,7 +34,7 @@ void ConstructAreaWidget::mousePressEvent(QMouseEvent *event) {
     auto prop =
             dynamic_cast<Properties *>(scene()->itemAt(mapToScene(event->pos()),
                                                        transform()));
-    // сигнал с nullptr - это ок (Я так не считаю) (приемники все обработают, норм)
+
     emit propertiesItemClicked(prop);
 }
 
@@ -55,7 +56,9 @@ void ConstructAreaWidget::mouseMoveEvent(QMouseEvent *event) {
 void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
-    invoke(Command::AddDevice(mapToScene(event->pos()), INSTRUMENT_CONFIG.getTypeId()));
+    invoke(Command::AddDevice(
+               mapToScene(event->pos()), INSTRUMENT_CONFIG.getTypeId(), DEVICE_ID_GEN.getId())
+           );
 
     emit deviceEmplacementChanged();
 }

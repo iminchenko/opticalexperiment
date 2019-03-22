@@ -5,7 +5,6 @@
 #include "device.h"
 #include "wave.h"
 
-
 class Laser: public Device {
 public:
     explicit Laser(int id);

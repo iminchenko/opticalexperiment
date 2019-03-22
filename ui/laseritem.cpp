@@ -15,7 +15,8 @@ LaserItem::LaserItem(QPointF pos, int id, QGraphicsItem *parent)
 }
 
 void LaserItem::paint(QPainter *painter,
-                      const QStyleOptionGraphicsItem *, QWidget *) {
+                      const QStyleOptionGraphicsItem *,
+                      QWidget *) {
     drawBox(painter);
 
     painter->setPen(QPen(defaultBorderColor, defaultBorderWidth));

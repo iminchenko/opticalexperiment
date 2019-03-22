@@ -10,8 +10,7 @@ int64_t m(size_t i, size_t N) {
             return (int64_t)i - (int64_t)N / 2;
         else
             return - (int64_t)N / 2 + (int64_t)i - 1;
-    }
-    else {
+    } else {
        return -((int64_t)N + 1) / 2 + (int64_t)i;
     }
 }

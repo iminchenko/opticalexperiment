@@ -50,10 +50,13 @@ struct DrawingConfig {
 class DeviceConfig {
 public:
     DeviceConfig() = default;
-    DeviceConfig(int inputCount, int outputCount, const std::string &name,
-        const std::string &descrption, const std::list<DrawingConfig> &drawing,
-                                       const VarList &variables,
-                                       const ExprMatrix &matr);
+    DeviceConfig(int inputCount,
+                 int outputCount,
+                 const std::string &name,
+                 const std::string &descrption,
+                 const std::list<DrawingConfig> &drawing,
+                 const VarList &variables,
+                 const ExprMatrix &matr);
 
     void setSize(float width, float height);
     void setBounding(const QRectF& rect);

@@ -16,8 +16,10 @@ pCommand Command::AddDevice(QPointF pos, int typeItemId, int id) {
     return cmnd;
 }
 
-pCommand Command::AddConnection(int sourceId, int destId,
-                                                int sourceNum, int destNum) {
+pCommand Command::AddConnection(int sourceId,
+                                int destId,
+                                int sourceNum,
+                                int destNum) {
     auto cmnd = std::make_shared<Command>();
 
     cmnd->typeCommand = CMND_ADD_CONNECTION;
@@ -38,8 +40,10 @@ std::shared_ptr<Command> Command::DeleteDevice(int id) {
     return cmnd;
 }
 
-pCommand Command::DeleteConnection(int sourceId, int destId,
-                                                   int sourceNum, int destNum) {
+pCommand Command::DeleteConnection(int sourceId,
+                                   int destId,
+                                   int sourceNum,
+                                   int destNum) {
     auto cmnd = AddConnection(sourceId, destId, sourceNum, destNum);
 
     cmnd->typeCommand = CMND_DELETE_CONNECTION;
