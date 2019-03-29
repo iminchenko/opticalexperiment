@@ -47,7 +47,11 @@ QByteArray ConstructorSerializer::serialize() {
 
             auto config = DEVICECONFIG_LIST[device->getType()];
             QJsonArray connections;
-            for (int j = 0; j < config.getInputCount(); ++j) {
+            int inputCount = config.getInputCount();
+            if (device->getType() == deviceType::TYPE_SHIELD) {
+                inputCount = 1;
+            }
+            for (int j = 0; j < inputCount; ++j) {
                 if (auto connectedDevice = device->getConnection(j).device.lock()) {
                     QJsonObject connection;
 
@@ -98,6 +102,8 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
 
     QJsonArray devices = doc.array();
 
+    std::list<QJsonObject> connections;
+
     for (auto device: devices) {
         auto deviceObject = device.toObject();
         auto posArray = deviceObject["pos"].toArray();
@@ -122,6 +128,21 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
             command = Command::ChangeValues(deviceObject["id"].toInt(), varList);
             CH_GLOBAL.handle(command);
         }
+
+        if (deviceObject.contains("connections")) {
+            for (auto connection: deviceObject["connections"].toArray()) {
+                connections.push_back(connection.toObject());
+            }
+        }
+    }
+
+    for (auto connection: connections) {
+        auto command = Command::AddConnection(
+                                        connection["sourceDevId"].toInt(),
+                                        connection["destDevId"].toInt(),
+                                        connection["sourceOutput"].toInt(),
+                                        connection["destInput"].toInt());
+        CH_GLOBAL.handle(command);
     }
 }
 
