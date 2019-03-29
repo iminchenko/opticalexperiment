@@ -123,10 +123,14 @@ void MainWindow::on_actionSave_triggered() {
 void MainWindow::on_actionSave_As_triggered() {
     QString filename = QFileDialog::getSaveFileName(this,
                                                     "Save as",
-                                                    "unnamed",
+                                                    "unnamed.opcstr",
                                                     "*.opcstr");
 
     if (filename != "") {
+        if (filename.endsWith(".opcstr")) {
+            filename += ".opcstr";
+        }
+
         ConstructorSerializer::setPath(filename);
         on_actionSave_triggered();
     }
@@ -134,7 +138,7 @@ void MainWindow::on_actionSave_As_triggered() {
 
 void MainWindow::on_actionLoad_triggered() {
     QString filename = QFileDialog::getOpenFileName(this,
-                                                    "Save as",
+                                                    "Load",
                                                     "",
                                                     "*.opcstr");
 
