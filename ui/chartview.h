@@ -6,7 +6,9 @@
 #include <QtDataVisualization/Q3DTheme>
 #include <QtDataVisualization/QSurfaceDataProxy>
 #include <QtDataVisualization/QSurface3DSeries>
+#include <QScrollArea>
 #include "deviceconfigs/wave.h"
+#include "ui/parametersmanager.h"
 
 constexpr double xMinus = -50;
 constexpr double xPlus = 50;
@@ -14,10 +16,11 @@ constexpr short int sizeDiscretization = 500;
 constexpr int discritezationsStep = 1e+3;
 constexpr int CHART_MINIMUM_HEIGHT = 175;
 
-constexpr double maxX = 1e-4, minX = -1e-4, stepX = std::abs(maxX - minX) / discritezationsStep;
-constexpr double maxY = 1e-4, minY = -1e-4, stepY = std::abs(maxY - minY) / discritezationsStep;
-constexpr int stepsX = (int) (maxX - minX)/stepX;
-constexpr int stepsY = (int) (maxY - minY)/stepY;
+constexpr double xDefaultMin = -1e-4;
+constexpr double xDefaultMax = 1e-4;
+constexpr double yDefaultMin = -1e-4;
+constexpr double yDefaultMax = 1e-4;
+
 constexpr double SCALE = 5e-8;
 
 constexpr double MATH_EPSILON_0 = 8.85419e-12;
@@ -29,18 +32,18 @@ constexpr double MATH_K_1 = M_PI / (MATH_LAMBDA * MATH_L);
 constexpr double MATH_D = 1e-3;
 constexpr double MATH_ALPHA = ( MATH_EPSILON_0 * MATH_C) / (8 * M_PI);
 
-enum SourcePositionMode {
-    OnlyX,
-    OnlyY,
-    OnCircle
-};
-
 using namespace QtDataVisualization;
 
-class ChartView
+enum AlgorithmType {
+    first = 0,
+    second
+};
+
+class ChartView : public QObject
 {
+    Q_OBJECT
 public:
-    ChartView(int id, QLayout *layout);
+    ChartView(int id, QTabWidget *_tabWidget);
     ~ChartView();
 
     void update(double min, double max,
@@ -48,8 +51,15 @@ public:
 
     void update3d(const std::function<std::vector<Wave>()> &func);
     int getId();
+    int getTabIndex();
+    void updateTabIndexAfterRemovingTab(int idx);
 
+public slots:
+    void updateScaleFactor();
+    void updateValues();
+    void changeAlgorithm(int);
 private:
+    void update3d();
     void initChart2D(QLayout *layout);
     void initChart3D(QLayout *layout);
 
@@ -58,10 +68,15 @@ private:
     QPointF getSourcePositionY(size_t sourceId, bool parity) const;
     QPointF getSourcePositionX(size_t sourceId, bool parity) const;
     QPointF getSourcePositionOnCircle(size_t sourceId, size_t sourceCount) const;
-    QPointF getSourcePositionInCircle(size_t sourceId, size_t) const;
-    
-    
-    QSurfaceDataArray* fill3DSeries(const std::function<std::vector<Wave>()> &func);
+    QPointF getSourcePositionInCircle() const;
+
+    SourcePositionMode getSourcePositionMode() const;
+
+    QSurfaceDataArray* fill3DSeriesFirstAlgo();
+    QSurfaceDataArray* fill3DSeriesSecondAlgo();
+
+    double randomDouble(double max) const;
+
     double fill2DSeries(
             QXYSeries *series,
             double min,
@@ -71,9 +86,33 @@ private:
     );
 
     int _id;
+    double _max;
+    std::vector<Wave> _waves;
+    QScrollArea *_scrollArea;
+    int _tabIdx;
+    AlgorithmType _algoType = AlgorithmType::first;
 
+    //warning! kostil is here:)
+    std::vector<QPointF> _sourcesForRand = std::vector<QPointF>();
+
+    double _maxX = 1e-4, _minX = -1e-4;
+    double _stepX = std::abs(_maxX - _minX) / discritezationsStep;
+    double _maxY = 1e-4, _minY = -1e-4;
+    double _stepY = std::abs(_maxY - _minY) / discritezationsStep;
+    int _stepsX = static_cast<int>((_maxX - _minX)/_stepX);
+    int _stepsY = static_cast<int>((_maxY - _minY)/_stepY);
+
+    QTabWidget *_tabWidget;
+    QTab *_tab;
     QLayout *_layout;
     QWidget *_container;
+    QLineEdit *_xMinEditField;
+    QLineEdit *_xMaxEditField;
+    QLineEdit *_yMinEditField;
+    QLineEdit *_yMaxEditField;
+    QSlider *_slider;
+    QLabel *_maxLabel;
+    QComboBox *_algorithmSelector;
 
     QChart *_chart;
     QChartView *_chartView;

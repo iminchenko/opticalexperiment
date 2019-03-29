@@ -11,7 +11,6 @@
 class CommandHadlerModel : CommandHandler {
     friend CommandHadlerModel& singleton<CommandHadlerModel>();
 
-//ToDo: Не думаю, что так нужно делать. Мб переделать на friend class?
 public:
     bool handle(std::shared_ptr<Command> cmnd) override;
 

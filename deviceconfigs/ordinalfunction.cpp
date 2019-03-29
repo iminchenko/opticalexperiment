@@ -22,8 +22,7 @@ void OrdinalFunction::createNullLlv() {
     _highLvls.push_back(QVector<size_t>());
     bool check;
     
-    for (size_t column = 0; column < _inc.columns(); ++column)
-    {
+    for (size_t column = 0; column < _inc.columns(); ++column) {
         check = true;
         for (size_t row = 0; row < _inc.rows(); ++row) {
             if (_inc[row][column] != 0) {
@@ -46,13 +45,15 @@ void OrdinalFunction::createNotUsedNode(size_t N) {
 
 void OrdinalFunction::checkOnCoherency(size_t lvl) {
     int swap;
-    for (int i = 0; i < _highLvls[lvl].size() - 1; ++i)
-        for (int j = i + 1; j < _highLvls[lvl].size(); ++j)
+    for (int i = 0; i < _highLvls[lvl].size() - 1; ++i) {
+        for (int j = i + 1; j < _highLvls[lvl].size(); ++j) {
             if (_inc[_highLvls[lvl][i]][_highLvls[lvl][j]] != 0) {
                 swap = _highLvls[lvl][j];
                 _highLvls[lvl][j] = _highLvls[lvl][i];
                 _highLvls[lvl][i] = swap;
             }
+        }
+    }
 }
 
 void OrdinalFunction::createHierarchyLvls() {
@@ -84,5 +85,3 @@ void OrdinalFunction::allClear() {
     _highLvls.clear();
     _notUsedNode.clear();
 }
-
-

@@ -37,7 +37,8 @@ Waves Device::getWave(int output) const {
     return _waveCache[output];
 }
 
-void Device::setConnection(int input, std::shared_ptr<Device> source,
+void Device::setConnection(int input,
+                           std::shared_ptr<Device> source,
                            int output) {
     _changed = true;
     _connections[input] = connection(source, output);
@@ -57,8 +58,7 @@ bool Device::changed() const {
 
     int j = 0;
     for (const auto &i : _connections) {
-        // ToDoI: Что ты хотел сказать этим условием?
-        if (!i.device.expired() && i.device.lock()->changed()
+        if ((!i.device.expired() && i.device.lock()->changed())
             || (i.device.expired() && _connectionCache[j++])) {
             _changed = true;
             return true;

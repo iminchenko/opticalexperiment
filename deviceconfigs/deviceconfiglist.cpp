@@ -39,8 +39,9 @@ void DeviceConfigList::loadDevices(std::string filename) {
         qDebug() << err.errorString() << err.offset;
 
         QString str;
-        for (int i = 0; i < err.offset; ++i)
+        for (int i = 0; i < err.offset; ++i) {
             str.push_back(QChar(raw[i]));
+        }
         qDebug() << raw;
         qDebug() << str;
 #endif

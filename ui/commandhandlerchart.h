@@ -15,20 +15,21 @@ class CommandHandlerChart: CommandHandler {
     friend CommandHandlerChart& singleton<CommandHandlerChart>();
 
 public:
-    void setLayout(QLayout *layout);
+    void setTabWidget(QTabWidget *tabWidget);
     bool handle(std::shared_ptr<Command> cmnd) override;
 
 private:
     CommandHandlerChart();
 
-    ChartView *findItemWithId(int id);
+    std::shared_ptr<ChartView> findItemWithId(int id);
+    QList<std::shared_ptr<ChartView>>::iterator findIterWithId(int id);
 
     bool createShield(std::shared_ptr<Command> cmnd);
     bool removeShield(std::shared_ptr<Command> cmnd);
-    bool update();
+    void update();
 
-    QLayout *_layout;
-    QList<ChartView *> _charts;
+    QTabWidget* _tabWidget;
+    QList<std::shared_ptr<ChartView>> _charts;
 };
 
 #endif // COMMANDHANDLERCHART_H

@@ -22,7 +22,7 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
     case TypeCommand::CMND_DELETE_CONNECTION:
         return removeConnection(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
-        return false; 
+        return true;
     default:
         return true;
     }
@@ -74,7 +74,6 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
     delete *iter;
     _devices.erase(iter);
     
-    /* ToDoI: Точно ли так надо писать? */
     return true;
 }
 
@@ -96,8 +95,5 @@ ConstructorItem *CommandHandlerView::findItemWithId(int id) {
     auto iter = std::find_if(_devices.begin(), _devices.end(),
                           [id](ConstructorItem *item){ return item->getId() == id; });
 
-    if (iter == _devices.end())
-        return nullptr;
-
-    return *iter;
+    return iter != _devices.end() ? *iter : nullptr;
 }

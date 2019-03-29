@@ -27,7 +27,6 @@ public:
     const std::vector<T>& operator[](size_t index) const;
 
     Matrix<T>& operator=(const Matrix<T> &m);
-    
 
 private:
     size_t _rows;
@@ -51,8 +50,7 @@ Matrix<T>::Matrix(size_t rows, size_t columns):
 template<class T>
 Matrix<T>::Matrix(size_t rows, size_t columns, T element) :
     _rows(rows), 
-    _columns(columns)
-{
+    _columns(columns) {
     for (size_t row = 0; row < rows; ++row) {
         _matrix.push_back(std::vector<T>());
         for (size_t column = 0; column < columns; ++column)
@@ -64,8 +62,7 @@ template<class T>
 Matrix<T>::Matrix(Matrix<T>&& m) noexcept :
     _rows(m.rows()),
     _columns(m.columns()),
-    _matrix(m.getMatrix())
-{
+    _matrix(m.getMatrix()) {
     m._rows = 0;
     m._columns = 0;
 }
