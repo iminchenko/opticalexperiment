@@ -26,6 +26,8 @@ private:
     bool addConnection(std::shared_ptr<Command> cmnd);
     bool removeItem(std::shared_ptr<Command> cmnd);
     bool removeConnection(std::shared_ptr<Command> cmnd);
+    bool changeVariables(std::shared_ptr<Command> cmnd);
+
     ConstructorItem *findItemWithId(int id);
 
 private:

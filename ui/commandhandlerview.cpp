@@ -21,6 +21,8 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
         return removeItem(cmnd);
     case TypeCommand::CMND_DELETE_CONNECTION:
         return removeConnection(cmnd);
+    case TypeCommand::CMND_CHANGE_VARIABLE:
+        return changeVariables(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
         return true;
     default:
@@ -87,6 +89,24 @@ bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {
     auto out = vertex->getOutput(cmnd->data.dc.sourceNum);
 
     delete out->getConnection();
+
+    return true;
+}
+
+bool CommandHandlerView::changeVariables(std::shared_ptr<Command> cmnd) {
+    auto device = findItemWithId(cmnd->data.cv.id);
+
+    if (!device) {
+        return false;
+    }
+
+    QMap<QString, double> properties;
+
+    for (const auto &i: cmnd->varList) {
+        properties[i.first.c_str()] = i.second;
+    }
+
+    device->setProperties(properties);
 
     return true;
 }
