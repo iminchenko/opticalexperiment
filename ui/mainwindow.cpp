@@ -1,11 +1,5 @@
 #include <QtCharts>
 #include <functional>
-#include <memory>
-
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonParseError>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -13,17 +7,10 @@
 #include "propertyobserver.h"
 #include "globaldefines.h"
 #include "deviceconfigs/deviceconfiglist.h"
-#include "devicemanager.h"
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
-#include "ui/parametersmanager.h"
-#include "utility/idgenerator.h"
-#include "devicemanager.h"
-#include "deviceconfigs/device.h"
 #include "utility/constructorserializer.h"
-
-#include "qcombobox.h"
 
 using std::list;
 using std::shared_ptr;
@@ -126,9 +113,33 @@ void MainWindow::initCommandPattern() {
 }
 
 void MainWindow::on_actionSave_triggered() {
+    if (ConstructorSerializer::getPath() == "") {
+        on_actionSave_As_triggered();
+    }
+
     ConstructorSerializer::save();
 }
 
+void MainWindow::on_actionSave_As_triggered() {
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    "Save as",
+                                                    "unnamed",
+                                                    "*.opcstr");
+
+    if (filename != "") {
+        ConstructorSerializer::setPath(filename);
+        on_actionSave_triggered();
+    }
+}
+
 void MainWindow::on_actionLoad_triggered() {
-    ConstructorSerializer::load();
+    QString filename = QFileDialog::getOpenFileName(this,
+                                                    "Save as",
+                                                    "",
+                                                    "*.opcstr");
+
+    if (filename != "") {
+        ConstructorSerializer::setPath(filename);
+        ConstructorSerializer::load();
+    }
 }

@@ -14,7 +14,7 @@
 #include "deviceconfigs/deviceconfiglist.h"
 #include "command/commandhanlerglobal.h"
 
-QString ConstructorSerializer::_filename = "saved.json";
+QString ConstructorSerializer::_filename = "";
 
 QByteArray ConstructorSerializer::serialize() {
     int lastId = DEVICE_ID_GEN.getLastId();
@@ -147,12 +147,10 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
 }
 
 void ConstructorSerializer::save() {
-    QString filename = "saved.json";
-
-    QFile file(filename);
+    QFile file(_filename);
 
     if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << "Can't open file" << filename;
+        qDebug() << "Can't open file" << _filename;
         return;
     }
 
