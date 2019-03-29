@@ -186,6 +186,57 @@ void MainWindow::on_actionSave_triggered(){
     file.write(doc.toJson());
 }
 
-void MainWindow::on_actionLoad_triggered(){
+void MainWindow::on_actionLoad_triggered() {
+    QString filename = "saved.json";
 
+    QFile file(filename);
+
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Can't open file" << filename;
+        return;
+    }
+
+    QByteArray raw = file.readAll();
+
+    QJsonParseError err{};
+
+    auto doc = QJsonDocument::fromJson(raw, &err);
+
+    if (err.error != QJsonParseError::NoError) {
+#ifdef _DEBUG
+        qDebug() << err.errorString() << err.offset;
+
+        QString str;
+        for (int i = 0; i < err.offset; ++i) {
+            str.push_back(QChar(raw[i]));
+        }
+        qDebug() << raw;
+        qDebug() << str;
+#endif
+    }
+
+    QJsonArray devices = doc.array();
+
+    for (auto device: devices) {
+        auto deviceObject = device.toObject();
+        auto command = Command::AddDevice(QPointF(0, 0),
+                                          deviceObject["type"].toInt(),
+                                          deviceObject["id"].toInt());
+
+        CH_GLOBAL.handle(command);
+
+        if (deviceObject.contains("variables")) {
+            auto varsObject = deviceObject["variables"].toObject();
+
+            VarList varList;
+
+            for (auto key: varsObject.keys()) {
+                varList.emplace_back(key.toStdString().c_str(),
+                                     varsObject[key].toDouble());
+            }
+
+            command = Command::ChangeValues(deviceObject["id"].toInt(), varList);
+            CH_GLOBAL.handle(command);
+        }
+    }
 }
