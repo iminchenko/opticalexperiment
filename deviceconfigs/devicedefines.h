@@ -21,3 +21,5 @@ enum deviceType {
     TYPE_SHIELD = -2,
     TYPE_GENERIC = 0
 };
+
+constexpr int NO_ID = -1;

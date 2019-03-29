@@ -7,13 +7,13 @@
 #include "propertyobserver.h"
 #include "globaldefines.h"
 #include "deviceconfigs/deviceconfiglist.h"
-#include "devicemanager.h"
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
-#include "ui/parametersmanager.h"
+#include "utility/constructorserializer.h"
 
-#include "qcombobox.h"
+using std::list;
+using std::shared_ptr;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -110,4 +110,40 @@ void MainWindow::showInfoWindow() {
 void MainWindow::initCommandPattern() {
     connect(ui->graphicsView, SIGNAL(invoke(std::shared_ptr<Command>)),
             &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
+}
+
+void MainWindow::on_actionSave_triggered() {
+    if (ConstructorSerializer::getPath() == "") {
+        on_actionSave_As_triggered();
+    }
+
+    ConstructorSerializer::save();
+}
+
+void MainWindow::on_actionSave_As_triggered() {
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    "Save as",
+                                                    "unnamed.opcstr",
+                                                    "*.opcstr");
+
+    if (filename != "") {
+        if (filename.endsWith(".opcstr")) {
+            filename += ".opcstr";
+        }
+
+        ConstructorSerializer::setPath(filename);
+        on_actionSave_triggered();
+    }
+}
+
+void MainWindow::on_actionLoad_triggered() {
+    QString filename = QFileDialog::getOpenFileName(this,
+                                                    "Load",
+                                                    "",
+                                                    "*.opcstr");
+
+    if (filename != "") {
+        ConstructorSerializer::setPath(filename);
+        ConstructorSerializer::load();
+    }
 }
