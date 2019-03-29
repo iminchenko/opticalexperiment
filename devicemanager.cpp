@@ -25,7 +25,6 @@ void DeviceManager::addConnection(int sourceDevId,
                                   int sourceOut,
                                   int destDevId,
                                   int destInput) {
-    // 10 - magic number for distance
     getDeviceById(destDevId)->setConnection(
                 destInput,getDeviceById(sourceDevId),sourceOut);
 }
@@ -55,15 +54,13 @@ void DeviceManager::changeVariables(int id, VarList vars) {
     getDeviceById(id)->setVariables(vars);
 }
 
-size_t DeviceManager::deviceCount() const {
-    return (size_t)_matrConn.rows();
-}
+DeviceManager::DeviceManager() {}
 
-int DeviceManager::getMaxId() const {
-    return _maxId;
-}
+std::shared_ptr<Device> DeviceManager::getDeviceById(int id) {
+    auto iter = getDeviceIterById(id);
 
-DeviceManager::DeviceManager() :_maxId(0) {}
+    return iter != _devices.end() ? *iter : nullptr;
+}
 
 std::vector<std::shared_ptr<Device>>::iterator DeviceManager::getDeviceIterById(int id) {
     return std::find_if(_devices.begin(),
@@ -71,10 +68,4 @@ std::vector<std::shared_ptr<Device>>::iterator DeviceManager::getDeviceIterById(
                         [id](auto device) {
                             return device->getId() == id;
                         });
-}
-
-std::shared_ptr<Device> DeviceManager::getDeviceById(int id) {
-    auto iter = getDeviceIterById(id);
-
-    return iter != _devices.end() ? *iter : nullptr;
 }

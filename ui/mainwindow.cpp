@@ -1,5 +1,11 @@
 #include <QtCharts>
 #include <functional>
+#include <memory>
+
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,8 +18,14 @@
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
 #include "ui/parametersmanager.h"
+#include "utility/idgenerator.h"
+#include "devicemanager.h"
+#include "deviceconfigs/device.h"
 
 #include "qcombobox.h"
+
+using std::list;
+using std::shared_ptr;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -113,7 +125,65 @@ void MainWindow::initCommandPattern() {
 }
 
 void MainWindow::on_actionSave_triggered(){
+    int lastId = DEVICE_ID_GEN.getLastId();
 
+    list<shared_ptr<Device>> devices;
+
+    QJsonArray jsonArray;
+
+    for (int i = 0; i < lastId; ++i) {
+        if (auto device = DEVICE_MANAGER.getDeviceById(i)) {
+            QJsonObject jsonDevice;
+
+            jsonDevice["id"] = device->getId();
+            jsonDevice["type"]= device->getType();
+
+            auto varList = device->getVariables();
+            if (varList.size()) {
+                QJsonObject varsObject;
+
+                for (const auto &variable: varList) {
+                    varsObject[variable.first.c_str()] = variable.second;
+                }
+
+                jsonDevice["variables"] = varsObject;
+            }
+
+            auto config = DEVICECONFIG_LIST[device->getType()];
+            QJsonArray connections;
+            for (int j = 0; j < config.getInputCount(); ++j) {
+                if (auto connectedDevice = device->getConnection(j).device.lock()) {
+                    QJsonObject connection;
+
+                    connection["sourceDevId"] = connectedDevice->getId();
+                    connection["destDevId"] = device->getId();
+                    connection["sourceOutput"] = device->getConnection(j).output;
+                    connection["destInput"] = j;
+
+                    connections.push_back(connection);
+                }
+            }
+
+            if (!connections.empty()) {
+                jsonDevice["connections"] = connections;
+            }
+
+            jsonArray.push_back(jsonDevice);
+        }
+    }
+
+    QJsonDocument doc(jsonArray);
+
+    QString filename = "saved.json";
+
+    QFile file(filename);
+
+    if (!file.open(QIODevice::WriteOnly)) {
+        qDebug() << "Can't open file" << filename;
+        return;
+    }
+
+    file.write(doc.toJson());
 }
 
 void MainWindow::on_actionLoad_triggered(){
