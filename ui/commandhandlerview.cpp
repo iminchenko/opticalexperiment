@@ -30,6 +30,16 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
     }
 }
 
+QPointF CommandHandlerView::getDevicePos(int id) {
+    auto item = findItemWithId(id);
+
+    if (!item) {
+        throw std::logic_error("can't find device with id");
+    }
+
+    return item->pos();
+}
+
 bool CommandHandlerView::addItem(std::shared_ptr<Command> cmnd) {
     ConstructorItem *newDevice = nullptr;
 

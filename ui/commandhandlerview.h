@@ -21,6 +21,9 @@ public:
     void setScene(QGraphicsScene *scene);    
     bool handle(std::shared_ptr<Command> cmnd) override;
 
+    // FIXME: этот метод должен быть в другом классе
+    QPointF getDevicePos(int id);
+
 private:
     bool addItem(std::shared_ptr<Command> cmnd);
     bool addConnection(std::shared_ptr<Command> cmnd);

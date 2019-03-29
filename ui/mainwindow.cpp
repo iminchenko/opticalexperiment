@@ -138,6 +138,10 @@ void MainWindow::on_actionSave_triggered(){
             jsonDevice["id"] = device->getId();
             jsonDevice["type"]= device->getType();
 
+            QPointF pos = CH_VIEW.getDevicePos(device->getId());
+
+            jsonDevice["pos"] = QJsonArray{ pos.x(), pos.y() };
+
             auto varList = device->getVariables();
             if (varList.size()) {
                 QJsonObject varsObject;
@@ -219,7 +223,10 @@ void MainWindow::on_actionLoad_triggered() {
 
     for (auto device: devices) {
         auto deviceObject = device.toObject();
-        auto command = Command::AddDevice(QPointF(0, 0),
+        auto posArray = deviceObject["pos"].toArray();
+
+        auto command = Command::AddDevice(QPointF(posArray[0].toDouble(),
+                                                  posArray[1].toDouble()),
                                           deviceObject["type"].toInt(),
                                           deviceObject["id"].toInt());
 
