@@ -200,6 +200,13 @@ void MainWindow::on_actionLoad_triggered() {
         return;
     }
 
+    // Удаление всех устройств
+    for (int i = 0; i <= DEVICE_ID_GEN.getLastId(); ++i) {
+        auto command = Command::DeleteDevice(i);
+        CH_GLOBAL.handle(command);
+    }
+    DEVICE_ID_GEN.setLastId(NO_ID);
+
     QByteArray raw = file.readAll();
 
     QJsonParseError err{};
