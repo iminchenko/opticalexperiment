@@ -22,7 +22,7 @@ using pCommand = std::shared_ptr<Command>;
 
 class Command {
 public:
-    static pCommand AddDevice(QPointF pos, int typeItemId, int id = -1);
+    static pCommand AddDevice(QPointF pos, int typeItemId, int id = NO_ID);
     static pCommand AddConnection(int sourceId, int destId,
                                   int sourceNum, int destNum);
     static pCommand DeleteDevice(int id);

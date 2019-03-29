@@ -1,7 +1,7 @@
 #include "idgenerator.h"
 
 IdGenerator::IdGenerator()
-    : lastId(0)
+    : lastId(-1)
 {}
 
 IdGenerator::IdGenerator(int startValue)
@@ -9,7 +9,7 @@ IdGenerator::IdGenerator(int startValue)
 {}
 
 int IdGenerator::getId() {
-    return lastId++;
+    return ++lastId;
 }
 
 int IdGenerator::getLastId() {
