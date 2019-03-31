@@ -1,30 +1,27 @@
 #pragma once
 
 template <class T>
-class Singleton
-{
+class Singleton {
 public:
-    Singleton(T& )
-    { }
+    Singleton(T& ) {}
 
-    ~Singleton()
-    {
-        s_pInstance = nullptr;
+    ~Singleton() {
+        _pInstance = nullptr;
     }
 
-    static T* i()
-    {
-        if (s_pInstance == nullptr) {
-            s_pInstance = new T();
+    static T* i() {
+        if (_pInstance == nullptr) {
+            _pInstance = new T();
         }
-        return (s_pInstance);
+        
+        return (_pInstance);
     }
 
 private:
-    static T* s_pInstance;
+    static T* _pInstance;
 
     Singleton(const Singleton& src);
     Singleton& operator=(const Singleton& src);
 };
 
-template <class T> T* Singleton<T>::s_pInstance = nullptr;
+template <class T> T* Singleton<T>::_pInstance = nullptr;
