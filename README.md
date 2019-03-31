@@ -6,6 +6,6 @@
 
 Почта для связи: a.koziy98@gmail.com
 
-## Hall of fame
+## Top contributors
 
 [![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/0)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/0)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/1)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/1)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/2)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/2)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/3)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/3)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/4)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/4)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/5)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/5)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/6)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/6)[![](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/images/7)](https://sourcerer.io/fame/iminchenko/iminchenko/opticalexperiment/links/7)

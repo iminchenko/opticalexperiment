@@ -26,9 +26,16 @@ bool CommandHadlerModel::handle(pCommand cmnd) {
 }
 
 bool CommandHadlerModel::addItem(pCommand cmnd) {
-    if (!cmnd->data.ad.id) {
+    if (cmnd->data.ad.id == -1) {
         cmnd->data.ad.id = IdGenerator::i()->getId();
+    } else if (IdGenerator::i()->getLastId() < cmnd->data.ad.id) {
+        IdGenerator::i()->setLastId(cmnd->data.ad.id);
     }
+
+    if (DeviceManager::i()->getDeviceById(cmnd->data.ad.id)) {
+        throw std::logic_error("Device with id already exists");
+    }
+
     DeviceManager::i()->addDevice(cmnd->data.ad.typeItemId, cmnd->data.ad.id);
     return true;
 }

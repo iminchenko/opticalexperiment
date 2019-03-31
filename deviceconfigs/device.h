@@ -34,6 +34,7 @@ public:
     connection getConnection(int input);
 
     virtual void setVariables(VarList vars);
+    virtual VarList getVariables() const;
 
     int getType() const;
     int getId() const;

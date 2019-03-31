@@ -5,9 +5,13 @@ IdGenerator::IdGenerator(int startValue)
       lastId(startValue) {}
 
 int IdGenerator::getId() {
-    return lastId++;
+    return ++lastId;
 }
 
 int IdGenerator::getLastId() {
     return lastId;
+}
+
+void IdGenerator::setLastId(int id) {
+    lastId = id;
 }

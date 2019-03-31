@@ -10,6 +10,8 @@ public:
     int getId();
     int getLastId();
 
+    void setLastId(int id);
+
 private:
     int lastId;
 };

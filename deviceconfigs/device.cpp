@@ -44,12 +44,20 @@ void Device::setConnection(int input,
     _connections[input] = connection(source, output);
 }
 
+Device::connection Device::getConnection(int input) {
+    return _connections[input];
+}
+
 void Device::setVariables(VarList vars) {
     _concreteVariables = std::move(vars);
 
     _changed = true;
 
     updateMatrix();
+}
+
+VarList Device::getVariables() const {
+    return _concreteVariables;
 }
 
 bool Device::changed() const {
