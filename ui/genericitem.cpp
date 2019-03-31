@@ -7,7 +7,7 @@ GenericItem::GenericItem(QPointF pos,
                          QGraphicsItem *parent)
     :ConstructorItem(pos, id, parent), _itemId(itemType) {
     // как-то некрасиво, надо переписать
-    int count = DEVICECONFIG_LIST[_itemId].getInputCount();
+    int count = (*DeviceConfigList::i())[_itemId].getInputCount();
     if (count > 1) {
         for (int i = 0; i < count; ++i) {
             addInputVertex((float)i / (count - 1) * 90);
@@ -16,14 +16,14 @@ GenericItem::GenericItem(QPointF pos,
         addInputVertex();
     }
 
-    count = DEVICECONFIG_LIST[_itemId].getOutputCount();
+    count = (*DeviceConfigList::i())[_itemId].getOutputCount();
 
     addOutputVertex();
     for (int i = 1; i < count; ++i) {
         addOutputVertex(((float)i / (count - 1)) * 90);
     }
 
-    const auto& vars =  DEVICECONFIG_LIST[_itemId].getVariables();
+    const auto& vars =  (*DeviceConfigList::i())[_itemId].getVariables();
     QMap<QString, double> properties;
 
     for (const auto &iter : vars) {
@@ -38,9 +38,9 @@ void GenericItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->setRenderHint(QPainter::TextAntialiasing);
     painter->setRenderHint(QPainter::Antialiasing);
 
-    DEVICECONFIG_LIST[_itemId].draw(painter, isSelected());
+    (*DeviceConfigList::i())[_itemId].draw(painter, isSelected());
 }
 
 QRectF GenericItem::boundingRect() const {
-    return DEVICECONFIG_LIST[_itemId].getBounding();
+    return (*DeviceConfigList::i())[_itemId].getBounding();
 }

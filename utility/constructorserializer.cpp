@@ -17,20 +17,20 @@
 QString ConstructorSerializer::_filename = "";
 
 QByteArray ConstructorSerializer::serialize() {
-    int lastId = DEVICE_ID_GEN.getLastId();
+    int lastId = IdGenerator::i()->getLastId();
 
     std::list<std::shared_ptr<Device>> devices;
 
     QJsonArray jsonArray;
 
     for (int i = 0; i <= lastId; ++i) {
-        if (auto device = DEVICE_MANAGER.getDeviceById(i)) {
+        if (auto device = DeviceManager::i()->getDeviceById(i)) {
             QJsonObject jsonDevice;
 
             jsonDevice["id"] = device->getId();
             jsonDevice["type"]= device->getType();
 
-            QPointF pos = CH_VIEW.getDevicePos(device->getId());
+            QPointF pos = CommandHandlerView::i()->getDevicePos(device->getId());
 
             jsonDevice["pos"] = QJsonArray{ pos.x(), pos.y() };
 
@@ -45,7 +45,7 @@ QByteArray ConstructorSerializer::serialize() {
                 jsonDevice["variables"] = varsObject;
             }
 
-            auto config = DEVICECONFIG_LIST[device->getType()];
+            auto config = (*DeviceConfigList::i())[device->getType()];
             QJsonArray connections;
             int inputCount = config.getInputCount();
             if (device->getType() == deviceType::TYPE_SHIELD) {
@@ -77,11 +77,11 @@ QByteArray ConstructorSerializer::serialize() {
 
 void ConstructorSerializer::deserialize(const QByteArray &raw) {
     // Удаление всех устройств
-    for (int i = 0; i <= DEVICE_ID_GEN.getLastId(); ++i) {
+    for (int i = 0; i <= IdGenerator::i()->getLastId(); ++i) {
         auto command = Command::DeleteDevice(i);
-        CH_GLOBAL.handle(command);
+        CommandHanlerGlobal::i()->handle(command);
     }
-    DEVICE_ID_GEN.setLastId(NO_ID);
+    IdGenerator::i()->setLastId(NO_ID);
 
     QJsonParseError err{};
 
@@ -113,7 +113,7 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
                                           deviceObject["type"].toInt(),
                                           deviceObject["id"].toInt());
 
-        CH_GLOBAL.handle(command);
+        CommandHanlerGlobal::i()->handle(command);
 
         if (deviceObject.contains("variables")) {
             auto varsObject = deviceObject["variables"].toObject();
@@ -126,7 +126,7 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
             }
 
             command = Command::ChangeValues(deviceObject["id"].toInt(), varList);
-            CH_GLOBAL.handle(command);
+            CommandHanlerGlobal::i()->handle(command);
         }
 
         if (deviceObject.contains("connections")) {
@@ -142,7 +142,7 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
                                         connection["destDevId"].toInt(),
                                         connection["sourceOutput"].toInt(),
                                         connection["destInput"].toInt());
-        CH_GLOBAL.handle(command);
+       CommandHanlerGlobal::i()->handle(command);
     }
 }
 

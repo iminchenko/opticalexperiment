@@ -10,16 +10,16 @@ Device::Device() :
     _id(-1)
 {}
 
-Device::Device(int type, int id) :
-    _connections(DEVICECONFIG_LIST[type].getInputCount(), {nullptr, 0}),
-    _changed(true),
-    _type(type), 
-    _id(id),    
-    _concreteMatrix(DEVICECONFIG_LIST[type].exprMatrix().rows(),
-                    DEVICECONFIG_LIST[type].exprMatrix().columns()),
-    _concreteVariables(DEVICECONFIG_LIST[type].getVariables()),
-    _waveCache(DEVICECONFIG_LIST[type].getOutputCount()),
-    _connectionCache(DEVICECONFIG_LIST[type].getInputCount(), false) {
+Device::Device(int type, int id) 
+    : _connections((*DeviceConfigList::i())[type].getInputCount(), {nullptr, 0}),
+      _changed(true),
+      _type(type), 
+      _id(id),    
+      _concreteMatrix((*DeviceConfigList::i())[type].exprMatrix().rows(),
+                    (*DeviceConfigList::i())[type].exprMatrix().columns()),
+      _concreteVariables((*DeviceConfigList::i())[type].getVariables()),
+      _waveCache((*DeviceConfigList::i())[type].getOutputCount()),
+      _connectionCache((*DeviceConfigList::i())[type].getInputCount(), false) {
     updateMatrix();
 }
 
@@ -131,11 +131,11 @@ void Device::updateMatrix() {
     for (size_t i = 0; i < _concreteMatrix.rows(); ++i) {
         for (size_t j = 0; j < _concreteMatrix.columns(); ++j) {
             _concreteMatrix[i][j].real(
-                evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].first,
+                evaluateExprassion((*DeviceConfigList::i())[_type].exprMatrix()[i][j].first,
                                    _concreteVariables)
             );
             _concreteMatrix[i][j].imag(
-                evaluateExprassion(DEVICECONFIG_LIST[_type].exprMatrix()[i][j].second,
+                evaluateExprassion((*DeviceConfigList::i())[_type].exprMatrix()[i][j].second,
                                    _concreteVariables)
             );
         }

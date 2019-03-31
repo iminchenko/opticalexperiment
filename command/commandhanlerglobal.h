@@ -1,16 +1,12 @@
 #ifndef COMANDHANLERGLOBAL_H
 #define COMANDHANLERGLOBAL_H
 
-
 #include "command/commandhandler.h"
 #include "utility/singleton.hpp"
 
-#define CH_GLOBAL singleton<CommandHanlerGlobal>()   
-
-class CommandHanlerGlobal : public CommandHandler {
-    friend CommandHanlerGlobal &singleton<CommandHanlerGlobal>();
+class CommandHanlerGlobal : public CommandHandler, public Singleton<CommandHanlerGlobal> {
+    Q_OBJECT
 public:
-Q_OBJECT
     CommandHanlerGlobal();
 
 public slots:

@@ -2,7 +2,9 @@
 #include "devicemanager.h"
 #include "utility/idgenerator.h"
 
-CommandHadlerModel::CommandHadlerModel() {}
+CommandHadlerModel::CommandHadlerModel() 
+     : CommandHandler(nullptr),
+       Singleton<CommandHadlerModel> (*this) {}
 
 bool CommandHadlerModel::handle(pCommand cmnd) {
     switch (cmnd->typeCommand) {
@@ -25,21 +27,21 @@ bool CommandHadlerModel::handle(pCommand cmnd) {
 
 bool CommandHadlerModel::addItem(pCommand cmnd) {
     if (cmnd->data.ad.id == -1) {
-        cmnd->data.ad.id = DEVICE_ID_GEN.getId();
-    } else if (DEVICE_ID_GEN.getLastId() < cmnd->data.ad.id) {
-        DEVICE_ID_GEN.setLastId(cmnd->data.ad.id);
+        cmnd->data.ad.id = IdGenerator::i()->getId();
+    } else if (IdGenerator::i()->getLastId() < cmnd->data.ad.id) {
+        IdGenerator::i()->setLastId(cmnd->data.ad.id);
     }
 
-    if (DEVICE_MANAGER.getDeviceById(cmnd->data.ad.id)) {
+    if (DeviceManager::i()->getDeviceById(cmnd->data.ad.id)) {
         throw std::logic_error("Device with id already exists");
     }
 
-    DEVICE_MANAGER.addDevice(cmnd->data.ad.typeItemId, cmnd->data.ad.id);
+    DeviceManager::i()->addDevice(cmnd->data.ad.typeItemId, cmnd->data.ad.id);
     return true;
 }
 
 bool CommandHadlerModel::addConnection(pCommand cmnd) {
-    DEVICE_MANAGER.addConnection(cmnd->data.ac.sourceId,
+    DeviceManager::i()->addConnection(cmnd->data.ac.sourceId,
                                  cmnd->data.ac.sourceNum,
                                  cmnd->data.ac.destId,
                                  cmnd->data.ac.destNum);
@@ -47,12 +49,12 @@ bool CommandHadlerModel::addConnection(pCommand cmnd) {
 }
 
 bool CommandHadlerModel::deleteItem(pCommand cmnd) {
-    DEVICE_MANAGER.removeDevice(cmnd->data.dd.id);
+    DeviceManager::i()->removeDevice(cmnd->data.dd.id);
     return true;
 }
 
 bool CommandHadlerModel::deleteConnection(pCommand cmnd) {
-    DEVICE_MANAGER.removeConnection(cmnd->data.dc.sourceId,
+    DeviceManager::i()->removeConnection(cmnd->data.dc.sourceId,
                                     cmnd->data.dc.sourceNum,
                                     cmnd->data.dc.destId,
                                     cmnd->data.dc.destNum);
@@ -60,7 +62,7 @@ bool CommandHadlerModel::deleteConnection(pCommand cmnd) {
 }
 
 bool CommandHadlerModel::changeVariables(pCommand cmnd) {
-    DEVICE_MANAGER.changeVariables(cmnd->data.cv.id, cmnd->varList);
+    DeviceManager::i()->changeVariables(cmnd->data.cv.id, cmnd->varList);
     return true;
 }
 
