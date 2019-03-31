@@ -14,6 +14,9 @@
 using std::list;
 using std::complex;
 
+DeviceConfigList::DeviceConfigList()
+    : Singleton<DeviceConfigList> (*this){}
+
 void DeviceConfigList::loadDevices(std::string filename) {
     QJsonDocument doc;
     QByteArray raw;

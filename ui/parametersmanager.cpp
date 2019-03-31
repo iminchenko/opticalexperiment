@@ -2,9 +2,11 @@
 #include "command/commandhanlerglobal.h"
 
 ParametersManager::ParametersManager()
-    : _positionMode(SourcePositionMode::OnlyX) {
+      : QObject(nullptr),
+        Singleton<ParametersManager>(*this),
+        _positionMode(SourcePositionMode::OnlyX) {
     connect(this, SIGNAL(invoke(std::shared_ptr<Command>)),
-            &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
+            CommandHanlerGlobal::i(), SLOT(handle(std::shared_ptr<Command>)));
 }
 
 SourcePositionMode ParametersManager::getSourcePositionMode() const {

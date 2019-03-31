@@ -7,6 +7,10 @@ using std::shared_ptr;
 using std::make_unique;
 using std::make_shared;
 
+DeviceManager::DeviceManager() 
+    : Singleton<DeviceManager> (*this),
+      _maxId(0) {}
+
 void DeviceManager::addDevice(int type, int id) {
     switch(type) {
         case deviceType::TYPE_LASER:
@@ -62,8 +66,6 @@ size_t DeviceManager::deviceCount() const {
 int DeviceManager::getMaxId() const {
     return _maxId;
 }
-
-DeviceManager::DeviceManager() :_maxId(0) {}
 
 std::vector<std::shared_ptr<Device>>::iterator DeviceManager::getDeviceIterById(int id) {
     return std::find_if(_devices.begin(),

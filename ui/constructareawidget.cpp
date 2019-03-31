@@ -57,7 +57,7 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
     invoke(Command::AddDevice(
-               mapToScene(event->pos()), INSTRUMENT_CONFIG.getTypeId(), DEVICE_ID_GEN.getId())
+               mapToScene(event->pos()), InstrumentConfig::i()->getTypeId(), IdGenerator::i()->getId())
            );
 
     emit deviceEmplacementChanged();

@@ -9,18 +9,14 @@
 #include "deviceconfigs/devicedefines.h"
 #include "command/command.h"
 
-#define CH_CHART singleton<CommandHandlerChart>()
-
-class CommandHandlerChart: CommandHandler {
-    friend CommandHandlerChart& singleton<CommandHandlerChart>();
-
+class CommandHandlerChart: CommandHandler, public Singleton<CommandHandlerChart> {
 public:
+    CommandHandlerChart();
+    
     void setTabWidget(QTabWidget *tabWidget);
     bool handle(std::shared_ptr<Command> cmnd) override;
 
 private:
-    CommandHandlerChart();
-
     std::shared_ptr<ChartView> findItemWithId(int id);
     QList<std::shared_ptr<ChartView>>::iterator findIterWithId(int id);
 

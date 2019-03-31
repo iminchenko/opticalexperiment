@@ -10,14 +10,12 @@
 #include "deviceconfigs/devicedefines.h"
 #include "command/command.h"
 
-#define CH_VIEW singleton<CommandHandlerView>()
-
 class ConstructorItem;
 
-class CommandHandlerView : CommandHandler {
-    friend CommandHandlerView& singleton<CommandHandlerView>();
-    
+class CommandHandlerView :CommandHandler,  public Singleton<CommandHandlerView> {
 public: 
+    CommandHandlerView();    
+    
     void setScene(QGraphicsScene *scene);    
     bool handle(std::shared_ptr<Command> cmnd) override;
 
@@ -29,7 +27,6 @@ private:
     ConstructorItem *findItemWithId(int id);
 
 private:
-    CommandHandlerView();
     QGraphicsScene  *_scene;
 
     QList<ConstructorItem *> _devices;

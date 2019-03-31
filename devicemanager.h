@@ -8,12 +8,10 @@
 #include "utility/singleton.hpp"
 #include "deviceconfigs/device.h"
 
-#define DEVICE_MANAGER singleton<DeviceManager>()
-
-class DeviceManager {
+class DeviceManager : public Singleton<DeviceManager> {
 public:
-    friend DeviceManager& singleton<DeviceManager>();
-
+    DeviceManager();
+    
     void addDevice(int type, int id);
     void addConnection(int sourceDevId, int sourceOut,
                        int destDevId, int destInput);
@@ -27,8 +25,6 @@ public:
     int getMaxId() const;
 
     std::shared_ptr<Device> getDeviceById(int id);
-protected:
-    DeviceManager();
 
 private:
     std::vector<std::shared_ptr<Device>>::iterator getDeviceIterById(int id);
