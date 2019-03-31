@@ -5,12 +5,14 @@ QVector<size_t> OrdinalFunction::path() {
     createHierarchyLvls();
 
     QVector<size_t> qv;
-    for (int i = 0; i < _highLvls.size(); ++i)
-        for (int j = 0; j < _highLvls[i].size(); ++j)
+    for (int i = 0; i < _highLvls.size(); ++i) {
+        for (int j = 0; j < _highLvls[i].size(); ++j) {
             qv.append(_highLvls[i][j]);
+        }
+    }
 
     allClear();
-    return std::move(qv);
+    return qv;
 }
 
 QVector<size_t> OrdinalFunction::path(const Matrix<size_t> &inc) {
@@ -39,8 +41,9 @@ void OrdinalFunction::createNullLlv() {
 }
 
 void OrdinalFunction::createNotUsedNode(size_t N) {
-    for (size_t i = 0; i < N; ++i)
+    for (size_t i = 0; i < N; ++i) {
         _notUsedNode.push_back(i);
+    }
 }
 
 void OrdinalFunction::checkOnCoherency(size_t lvl) {
@@ -58,8 +61,9 @@ void OrdinalFunction::checkOnCoherency(size_t lvl) {
 
 void OrdinalFunction::createHierarchyLvls() {
     createNullLlv();
-    if (_highLvls[0].size() == 0)
+    if (_highLvls[0].size() == 0) {
         throw "Не удалось создать первый уровень";
+    }
 
     size_t currLvl = 1, row = 0;
     int  indexNode = 0;
@@ -68,12 +72,13 @@ void OrdinalFunction::createHierarchyLvls() {
         _highLvls.append(QVector<size_t>());
         for (int count = 0; count < _highLvls[currLvl - 1].size(); ++row) {
             row = _highLvls[currLvl - 1][count];
-            for (size_t column = 0; column < _inc.columns(); ++column)
+            for (size_t column = 0; column < _inc.columns(); ++column) {
                 if (_inc[row][column] != 0
                         && (indexNode = _notUsedNode.indexOf(column)) != -1) {
                     _notUsedNode.removeAt(indexNode);
                     _highLvls[currLvl].append(column);
                 }
+            }
         }
         
         checkOnCoherency(currLvl);

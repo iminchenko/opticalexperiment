@@ -10,16 +10,16 @@
 #include "deviceconfigs/wave.h"
 #include "ui/parametersmanager.h"
 
-constexpr double xMinus = -50;
-constexpr double xPlus = 50;
-constexpr short int sizeDiscretization = 500;
-constexpr int discritezationsStep = 1e+3;
+constexpr double X_MINUS = -50;
+constexpr double X_PLUS = 50;
+constexpr short int SIZE_DISCRETIZATION = 500;
+constexpr int DISCRETIZATION_STEP = 1e+3;
 constexpr int CHART_MINIMUM_HEIGHT = 175;
 
-constexpr double xDefaultMin = -1e-4;
-constexpr double xDefaultMax = 1e-4;
-constexpr double yDefaultMin = -1e-4;
-constexpr double yDefaultMax = 1e-4;
+constexpr double X_DEFAULT_MIN = -1e-4;
+constexpr double X_DEFAULT_MAX = 1e-4;
+constexpr double Y_DEFAULT_MIN = -1e-4;
+constexpr double Y_DEFAULT_MAX = 1e-4;
 
 constexpr double SCALE = 5e-8;
 
@@ -39,15 +39,16 @@ enum AlgorithmType {
     second
 };
 
-class ChartView : public QObject
-{
+class ChartView : public QObject {
     Q_OBJECT
 public:
     ChartView(int id, QTabWidget *_tabWidget);
     ~ChartView();
 
-    void update(double min, double max,
-                           double step, const std::function<double(double)> &func);
+    void update(double min,
+                double max,
+                double step,
+                const std::function<double(double)> &func);
 
     void update3d(const std::function<std::vector<Wave>()> &func);
     int getId();
@@ -58,6 +59,7 @@ public slots:
     void updateScaleFactor();
     void updateValues();
     void changeAlgorithm(int);
+
 private:
     void update3d();
     void initChart2D(QLayout *layout);
@@ -96,9 +98,9 @@ private:
     std::vector<QPointF> _sourcesForRand = std::vector<QPointF>();
 
     double _maxX = 1e-4, _minX = -1e-4;
-    double _stepX = std::abs(_maxX - _minX) / discritezationsStep;
+    double _stepX = std::abs(_maxX - _minX) / DISCRETIZATION_STEP;
     double _maxY = 1e-4, _minY = -1e-4;
-    double _stepY = std::abs(_maxY - _minY) / discritezationsStep;
+    double _stepY = std::abs(_maxY - _minY) / DISCRETIZATION_STEP;
     int _stepsX = static_cast<int>((_maxX - _minX)/_stepX);
     int _stepsY = static_cast<int>((_maxY - _minY)/_stepY);
 

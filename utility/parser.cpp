@@ -86,8 +86,9 @@ void removeSpaces(string &str) {
     noSpaces.reserve(str.size());
 
     for (const auto &c : str) {
-        if (c != ' ')
+        if (c != ' ') {
             noSpaces.push_back(c);
+        }
     }
 
     noSpaces.reserve(noSpaces.size());
@@ -141,7 +142,7 @@ opType operatorAt(string::const_iterator &pos,
 
     auto start = pos;
 
-    while (++pos != end && !isDelimeter(*pos));
+    while (++pos != end && !isDelimeter(*pos)) {}
 
     string op(start, pos);
 
@@ -176,8 +177,9 @@ string::const_iterator lessPriorityOperator(const string::const_iterator &begin,
         opType opCur = operatorAt(pos, end);
 
         // TODO: это костыль
-        if (iterCur == begin && opCur == OP_MINUS)
+        if (iterCur == begin && opCur == OP_MINUS) {
             opCur = OP_MINUS_UNARY;
+        }
 
         if (opCur <= opLesser) {
             opLesser = opCur;
@@ -221,8 +223,9 @@ bool inBrackets(const string::const_iterator &begin,
         }
     }
 
-    if (brCount != 0)
+    if (brCount != 0) {
         throw "incorrect brackets";
+    }
 
     return false;
 }
@@ -264,8 +267,9 @@ double calculate(double lhs, double rhs, opType op) {
 }
 
 double calculate(string::const_iterator begin, string::const_iterator end) {
-    if (begin >= end)
+    if (begin >= end) {
         return 0;
+    }
 
     if (inBrackets(begin, end)) {
         return calculate(++begin, --end);
@@ -279,16 +283,18 @@ double calculate(string::const_iterator begin, string::const_iterator end) {
     opType op = operatorAt(pos, end);
 
     // TODO: это костыль
-    if (op == OP_MINUS && start==begin)
+    if (op == OP_MINUS && start==begin) {
         op = OP_MINUS_UNARY;
+    }
 
     // если оператор не найден
     if (pos == end) {
         return std::stod(string(begin, end));
     }
 
-    if (op == OP_UNKNOWN)
+    if (op == OP_UNKNOWN) {
         throw "unknown operator";
+    }
 
     if (isUnary(op)) {
         // если что-то есть перед унарным оператором

@@ -19,7 +19,7 @@ void LaserItem::paint(QPainter *painter,
                       QWidget *) {
     drawBox(painter);
 
-    painter->setPen(QPen(defaultBorderColor, defaultBorderWidth));
+    painter->setPen(QPen(DEFAULT_BORDER_COLOR, DEFAULT_BORDER_WIDTH));
     painter->setBrush(Qt::NoBrush);
 
     painter->drawLine(QPointF(-15, 0), QPointF(15, 0));

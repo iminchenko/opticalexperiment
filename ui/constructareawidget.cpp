@@ -102,15 +102,17 @@ void ConstructAreaWidget::createConnectionLine(QPointF pos) {
     if (_connectionLine == nullptr) {
         auto v = dynamic_cast<OutputVertexItem *>(scene()->itemAt(pos,
                                                                   transform()));
-        if (v)
+        if (v) {
             _connectionLine = scene()->addLine(QLineF(v->scenePos(), pos),
                                                            QPen(Qt::black, 0));
+        }
     }
 }
 
 void ConstructAreaWidget::adjustConnectionLine(QPointF pos) {
-    if (_connectionLine != nullptr)
+    if (_connectionLine != nullptr) {
         _connectionLine->setLine(QLineF(_connectionLine->line().p1(), pos));
+    }
 }
 
 void ConstructAreaWidget::dropConnectionLine() {

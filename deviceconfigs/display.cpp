@@ -6,10 +6,11 @@ using std::vector;
 
 int64_t m(size_t i, size_t N) {
     if (!(N & 1)) {
-        if (i > N / 2)
+        if (i > N / 2) {
             return (int64_t)i - (int64_t)N / 2;
-        else
+        } else {
             return - (int64_t)N / 2 + (int64_t)i - 1;
+        }
     } else {
        return -((int64_t)N + 1) / 2 + (int64_t)i;
     }
@@ -52,8 +53,9 @@ std::complex<double> Display::I(const std::vector<Wave>& ws, double x) const {
 }
 
 Waves Display::getWave(int) const {
-    if (!_connections[0].device.expired())
+    if (!_connections[0].device.expired()) {
         return _connections[0].device.lock()->getWave(_connections[0].output);
+    }
 
     return Waves();
 }

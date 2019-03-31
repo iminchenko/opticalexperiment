@@ -29,7 +29,7 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
 
 bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd) {
     auto chart = std::make_shared<ChartView>(cmnd->data.ad.id, _tabWidget);
-    chart->update(xMinus, xPlus, xPlus / sizeDiscretization, [](double x){return 0;});
+    chart->update(X_MINUS, X_PLUS, X_PLUS / SIZE_DISCRETIZATION, [](double){return 0;});
     _charts.push_back(chart);
     return true;
 }
@@ -53,7 +53,7 @@ void CommandHandlerChart::update() {
     for (auto &chart : _charts) {
         auto rawDevice = (DEVICE_MANAGER.getDeviceById(chart->getId()).get());
         auto shield = dynamic_cast<Display*>(rawDevice);
-        chart->update(xMinus, xPlus, xPlus / sizeDiscretization,
+        chart->update(X_MINUS, X_PLUS, X_PLUS / SIZE_DISCRETIZATION,
                 [&shield](double x){return shield->getValue(x).real();});
         chart->update3d([&shield](){return shield->getWave();});
     }

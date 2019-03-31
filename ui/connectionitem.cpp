@@ -53,9 +53,10 @@ QRectF ConnectionItem::boundingRect() const {
 
 QPainterPath ConnectionItem::shape() const {
     double indent =
-            max<double>(abs(_source->scenePos().x() - _dest->scenePos().x()), 1);
-    if (indent < abs(_source->scenePos().y() - _dest->scenePos().y()))
+           max<double>(abs(_source->scenePos().x() - _dest->scenePos().x()), 1);
+    if (indent < abs(_source->scenePos().y() - _dest->scenePos().y())) {
         indent = abs(_source->scenePos().y() - _dest->scenePos().y());
+    }
 //    indent *= 0.75;
 
 //    indent = std::min<double>(175, indent);
@@ -116,8 +117,10 @@ void ConnectionItem::paint(QPainter *painter,
 std::array<QPointF, 4> ConnectionItem::getBezierCurvePoints() const {
     double indent =
       max<double>(abs(_source->scenePos().x() - _dest->scenePos().x()), 1);
-    if (indent < abs(_source->scenePos().y() - _dest->scenePos().y()))
+    if (indent < abs(_source->scenePos().y() - _dest->scenePos().y())) {
             indent = abs(_source->scenePos().y() - _dest->scenePos().y());
+    }
+
     indent *= 0.75;
 
     indent = std::min<double>(175, indent);

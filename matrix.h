@@ -53,8 +53,9 @@ Matrix<T>::Matrix(size_t rows, size_t columns, T element) :
     _columns(columns) {
     for (size_t row = 0; row < rows; ++row) {
         _matrix.push_back(std::vector<T>());
-        for (size_t column = 0; column < columns; ++column)
+        for (size_t column = 0; column < columns; ++column) {
             _matrix[row].push_back(element);
+        }
     }
 }
 
@@ -76,8 +77,9 @@ void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix) {
 
 template<class T>
 void Matrix<T>::removeAt(size_t index) {
-    if (index > _rows || index > _columns)
+    if (index > _rows || index > _columns) {
         throw "Не верный индекс";
+    }
 
     _matrix.erase(_matrix.begin() + index);
 }
@@ -86,13 +88,15 @@ template<class T>
 void Matrix<T>::resize(size_t size) {
     if (_rows < size) {
         _matrix.reserve((size_t)size);
-        for (int i = size - _rows; i > 0; i--)
+        for (int i = size - _rows; i > 0; i--) {
             _matrix.push_back(std::vector<T>(size, 0));
+        }
 
         for (int i = 0; i < _rows; i++) {
             _matrix[i].resize(size);
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < size; j++) {
                 _matrix[i][j] = 0;
+            }
         }
 
         _rows = _columns = (int)_matrix.size();
@@ -100,8 +104,9 @@ void Matrix<T>::resize(size_t size) {
         _matrix.resize((size_t)size);
         _rows = size;
         
-        for (int i = 0; i < _rows; i++)
+        for (int i = 0; i < _rows; i++) {
             _matrix[i].resize(size);
+        }
         _columns = size;
     }
 }
@@ -123,16 +128,18 @@ size_t Matrix<T>::rows() const {
 
 template<class T>
 std::vector<T> &Matrix<T>::operator[](size_t index) {
-    if (index < 0 || index > _rows)
+    if (index < 0 || index > _rows) {
         throw "Выход за границы матрицы";
+    }
 
     return _matrix[index];
 }
 
 template<class T>
 const std::vector<T> &Matrix<T>::operator[](size_t index) const {
-    if (index < 0 || index > _rows)
+    if (index < 0 || index > _rows) {
         throw "Выход за границы матрицы";
+    }
 
     return _matrix[index];
 }
@@ -150,53 +157,67 @@ Matrix<T> &Matrix<T>::operator=(const Matrix<T> &m) {
 
 template<class T>
 Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2) {
-    if (m1._rows != m2._rows && m1._columns != m2._columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns) {
         throw "Матрицы разного размера";
+    }
 
     Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
-    for (int row = 0; row < m1._rows; row++)
-        for (int column = 0; column < m1._columns; column++)
+    for (int row = 0; row < m1._rows; row++) {
+        for (int column = 0; column < m1._columns; column++) {
             newM[row][column] = m1[row][column] + m2[row][column];
+        }
+    }
 
     return newM;
 }
 
 template<class T>
 Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2) {
-    if (m1._rows != m2._rows && m1._columns != m2._columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns) {
         throw "Матрицы разного размера";
+    }
 
     Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
-    for (int row = 0; row < m1._rows; row++)
-        for (int column = 0; column < m1._columns; column++)
+    for (int row = 0; row < m1._rows; row++) {
+        for (int column = 0; column < m1._columns; column++) {
             newM[row][column] = m1[row][column] - m2[row][column];
+        }
+    }
 
     return newM;
 }
 
 template<class T>
 Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2) {
-    if (m1._rows != m2._rows && m1._columns != m2._columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns) {
         throw "Матрицы разного размера";
+    }
 
     Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
-    for (int row = 0; row < m1._rows; row++)
-        for (int column = 0; column < m1._columns; column++)
-            for (int count = 0; count < m1._columns; count++)
+    for (int row = 0; row < m1._rows; row++) {
+        for (int column = 0; column < m1._columns; column++) {
+            for (int count = 0; count < m1._columns; count++) {
                 newM[row][column] += m1[row][count] * m2[count][column];
+            }
+        }
+    }
 
     return newM;
 }
 
 template<class T>
 bool operator ==(const Matrix<T>& m1, const Matrix<T>& m2) {
-    if (m1._rows != m2._rows && m1._columns != m2._columns)
+    if (m1._rows != m2._rows && m1._columns != m2._columns) {
         return false;
+    }
 
-    for (int row = 0; row < m1._rows; row++)
-        for (int column = 0; column < m1._columns; column++)
-            if (m1[row][column] != m2[row][column])
+    for (int row = 0; row < m1._rows; row++) {
+        for (int column = 0; column < m1._columns; column++) {
+            if (m1[row][column] != m2[row][column]) {
                 return false;
+            }
+        }
+    }
     
     return true;
 }

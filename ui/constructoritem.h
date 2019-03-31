@@ -27,15 +27,13 @@ public:
     float getBorderWidth() const;
     float getWidth() const;
 
-    int getId() const;
+    int getId() const override;
 
     OutputVertexItem *getOutput(int number);
     InputVertexItem *getInput(int number);
 
 protected:
     QRectF boundingRect() const override;
-
-    void keyPressEvent(QKeyEvent *event) override;
 
     QVariant itemChange(GraphicsItemChange change,
                         const QVariant &value) override;
@@ -45,11 +43,11 @@ protected:
     void addOutputVertex(float angle = 0);
     void addInputVertex(float angle = 0);
 
-    static const QColor defaultBackgroundColor;
-    static const QColor defaultSelectedColor;
-    static const QColor defaultBorderColor;
-    static const float defaultBorderWidth;
-    static const float defaultWidth;
+    static const QColor DEFAULT_BACKGROUND_COLOR;
+    static const QColor DEFAULT_SELECTED_COLOR;
+    static const QColor DEFAULT_BORDER_COLOR;
+    static const float DEFAULT_BORDER_WIDTH;
+    static const float DEFAULT_WIDTH;
 
 private:
     QColor _backgroundColor;

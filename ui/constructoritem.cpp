@@ -5,16 +5,16 @@
 
 #include "constructoritem.h"
 
-const QColor ConstructorItem::defaultBackgroundColor = QColor(200, 225, 255);
-const QColor ConstructorItem::defaultSelectedColor = QColor(200, 255, 225);
-const QColor ConstructorItem::defaultBorderColor = Qt::black;
-const float ConstructorItem::defaultBorderWidth = 2;
-const float ConstructorItem::defaultWidth = 50;
+const QColor ConstructorItem::DEFAULT_BACKGROUND_COLOR = QColor(200, 225, 255);
+const QColor ConstructorItem::DEFAULT_SELECTED_COLOR = QColor(200, 255, 225);
+const QColor ConstructorItem::DEFAULT_BORDER_COLOR = Qt::black;
+const float ConstructorItem::DEFAULT_BORDER_WIDTH = 2;
+const float ConstructorItem::DEFAULT_WIDTH = 50;
 
 ConstructorItem::ConstructorItem(QPointF pos, int id, QGraphicsItem *parent)
-    :QGraphicsItem(parent), _backgroundColor(defaultBackgroundColor),
-      _selectedColor(defaultSelectedColor), _borderColor(defaultBorderColor),
-      _borderWidth(defaultBorderWidth), _width(defaultWidth),
+    :QGraphicsItem(parent), _backgroundColor(DEFAULT_BACKGROUND_COLOR),
+      _selectedColor(DEFAULT_SELECTED_COLOR), _borderColor(DEFAULT_BORDER_COLOR),
+      _borderWidth(DEFAULT_BORDER_WIDTH), _width(DEFAULT_WIDTH),
       _outCount(0), _inCount(0), _id(id) {
     setFlag(ItemIsMovable);
     setFlag(ItemIsSelectable);
@@ -77,14 +77,6 @@ QRectF ConstructorItem::boundingRect() const {
                   _width + _borderWidth, _width + _borderWidth);
 }
 
-void ConstructorItem::keyPressEvent(QKeyEvent *event) {
-    QGraphicsItem::keyPressEvent(event);
-
-//    // there may be a better solution
-//    if (event->key() == Qt::Key_Delete)
-//        delete this;
-}
-
 QVariant ConstructorItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                  const QVariant &value) {
     for (auto child : childItems()) {
@@ -100,10 +92,11 @@ QVariant ConstructorItem::itemChange(QGraphicsItem::GraphicsItemChange change,
 void ConstructorItem::drawBox(QPainter *painter) const {
     painter->setPen(QPen(getBorderColor(), getBorderWidth()));
 
-    if (!isSelected())
+    if (!isSelected()) {
         painter->setBrush(getBackgroundColor());
-    else
+    } else {
         painter->setBrush(getSelectedColor());
+    }
 
     float halfWidth = _width/2;
     painter->drawRoundRect(QRectF(-halfWidth, -halfWidth, _width, _width));

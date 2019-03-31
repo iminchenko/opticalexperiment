@@ -131,8 +131,9 @@ size_t DeviceConfigList::count() const {
 
 const DeviceConfig &DeviceConfigList::operator[](int id) const {
     // позже добавить нормальную проверку на лазер и экран
-    if (id == deviceType::TYPE_LASER || id == deviceType::TYPE_SHIELD)
+    if (id == deviceType::TYPE_LASER || id == deviceType::TYPE_SHIELD) {
         return _dummyDevice;
+    }
 
     return _devList[id];
 }

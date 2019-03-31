@@ -1,10 +1,10 @@
 #include <list>
 #include <memory>
-
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <QFile>
 
 #include "constructorserializer.h"
 #include "utility/idgenerator.h"
