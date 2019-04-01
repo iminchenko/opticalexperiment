@@ -1,5 +1,5 @@
-# Checks: '*'
-WarningsAsErrors: 'readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming'
+Checks: 'readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming,google-readability-casting,misc-unused-*,clang-diagnostic-absolute-value,hicpp-exception-baseclass,hicpp-use-equals-default,readability-container-size-empty,eadability-inconsistent-declaration-parameter-name,modernize-deprecated-headers,google-readability-todo,google-readability-todo,readability-else-after-return,hicpp-use-auto,modernize-use-auto,clang-analyzer-security.FloatLoopCounte,cppcoreguidelines-pro-type-member-init'
+WarningsAsErrors: 'readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming,google-readability-casting,misc-unused-*,clang-diagnostic-absolute-value,hicpp-exception-baseclass,hicpp-use-equals-default,readability-container-size-empty,eadability-inconsistent-declaration-parameter-name,modernize-deprecated-headers'
 #HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 FormatStyle: file

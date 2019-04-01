@@ -120,7 +120,7 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
 
             VarList varList;
 
-            for (auto key: varsObject.keys()) {
+            for (const auto &key: varsObject.keys()) {
                 varList.emplace_back(key.toStdString().c_str(),
                                      varsObject[key].toDouble());
             }

@@ -43,22 +43,22 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
         - EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-        - AFTER_BUILD="clang-tidy-6.0 -line-filter=$(cat clang-lines-filter.json) -checks=readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h"
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-6.0
-          packages:
-          - clang-6.0
-          - clang-tidy-6.0
-          - clang-format-6.0
-      env:
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
-        - EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-        - AFTER_BUILD="clang-tidy-6.0 -line-filter=$(cat clang-lines-filter.json) -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h"
+        - AFTER_BUILD="clang-tidy-6.0 -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h *.hpp deviceconfigs/*.hpp ui/*.h utility/*.hpp command/*.hpp"
+#
+#    - os: linux
+#      addons:
+#        apt:
+#          sources:
+#          - ubuntu-toolchain-r-test
+#          - llvm-toolchain-trusty-6.0
+#          packages:
+#          - clang-6.0
+#          - clang-tidy-6.0
+#          - clang-format-6.0
+#      env:
+#        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+#        - EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+#        - AFTER_BUILD="clang-tidy-6.0 -checks=readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming -line-filter=$(cat clang-lines-filter.json) -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h"
 
 before_install:
   # Qt
