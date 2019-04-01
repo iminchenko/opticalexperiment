@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "commandhandlerview.h"
 #include "laseritem.h"
 #include "shielditem.h"
@@ -65,8 +67,9 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
     auto source = findItemWithId(cmnd->data.ac.sourceId);
     auto dest = findItemWithId(cmnd->data.ac.destId);
 
-    if (!source || !dest)
+    if (!source || !dest) {
         return false;
+    }
 
     auto v1 = source->getOutput(cmnd->data.ac.sourceNum);
     auto v2 = dest->getInput(cmnd->data.ac.destNum);
@@ -82,8 +85,9 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
                              [cmnd](ConstructorItem *item)
                              { return item->getId() == cmnd->data.dd.id; });
 
-    if (iter == _devices.end())
+    if (iter == _devices.end()) {
         return false;
+    }
 
     delete *iter;
     _devices.erase(iter);
@@ -94,9 +98,10 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
 bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {
     auto vertex = findItemWithId(cmnd->data.dc.sourceId);
 
-    if (!vertex)
+    if (!vertex) {
         // что-то поломалось
         return false;
+    }
 
     auto out = vertex->getOutput(cmnd->data.dc.sourceNum);
 

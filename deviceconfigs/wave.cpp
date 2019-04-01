@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "wave.h"
 
 Wave::Wave(): _ex(std::complex<double>(0., 0.)),
@@ -36,8 +38,9 @@ bool Wave::operator==(const Wave &wave) {
 
 Wave operator*(const TransMatrix &m, const Wave &w) {
     /* В волне всегда два компонента */
-    if (m.columns() != 2)
-        throw "Количество столбцов матрицы не равно 2";
+    if (m.columns() != 2) {
+        throw std::logic_error("Количество столбцов матрицы не равно 2");
+    }
 
     Wave newW;
 
@@ -48,10 +51,11 @@ Wave operator*(const TransMatrix &m, const Wave &w) {
 }
 
 Waves operator*(const TransMatrix &m, const Waves &ws) {
-    if (m.columns() != ws.size() * 2)
-        throw "Умножение невозможно";
+    if (m.columns() != ws.size() * 2) {
+        throw std::logic_error("Умножение невозможно");
+    }
 
-    Waves newWs((size_t)(m.rows() / 2));
+    Waves newWs(static_cast<size_t>(m.rows() / 2));
     for (size_t i = 0; i < m.rows(); ++i) {
         std::complex<double> accum(0, 0);
 

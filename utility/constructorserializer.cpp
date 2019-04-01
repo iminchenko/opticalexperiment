@@ -1,10 +1,10 @@
 #include <list>
 #include <memory>
-
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
+#include <QFile>
 
 #include "constructorserializer.h"
 #include "utility/idgenerator.h"
@@ -35,7 +35,7 @@ QByteArray ConstructorSerializer::serialize() {
             jsonDevice["pos"] = QJsonArray{ pos.x(), pos.y() };
 
             auto varList = device->getVariables();
-            if (varList.size()) {
+            if (!varList.empty()) {
                 QJsonObject varsObject;
 
                 for (const auto &variable: varList) {
@@ -120,7 +120,7 @@ void ConstructorSerializer::deserialize(const QByteArray &raw) {
 
             VarList varList;
 
-            for (auto key: varsObject.keys()) {
+            for (const auto &key: varsObject.keys()) {
                 varList.emplace_back(key.toStdString().c_str(),
                                      varsObject[key].toDouble());
             }

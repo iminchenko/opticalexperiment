@@ -6,8 +6,6 @@
 #include "vertexitem.h"
 #include "connectionitem.h"
 
-using std::list;
-
 VertexItem::VertexItem(ConstructorItem *parent, int number)
     :QGraphicsItem(parent), _hoverEvent(false),
      _connection(nullptr), _number(number){
@@ -21,11 +19,13 @@ VertexItem::~VertexItem() {
 
 bool VertexItem::canConnect(const VertexItem *vertex) {
     if (_connection && (_connection->getDestination() == vertex
-                        || _connection->getSource() == vertex))
+                        || _connection->getSource() == vertex)) {
         return false;
+    }
 
-    if (vertex->parentItem() == parentItem())
+    if (vertex->parentItem() == parentItem()) {
         return false;
+    }
 
     return !_connection;
 }
@@ -62,8 +62,9 @@ InputVertexItem::InputVertexItem(ConstructorItem *parent, int number)
 void InputVertexItem::paint(QPainter *painter,
                             const QStyleOptionGraphicsItem*,
                             QWidget*) {
-    if (isHoverEvent())
+    if (isHoverEvent()) {
         drawAim(painter);
+    }
 
     painter->setPen(QPen(Qt::black, 2));
     painter->setBrush(QColor(200, 225, 255));
@@ -79,8 +80,9 @@ void VertexItem::drawAim(QPainter *painter) const {
 }
 
 bool VertexItem::addConnection(ConnectionItem *connection) {
-   if (_connection)
+   if (_connection) {
        return false;
+   }
 
    _connection = connection;
    return true;
@@ -92,8 +94,9 @@ void VertexItem::removeConnection() {
 
 QVariant VertexItem::itemChange(QGraphicsItem::GraphicsItemChange change,
                                 const QVariant &value) {
-    if (_connection)
+    if (_connection) {
         _connection->update();
+    }
     return QGraphicsItem::itemChange(change, value);
 }
 
@@ -107,8 +110,9 @@ OutputVertexItem::OutputVertexItem(ConstructorItem *parent, int number)
 void OutputVertexItem::paint(QPainter *painter,
                              const QStyleOptionGraphicsItem*,
                              QWidget*) {
-    if (isHoverEvent())
+    if (isHoverEvent()) {
         drawAim(painter);
+    }
 
     painter->setPen(QPen(Qt::black, 2));
     painter->setBrush(QColor(200, 225, 255));

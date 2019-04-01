@@ -1,0 +1,65 @@
+sudo: true
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+        - COMPILER_FLAGS="-DCMAKE_CXX_FLAGS=-Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic"
+        - EXTRA_FLAGS=""
+        - AFTER_BUILD=""
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-6.0
+          packages:
+            - clang-6.0
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+        - COMPILER_FLAGS="-DCMAKE_CXX_FLAGS=-Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic"
+        - EXTRA_FLAGS=""
+        - AFTER_BUILD=""
+
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-6.0
+          packages:
+            - clang-6.0
+            - clang-tidy-6.0
+            - clang-format-6.0
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+        - EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+        - AFTER_BUILD="clang-tidy-6.0 -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h *.hpp deviceconfigs/*.hpp ui/*.h utility/*.hpp command/*.hpp"
+
+before_install:
+  # Qt
+  - sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y
+  - sudo apt-get update
+
+install:
+  # Qt
+  - sudo apt-get install qt510base qt510-meta-minimal qt510charts-no-lgpl qt510datavis3d-no-lgpl -y
+  - source /opt/qt510/bin/qt510-env.sh
+
+script:
+  - eval "${MATRIX_EVAL}"
+  - mkdir build
+  - cd build
+  - cmake "${COMPILER_FLAGS}" ${EXTRA_FLAGS} ..
+  - make -j2 -k
+  - cd ..
+  - ${AFTER_BUILD}

@@ -9,8 +9,9 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Charts REQUIRED)
+find_package(Qt5DataVisualization REQUIRED)
 
-file(GLOB helloworld_SRC
+file(GLOB optical_SRC
         "*.h"
         "*.hpp"
         "*.cpp"
@@ -27,12 +28,12 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-add_executable(OpticalExperiment ${helloworld_SRC})
+add_executable(OpticalExperiment ${optical_SRC})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/deviceconfigs)
 
 # указываем, какие библиотеки необходимо подключить
 target_link_libraries(${PROJECT_NAME} Qt5::Core)
 target_link_libraries(${PROJECT_NAME} Qt5::Gui)
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
 target_link_libraries(${PROJECT_NAME} Qt5::Charts)
+target_link_libraries(${PROJECT_NAME} Qt5::DataVisualization)

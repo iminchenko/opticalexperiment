@@ -3,7 +3,8 @@
 
 #include <QSurfaceDataItem>
 #include <QPushButton>
-#include  "math.h"
+#include <cmath>
+
 ChartView::ChartView(int id, QTabWidget *tabWidget)
     : _id(id),
       _tabWidget(tabWidget) {
@@ -15,28 +16,28 @@ ChartView::ChartView(int id, QTabWidget *tabWidget)
     connect( _algorithmSelector, SIGNAL(currentIndexChanged(int)),
             this, SLOT(changeAlgorithm(int)));
 
-    QFormLayout *algoLayout = new QFormLayout();
+    auto algoLayout = new QFormLayout();
     algoLayout->addRow("Algorithm type:", _algorithmSelector);
 
-    QGroupBox *algorithmControls = new QGroupBox();
+    auto algorithmControls = new QGroupBox();
     algorithmControls->setLayout(algoLayout);
     algorithmControls->setTitle("Algorithm settings:");
     containerLayout->addWidget(algorithmControls);
 
     //adding scaling controlls
-    QFormLayout *scalingLayout = new QFormLayout();
+    auto scalingLayout = new QFormLayout();
 
     _slider = new QSlider(Qt::Horizontal);
     _slider->setMaximum(100);
     _slider->setMinimum(10);
-    connect((QSlider*) _slider, SIGNAL(sliderReleased()), this, SLOT(updateScaleFactor()));
+    connect(_slider, SIGNAL(sliderReleased()), this, SLOT(updateScaleFactor()));
 
     _maxLabel = new QLabel("0");
 
     scalingLayout->addRow("Scale factor:", _slider);
     scalingLayout->addRow("Max value:",_maxLabel);
 
-    QGroupBox *maxValueBlock = new QGroupBox();
+    auto maxValueBlock = new QGroupBox();
     maxValueBlock->setLayout(scalingLayout);
     maxValueBlock->setTitle("Scaling chart:");
     containerLayout->addWidget(maxValueBlock);
@@ -46,22 +47,22 @@ ChartView::ChartView(int id, QTabWidget *tabWidget)
     _xMaxEditField = new QLineEdit();
     _yMinEditField = new QLineEdit();
     _yMaxEditField = new QLineEdit();
-    _xMinEditField->setText(QString::number(xDefaultMin));
-    _xMaxEditField->setText(QString::number(xDefaultMax));
-    _yMinEditField->setText(QString::number(yDefaultMin));
-    _yMaxEditField->setText(QString::number(yDefaultMax));
+    _xMinEditField->setText(QString::number(X_DEFAULT_MIN));
+    _xMaxEditField->setText(QString::number(X_DEFAULT_MAX));
+    _yMinEditField->setText(QString::number(Y_DEFAULT_MIN));
+    _yMaxEditField->setText(QString::number(Y_DEFAULT_MAX));
 
-    QFormLayout *sizeControlsLayout = new QFormLayout();
+    auto sizeControlsLayout = new QFormLayout();
     sizeControlsLayout->addRow("xMin", _xMinEditField);
     sizeControlsLayout->addRow("xMax", _xMaxEditField);
     sizeControlsLayout->addRow("yMin", _yMinEditField);
     sizeControlsLayout->addRow("yMax", _yMaxEditField);
 
-    QPushButton *updateBtn = new QPushButton("Update");
+    auto updateBtn = new QPushButton("Update");
     sizeControlsLayout->addWidget(updateBtn);
     connect(updateBtn, SIGNAL(clicked()), this, SLOT(updateValues()));
 
-    QGroupBox *xyControls = new QGroupBox();
+    auto xyControls = new QGroupBox();
     xyControls->setLayout(sizeControlsLayout);
     xyControls->setTitle("X,Y controls:");
     containerLayout->addWidget(xyControls);
@@ -71,7 +72,7 @@ ChartView::ChartView(int id, QTabWidget *tabWidget)
     initChart2D(containerLayout);
 
     //adding scroll area
-    QWidget* inner = new QFrame();
+    auto* inner = new QFrame();
     inner->setLayout(containerLayout);
 
     _scrollArea = new QScrollArea();
@@ -91,7 +92,7 @@ void ChartView::initChart2D(QLayout *layout) {
     _chart->addSeries(new QLineSeries(_chart));
 
     _chart->createDefaultAxes();
-    _chart->axisX()->setRange(xMinus, xPlus);
+    _chart->axisX()->setRange(X_MINUS, X_PLUS);
     _chart->axisY()->setRange(0, 0.01);
     _chart->legend()->hide();
     _chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -186,7 +187,9 @@ void ChartView::changeAlgorithm(int type) {
 }
 
 void ChartView::updateTabIndexAfterRemovingTab(int idx) {
-    if (idx < _tabIdx) _tabIdx--;
+    if (idx < _tabIdx) {
+        _tabIdx--;
+    }
 }
 
 QSurfaceDataArray* ChartView::getDefaultChart() {
@@ -247,11 +250,11 @@ void ChartView::update3d() {
     _maxY = _yMaxEditField ->text().toDouble();
     _minY = _yMinEditField->text().toDouble();
 
-    _stepX = std::abs(_maxX - _minX) / discritezationsStep;
-    _stepY = std::abs(_maxY - _minY) / discritezationsStep;
+    _stepX = std::abs(_maxX - _minX) / DISCRETIZATION_STEP;
+    _stepY = std::abs(_maxY - _minY) / DISCRETIZATION_STEP;
 
-    _stepsX = (int) (_maxX - _minX)/_stepX;
-    _stepsY = (int) (_maxY - _minY)/_stepY;
+    _stepsX = static_cast<int>(_maxX - _minX)/_stepX;
+    _stepsY = static_cast<int>(_maxY - _minY)/_stepY;
 
     QSurfaceDataArray *newArray;
     switch(_algoType) {
@@ -318,15 +321,16 @@ QPointF ChartView::getSourcePositionInCircle() const {
 }
 
 double ChartView::randomDouble(double max) const {
-    return (double)(qrand()) / RAND_MAX * max;
+    return static_cast<double>(qrand()) / RAND_MAX * max;
 }
 
 QSurfaceDataArray* ChartView::fill3DSeriesFirstAlgo() {
-    if (_waves.size() == 0)
+    if (_waves.empty()) {
         return getDefaultChart();
+    }
 
     // result matrix of intencivity
-    QSurfaceDataArray *dataArray = new QSurfaceDataArray;
+    auto dataArray = new QSurfaceDataArray;
     dataArray->reserve(_stepsY);
     // max value of intencivity
     _max = 0;
@@ -381,9 +385,9 @@ QSurfaceDataArray* ChartView::fill3DSeriesFirstAlgo() {
             newRow->push_back(
                  QSurfaceDataItem(
                      QVector3D(
-                         (float) currentPoint.x(),
-                         (float) I,
-                         (float) currentPoint.y()
+                         static_cast<float>(currentPoint.x()),
+                         static_cast<float>(I),
+                         static_cast<float>(currentPoint.y())
                      )
                  )
             );
@@ -398,8 +402,9 @@ QSurfaceDataArray* ChartView::fill3DSeriesFirstAlgo() {
 }
 
 QSurfaceDataArray* ChartView::fill3DSeriesSecondAlgo() {
-    if (_waves.size() == 0)
+    if (_waves.empty()) {
         return getDefaultChart();
+    }
 
     // result matrix of intencivity
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
@@ -469,9 +474,9 @@ QSurfaceDataArray* ChartView::fill3DSeriesSecondAlgo() {
             newRow->push_back(
                  QSurfaceDataItem(
                      QVector3D(
-                         (float) currentPoint.x(),
-                         (float) I,
-                         (float) currentPoint.y()
+                         static_cast<float>(currentPoint.x()),
+                         static_cast<float>(I),
+                         static_cast<float>(currentPoint.y())
                      )
                  )
             );
@@ -489,8 +494,9 @@ double ChartView::fill2DSeries(QXYSeries *series, double min, double max,
     double step, const std::function<double(double)> &func) {
 
     double maxValue = 1e-7;
-    if (!series)
+    if (!series) {
         return maxValue;
+    }
 
     series->clear();
 

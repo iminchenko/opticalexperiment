@@ -1,0 +1,3 @@
+/home/travis/build/iminchenko/opticalexperiment/build/OpticalExperiment_autogen/include/ui_mainwindow.h:33:7: error: invalid case style for class 'Ui_MainWindow' [readability-identifier-naming,-warnings-as-errors]
+/home/travis/build/iminchenko/opticalexperiment/build/OpticalExperiment_autogen/include/ui_mainwindow.h:59:48: error: statement should be inside braces [readability-braces-around-statements,-warnings-as-errors]
+/home/travis/build/iminchenko/opticalexperiment/build/OpticalExperiment_autogen/include/ui_mainwindow.h:114:44: error: statement should be inside braces [readability-braces-around-statements,-warnings-as-errors]

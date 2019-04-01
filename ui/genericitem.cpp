@@ -10,7 +10,7 @@ GenericItem::GenericItem(QPointF pos,
     int count = (*DeviceConfigList::i())[_itemId].getInputCount();
     if (count > 1) {
         for (int i = 0; i < count; ++i) {
-            addInputVertex((float)i / (count - 1) * 90);
+            addInputVertex(static_cast<float>(i) / (count - 1) * 90);
         }
     } else {
         addInputVertex();
@@ -20,7 +20,7 @@ GenericItem::GenericItem(QPointF pos,
 
     addOutputVertex();
     for (int i = 1; i < count; ++i) {
-        addOutputVertex(((float)i / (count - 1)) * 90);
+        addOutputVertex((static_cast<float>(i) / (count - 1)) * 90);
     }
 
     const auto& vars =  (*DeviceConfigList::i())[_itemId].getVariables();

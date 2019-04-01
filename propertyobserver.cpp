@@ -6,8 +6,9 @@
 PropertyObserver::PropertyObserver(QTableWidget *propertyWidget,
                                    QObject *parent)
     :QObject(parent), _propertyWidget(propertyWidget) {
-    if (!propertyWidget)
+    if (!propertyWidget) {
         throw std::invalid_argument("nullptr QTableWidget");
+    }
 
     connect(_propertyWidget, SIGNAL(cellChanged(int,int)),
             this, SLOT(writeProperties()));
@@ -45,15 +46,18 @@ void PropertyObserver::writeProperties() {
         // TODO снова костыль
         emit changed();
     } else {
-        while (_propertyWidget->rowCount()) _propertyWidget->removeRow(0);
+        while (_propertyWidget->rowCount()){
+            _propertyWidget->removeRow(0);
+        }
     }
 }
 
 void PropertyObserver::fillList() {
     // чтобы не пытаться записать в пропертис только что выгруженные данные
     _propertyWidget->blockSignals(true);
-    while (_propertyWidget->rowCount())
+    while (_propertyWidget->rowCount()) {
         _propertyWidget->removeRow(0);
+    }
 
     int counter = 0;
     auto lst = _propertyItem->getProperties();

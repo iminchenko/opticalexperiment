@@ -1,5 +1,6 @@
 #include "properties.h"
 
+Properties::~Properties() = default;
 
 QMap<QString, double> Properties::getProperties() const {
     return _properties;

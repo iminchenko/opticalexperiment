@@ -65,10 +65,11 @@ int DeviceConfig::getOutputCount() const {
 void DeviceConfig::draw(QPainter *painter, bool selected) const {
     painter->setPen(QPen(Qt::black, 2));
 
-    if (!selected)
+    if (!selected) {
         painter->setBrush(QColor(200, 225, 255));
-    else
+    } else {
         painter->setBrush(QColor(200, 255, 225));
+    }
 
     qreal halfWidth = _bounding.width() / 2;
     qreal halfHeight = _bounding.height() / 2;

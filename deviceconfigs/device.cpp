@@ -41,10 +41,10 @@ void Device::setConnection(int input,
                            std::shared_ptr<Device> source,
                            int output) {
     _changed = true;
-    _connections[input] = connection(source, output);
+    _connections[input] = Connection(source, output);
 }
 
-Device::connection Device::getConnection(int input) {
+Device::Connection Device::getConnection(int input) {
     return _connections[input];
 }
 
@@ -61,8 +61,9 @@ VarList Device::getVariables() const {
 }
 
 bool Device::changed() const {
-    if (_changed)
+    if (_changed) {
         return true;
+    }
 
     int j = 0;
     for (const auto &i : _connections) {
