@@ -12,9 +12,6 @@
 #include "ui/commandhandlerchart.h"
 #include "utility/constructorserializer.h"
 
-using std::list;
-using std::shared_ptr;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {

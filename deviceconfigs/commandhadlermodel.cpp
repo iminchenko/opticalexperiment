@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "commandhadlermodel.h"
 #include "devicemanager.h"
 #include "utility/idgenerator.h"

@@ -24,7 +24,7 @@ ConstructorItem::ConstructorItem(QPointF pos, int id, QGraphicsItem *parent)
     setZValue(1);
 }
 
-ConstructorItem::~ConstructorItem() {}
+ConstructorItem::~ConstructorItem() = default;
 
 int ConstructorItem::getItemType() const {
     return (isSource() ? TYPE_SOURCE : 0) | (isReciever() ? TYPE_RECIEVER : 0);

@@ -2,6 +2,7 @@
 
 #include <complex>
 #include <vector>
+#include <stdexcept>
 
 template<class T>
 class Matrix {
@@ -78,7 +79,7 @@ void Matrix<T>::setMatrix(const std::vector<std::vector<T>>& matrix) {
 template<class T>
 void Matrix<T>::removeAt(size_t index) {
     if (index > _rows || index > _columns) {
-        throw "Не верный индекс";
+        throw std::logic_error("Не верный индекс");
     }
 
     _matrix.erase(_matrix.begin() + index);
@@ -129,7 +130,7 @@ size_t Matrix<T>::rows() const {
 template<class T>
 std::vector<T> &Matrix<T>::operator[](size_t index) {
     if (index < 0 || index > _rows) {
-        throw "Выход за границы матрицы";
+        throw std::logic_error("Выход за границы матрицы");
     }
 
     return _matrix[index];
@@ -138,7 +139,7 @@ std::vector<T> &Matrix<T>::operator[](size_t index) {
 template<class T>
 const std::vector<T> &Matrix<T>::operator[](size_t index) const {
     if (index < 0 || index > _rows) {
-        throw "Выход за границы матрицы";
+        throw std::logic_error("Выход за границы матрицы");
     }
 
     return _matrix[index];
@@ -158,7 +159,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix<T> &m) {
 template<class T>
 Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns) {
-        throw "Матрицы разного размера";
+        throw std::logic_error("Матрицы разного размера");
     }
 
     Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
@@ -174,7 +175,7 @@ Matrix<T> operator +(const Matrix<T>& m1, const Matrix<T>& m2) {
 template<class T>
 Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns) {
-        throw "Матрицы разного размера";
+        throw std::logic_error("Матрицы разного размера");
     }
 
     Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);
@@ -190,7 +191,7 @@ Matrix<T> operator -(const Matrix<T>& m1, const Matrix<T>& m2) {
 template<class T>
 Matrix<T> operator *(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._rows != m2._rows && m1._columns != m2._columns) {
-        throw "Матрицы разного размера";
+        throw std::logic_error("Матрицы разного размера");
     }
 
     Matrix<T> newM = Matrix<T>(m1._rows, m2._columns);

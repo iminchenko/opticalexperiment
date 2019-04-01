@@ -12,7 +12,6 @@
 #include "utility/parser.h"
 
 using std::list;
-using std::complex;
 
 DeviceConfigList::DeviceConfigList()
     : Singleton<DeviceConfigList> (*this){}
@@ -52,7 +51,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
     QJsonArray arr = doc.array();
 
-    _devList.reserve((size_t)arr.size());
+    _devList.reserve(static_cast<size_t>(arr.size()));
 
     for (const auto &iter : arr) {
         QJsonObject obj = iter.toObject();
@@ -72,7 +71,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
                 if (type != DrawingConfig::TYPE_TEXT) {
                     QJsonArray jsonCoords = drawObj["coordinates"].toArray();
-                    oneDrawing.coordinates.reserve((size_t) jsonCoords.size());
+                    oneDrawing.coordinates.reserve(static_cast<size_t>(jsonCoords.size()));
 
                     for (const auto &coordinate : jsonCoords) {
                         oneDrawing.coordinates.push_back(coordinate.toInt());

@@ -7,12 +7,12 @@ using std::vector;
 int64_t m(size_t i, size_t N) {
     if (!(N & 1)) {
         if (i > N / 2) {
-            return (int64_t)i - (int64_t)N / 2;
+            return static_cast<int64_t>(i) - static_cast<int64_t>(N) / 2;
         } else {
-            return - (int64_t)N / 2 + (int64_t)i - 1;
+            return - static_cast<int64_t>(N) / 2 + static_cast<int64_t>(i) - 1;
         }
     } else {
-       return -((int64_t)N + 1) / 2 + (int64_t)i;
+       return -(static_cast<int64_t>(N) + 1) / 2 + static_cast<int64_t>(i);
     }
 }
 

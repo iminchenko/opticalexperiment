@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "commandhandlerview.h"
 #include "laseritem.h"
 #include "shielditem.h"

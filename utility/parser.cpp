@@ -1,23 +1,19 @@
-#include <iostream>
 #include <string>
 #include <array>
 #include <cctype>
 #include <utility>
-#include <list>
 #include <algorithm>
 #include <sstream>
 #include <array>
-//#include <experimental/array>
 #include <experimental/string_view>
 #include <cmath>
+#include <stdexcept>
 
-using std::cin;
-using std::cout;
-using std::endl;
+#include "parser.h"
+
 using std::string;
 using std::stringstream;
 using std::array;
-using std::list;
 using std::pair;
 using std::make_pair;
 //using std::experimental::make_array;
@@ -213,7 +209,7 @@ bool inBrackets(const string::const_iterator &begin,
             ++brCount;
             if (brCount == 0) {
                 // значит, скобки уходили в минус
-                throw "incorrect brackets";
+                throw std::logic_error("incorrect brackets");
             }
         } else if (*iter == ')') {
             --brCount;
@@ -224,7 +220,7 @@ bool inBrackets(const string::const_iterator &begin,
     }
 
     if (brCount != 0) {
-        throw "incorrect brackets";
+        throw std::logic_error("incorrect brackets");
     }
 
     return false;
@@ -246,7 +242,7 @@ double calculate(double rhs, opType op) {
         case OP_EXP:
             return exp(rhs);
         default:
-            throw "unary operator expected";
+            throw std::logic_error("unary operator expected");
     }
 }
 
@@ -262,7 +258,7 @@ double calculate(double lhs, double rhs, opType op) {
         case OP_MULT:
             return lhs * rhs;
         default:
-            throw "binary operator expected";
+            throw std::logic_error("binary operator expected");
     }
 }
 
@@ -293,20 +289,20 @@ double calculate(string::const_iterator begin, string::const_iterator end) {
     }
 
     if (op == OP_UNKNOWN) {
-        throw "unknown operator";
+        throw std::logic_error("unknown operator");
     }
 
     if (isUnary(op)) {
         // если что-то есть перед унарным оператором
         if (start != begin) {
-            throw "incorrent using of unary operator";
+            throw std::logic_error("incorrent using of unary operator");
         }
 
         return calculate(calculate(pos, end), op);
     } else if (isBinary(op)) {
         // если ничего нет перед бинарным оператором
         if (start == begin) {
-            throw "incorrect using of binary operator";
+            throw std::logic_error("incorrect using of binary operator");
         }
 
         return calculate(calculate(begin, start), calculate(pos, end), op);
@@ -316,7 +312,7 @@ double calculate(string::const_iterator begin, string::const_iterator end) {
 }
 
 double evaluateExprassion(string expr,
-                          const list<pair<string, double>> &variables) {
+                          const std::list<pair<string, double>> &variables) {
     removeSpaces(expr);
     insertVariables(expr, variables);
     return calculate(expr.begin(), expr.end());

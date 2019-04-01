@@ -6,8 +6,6 @@
 #include "vertexitem.h"
 #include "connectionitem.h"
 
-using std::list;
-
 VertexItem::VertexItem(ConstructorItem *parent, int number)
     :QGraphicsItem(parent), _hoverEvent(false),
      _connection(nullptr), _number(number){

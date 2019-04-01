@@ -14,7 +14,7 @@
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
-    auto *scene = new QGraphicsScene(this);
+    auto scene = new QGraphicsScene(this);
     scene->setSceneRect(this->rect());
     setScene(scene);
 

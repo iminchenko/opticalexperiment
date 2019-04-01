@@ -35,7 +35,7 @@ QByteArray ConstructorSerializer::serialize() {
             jsonDevice["pos"] = QJsonArray{ pos.x(), pos.y() };
 
             auto varList = device->getVariables();
-            if (varList.size()) {
+            if (!varList.empty()) {
                 QJsonObject varsObject;
 
                 for (const auto &variable: varList) {

@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "ordinalfunction.h"
 
 QVector<size_t> OrdinalFunction::path() {
@@ -61,14 +63,14 @@ void OrdinalFunction::checkOnCoherency(size_t lvl) {
 
 void OrdinalFunction::createHierarchyLvls() {
     createNullLlv();
-    if (_highLvls[0].size() == 0) {
-        throw "Не удалось создать первый уровень";
+    if (_highLvls[0].empty()) {
+        throw std::logic_error("Не удалось создать первый уровень");
     }
 
     size_t currLvl = 1, row = 0;
     int  indexNode = 0;
     
-    while(_notUsedNode.size() != 0) {
+    while(!_notUsedNode.empty()) {
         _highLvls.append(QVector<size_t>());
         for (int count = 0; count < _highLvls[currLvl - 1].size(); ++row) {
             row = _highLvls[currLvl - 1][count];
