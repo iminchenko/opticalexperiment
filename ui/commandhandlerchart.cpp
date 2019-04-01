@@ -1,7 +1,10 @@
 #include "commandhandlerchart.h"
 #include "devicemanager.h"
 #include <QTabBar>
-CommandHandlerChart::CommandHandlerChart() {}
+
+CommandHandlerChart::CommandHandlerChart()
+    : CommandHandler(nullptr),
+      Singleton<CommandHandlerChart>(*this) {}
 
 void CommandHandlerChart::setTabWidget(QTabWidget *tabWidget) {
     _tabWidget = tabWidget;
@@ -51,7 +54,7 @@ bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
 
 void CommandHandlerChart::update() {
     for (auto &chart : _charts) {
-        auto rawDevice = (DEVICE_MANAGER.getDeviceById(chart->getId()).get());
+        auto rawDevice = (DeviceManager::i()->getDeviceById(chart->getId()).get());
         auto shield = dynamic_cast<Display*>(rawDevice);
         chart->update(X_MINUS, X_PLUS, X_PLUS / SIZE_DISCRETIZATION,
                 [&shield](double x){return shield->getValue(x).real();});

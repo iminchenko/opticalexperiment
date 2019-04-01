@@ -208,7 +208,7 @@ QSurfaceDataArray* ChartView::getDefaultChart() {
 }
 
 SourcePositionMode ChartView::getSourcePositionMode() const {
-    return PARAM_MANAGER.getSourcePositionMode();
+    return ParametersManager::i()->getSourcePositionMode();
 }
 
 QPointF ChartView::getSourcePosition(size_t sourceId, size_t sourceCount) const {

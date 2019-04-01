@@ -3,20 +3,22 @@
 #include "ui/commandhandlerview.h"
 #include "ui/commandhandlerchart.h"
 
-CommandHanlerGlobal::CommandHanlerGlobal() {}
+CommandHanlerGlobal::CommandHanlerGlobal()
+    : CommandHandler(nullptr),
+      Singleton<CommandHanlerGlobal>(*this) {}
 
 bool CommandHanlerGlobal::handle(std::shared_ptr<Command> cmnd) {
     /* ToDo: Cпорное решение. Не уверен, что так должно быть */
     bool success = true;
-    if(!CH_MODEL.handle(cmnd)) {
+    if(!CommandHadlerModel::i()->handle(cmnd)) {
         success = false;
         qDebug("Models handler failed!");
     }
-    if(!CH_VIEW.handle(cmnd)) {
+    if(!CommandHandlerView::i()->handle(cmnd)) {
         success = false;
         qDebug("Views handler failed!");
     }
-    if(!CH_CHART.handle(cmnd)) {
+    if(!CommandHandlerChart::i()->handle(cmnd)) {
         success = false;
         qDebug("Charts handler failed!");
     }

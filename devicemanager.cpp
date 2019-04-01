@@ -7,6 +7,9 @@ using std::shared_ptr;
 using std::make_unique;
 using std::make_shared;
 
+DeviceManager::DeviceManager() 
+    : Singleton<DeviceManager> (*this) {}
+
 void DeviceManager::addDevice(int type, int id) {
     switch(type) {
         case deviceType::TYPE_LASER:
@@ -54,8 +57,6 @@ void DeviceManager::changeVariables(int id, VarList vars) {
     }
     getDeviceById(id)->setVariables(vars);
 }
-
-DeviceManager::DeviceManager() {}
 
 std::shared_ptr<Device> DeviceManager::getDeviceById(int id) {
     auto iter = getDeviceIterById(id);

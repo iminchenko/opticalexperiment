@@ -6,12 +6,10 @@
 #include "utility/singleton.hpp"
 #include "command/command.h"
 
-#define CH_MODEL singleton<CommandHadlerModel>()
-
-class CommandHadlerModel : CommandHandler {
-    friend CommandHadlerModel& singleton<CommandHadlerModel>();
-
+class CommandHadlerModel : CommandHandler, public Singleton<CommandHadlerModel> {
 public:
+    CommandHadlerModel();
+    
     bool handle(std::shared_ptr<Command> cmnd) override;
 
 private:
@@ -21,9 +19,6 @@ private:
     bool deleteConnection(pCommand cmnd);
     bool changeVariables(pCommand cmnd);
     bool refreshItem(pCommand cmnd);
-    
-private:
-    CommandHadlerModel();
      
 };
 

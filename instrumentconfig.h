@@ -5,9 +5,7 @@
 #include "utility/singleton.hpp"
 #include "deviceconfigs/devicedefines.h"
 
-#define INSTRUMENT_CONFIG singleton<InstrumentConfig>()
-
-class InstrumentConfig: public QObject {
+class InstrumentConfig: public QObject, public Singleton<InstrumentConfig> {
     Q_OBJECT
 public:
     InstrumentConfig();

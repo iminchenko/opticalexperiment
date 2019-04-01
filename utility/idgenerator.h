@@ -3,12 +3,9 @@
 
 #include "utility/singleton.hpp"
 
-#define DEVICE_ID_GEN singleton<IdGenerator>()
-
-class IdGenerator {
+class IdGenerator : public Singleton<IdGenerator> {
 public:
-    IdGenerator();
-    IdGenerator(int startValue);
+    IdGenerator(int startValue = 0);
 
     int getId();
     int getLastId();
