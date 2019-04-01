@@ -18,7 +18,7 @@ public:
 public slots:
     void showInfoWindow();
 
-private slots:
+protected slots:
     void on_actionSave_triggered();
     void on_actionSave_As_triggered();
     void on_actionLoad_triggered();
