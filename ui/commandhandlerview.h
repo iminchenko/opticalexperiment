@@ -14,9 +14,17 @@ class ConstructorItem;
 
 class CommandHandlerView :CommandHandler,  public Singleton<CommandHandlerView> {
 public: 
-    CommandHandlerView();    
+    CommandHandlerView();
     
     bool handle(std::shared_ptr<Command> cmnd) override;
+    
+private:
+    bool addItem(std::shared_ptr<Command> cmnd);
+    bool addConnection(std::shared_ptr<Command> cmnd);
+    bool removeItem(std::shared_ptr<Command> cmnd);
+    bool removeConnection(std::shared_ptr<Command> cmnd);
+    bool changeVariables(std::shared_ptr<Command> cmnd);
+
 };
 
 #endif // COMANDHANDLERVIEW_H
