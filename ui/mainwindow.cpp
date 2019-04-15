@@ -10,6 +10,7 @@
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
+#include "ui/commandviewmanager.h"
 #include "utility/constructorserializer.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -46,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
     
     // ToDo: Скорее всего эту строчку куда-то нужно перенести
-    CommandHandlerView::i()->setScene(ui->graphicsView->scene()); 
+    CommandViewManager::i()->setScene(ui->graphicsView->scene()); 
     CommandHandlerChart::i()->setTabWidget(ui->tabWidget);
 }
 

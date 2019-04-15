@@ -11,6 +11,7 @@
 #include "deviceconfigs/device.h"
 #include "devicemanager.h"
 #include "ui/commandhandlerview.h"
+#include "ui/commandviewmanager.h"
 #include "deviceconfigs/deviceconfiglist.h"
 #include "command/commandhanlerglobal.h"
 
@@ -30,7 +31,7 @@ QByteArray ConstructorSerializer::serialize() {
             jsonDevice["id"] = device->getId();
             jsonDevice["type"]= device->getType();
 
-            QPointF pos = CommandHandlerView::i()->getDevicePos(device->getId());
+            QPointF pos = CommandViewManager::i()->getDevicePos(device->getId());
 
             jsonDevice["pos"] = QJsonArray{ pos.x(), pos.y() };
 
