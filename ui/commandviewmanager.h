@@ -1,13 +1,12 @@
 #ifndef COMMANDVIEWMANAGER_H
 #define COMMANDVIEWMANAGER_H
 #include <QPointF>
+#include <QGraphicsScene>
 
 #include "constructoritem.h"
 #include "utility/singleton.hpp"
-#include "command/command.h"
 
-class CommandViewManager : public Singleton<CommandViewManager>
-{
+class CommandViewManager : public Singleton<CommandViewManager> {
 public:
     CommandViewManager();
         

@@ -1,9 +1,6 @@
 #ifndef COMANDHANDLERVIEW_H
 #define COMANDHANDLERVIEW_H
 #include <memory>
-#include <QGraphicsScene>
-#include <QPointF>
-#include <QList>
 
 #include "command/commandhandler.h"
 #include "utility/singleton.hpp"
@@ -12,7 +9,7 @@
 
 class ConstructorItem;
 
-class CommandHandlerView :CommandHandler,  public Singleton<CommandHandlerView> {
+class CommandHandlerView : CommandHandler,  public Singleton<CommandHandlerView> {
 public: 
     CommandHandlerView();
     
