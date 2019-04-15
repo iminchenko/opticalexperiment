@@ -19,7 +19,6 @@ private:
     bool deleteConnection(pCommand cmnd);
     bool changeVariables(pCommand cmnd);
     bool refreshItem(pCommand cmnd);
-     
 };
 
 #endif // COMANDHADLERMODEL_H

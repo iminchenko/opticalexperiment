@@ -45,9 +45,8 @@ bool CommandHandlerView::addItem(std::shared_ptr<Command> cmnd) {
                                     cmnd->data.ad.typeItemId);
     }
 
-    CommandViewManager::i()->scene()->addItem(newDevice);
-
-    CommandViewManager::i()->devices().push_back(newDevice);
+    CommandViewManager::i()->addItemToScene(newDevice);
+    CommandViewManager::i()->addDevice(newDevice);
 
     return true;
 }
@@ -63,36 +62,22 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
     auto v1 = source->getOutput(cmnd->data.ac.sourceNum);
     auto v2 = dest->getInput(cmnd->data.ac.destNum);
 
-    CommandViewManager::i()->scene()->addItem(new ConnectionItem(v1, v2));
+    CommandViewManager::i()->addItemToScene(new ConnectionItem(v1, v2));
     
     return true;
 }
 
 bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
-    auto iter = std::find_if(CommandViewManager::i()->devices().begin(), CommandViewManager::i()->devices().end(),
-                             [cmnd](ConstructorItem *item)
-                             { return item->getId() == cmnd->data.dd.id; });
-
-    if (iter == CommandViewManager::i()->devices().end()) {
-        return false;
-    }
-
-    delete *iter;
-    CommandViewManager::i()->devices().erase(iter);
-    
-    return true;
+    return CommandViewManager::i()->removeDevice(cmnd->data.dd.id);
 }
 
 bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {
     auto vertex = CommandViewManager::i()->findItemWithId(cmnd->data.dc.sourceId);
 
-    if (!vertex) {
-        // что-то поломалось
+    if (vertex == nullptr) 
         return false;
-    }
 
     auto out = vertex->getOutput(cmnd->data.dc.sourceNum);
-
     delete out->getConnection();
 
     return true;
@@ -101,12 +86,10 @@ bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {
 bool CommandHandlerView::changeVariables(std::shared_ptr<Command> cmnd) {
     auto device = CommandViewManager::i()->findItemWithId(cmnd->data.cv.id);
 
-    if (!device) {
+    if (device == nullptr)
         return false;
-    }
 
     QMap<QString, double> properties;
-
     for (const auto &i: cmnd->varList) {
         properties[i.first.c_str()] = i.second;
     }

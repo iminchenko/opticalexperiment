@@ -24,7 +24,6 @@ private:
     bool removeItem(std::shared_ptr<Command> cmnd);
     bool removeConnection(std::shared_ptr<Command> cmnd);
     bool changeVariables(std::shared_ptr<Command> cmnd);
-
 };
 
 #endif // COMANDHANDLERVIEW_H

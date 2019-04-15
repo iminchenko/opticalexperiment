@@ -2,10 +2,10 @@
 
 CommandViewManager::CommandViewManager() : Singleton<CommandViewManager> (*this) { }
 
-QPointF CommandViewManager::getDevicePos(int id) const {
+QPointF CommandViewManager::getDevicePos(int id) {
     auto item = findItemWithId(id);
 
-    if (!item) {
+    if (item == nullptr) {
         throw std::logic_error("can't find device with id");
     }
 
@@ -17,17 +17,36 @@ void CommandViewManager::setScene(QGraphicsScene *scene) {
     _scene = scene;
 }
 
-QGraphicsScene *CommandViewManager::scene() const
-{
-    return _scene;
+bool CommandViewManager::addItemToScene(QGraphicsItem * const item) {
+    if (item == nullptr)
+        return false;
+    
+    _scene->addItem(item);
+    return true;
 }
 
-QList<ConstructorItem *>& CommandViewManager::devices()
-{
-    return _devices;
+bool CommandViewManager::addDevice(ConstructorItem *dev) {
+    if (dev == nullptr)
+        return false;
+    
+    _devices.push_back(dev);
+    return true;
 }
 
-ConstructorItem *CommandViewManager::findItemWithId(int id) const {
+bool CommandViewManager::removeDevice(int id) {
+    auto iter = std::find_if(_devices.begin(), _devices.end(),
+                          [id](ConstructorItem *item){ return item->getId() == id; });
+    
+    if (iter == _devices.end())
+        return false;
+    
+    delete *iter;
+    _devices.erase(iter);
+    
+    return true;
+}
+
+ConstructorItem *CommandViewManager::findItemWithId(int id) {
     auto iter = std::find_if(_devices.begin(), _devices.end(),
                           [id](ConstructorItem *item){ return item->getId() == id; });
 

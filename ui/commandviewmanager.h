@@ -11,18 +11,18 @@ class CommandViewManager : public Singleton<CommandViewManager>
 public:
     CommandViewManager();
         
-    void setScene(QGraphicsScene *scene); 
-    QGraphicsScene * scene() const;
+    void setScene(QGraphicsScene *scene);
+    bool addItemToScene(QGraphicsItem * const item);
     
-    QList<ConstructorItem *> &devices();
+    bool addDevice(ConstructorItem *dev);
+    bool removeDevice(int id);
     
-    QPointF getDevicePos(int id) const;
-    ConstructorItem *findItemWithId(int id) const;
+    QPointF getDevicePos(int id);
+    ConstructorItem * findItemWithId(int id);
     
 private:
     QList<ConstructorItem *> _devices;
     QGraphicsScene  *_scene;
-    
 };
 
 #endif // COMMANDVIEWMANAGER_H
