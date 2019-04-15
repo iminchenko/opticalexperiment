@@ -58,7 +58,8 @@ SOURCES += \
     ui/commandhandlerchart.cpp \
     ui/chartview.cpp \
     ui/parametersmanager.cpp \
-    utility/constructorserializer.cpp
+    utility/constructorserializer.cpp \
+    ui/commandviewmanager.cpp
 
 HEADERS += \
     command/command.h \
@@ -94,7 +95,8 @@ HEADERS += \
     ui/commandhandlerchart.h \
     ui/chartview.h \
     ui/parametersmanager.h \
-    utility/constructorserializer.h
+    utility/constructorserializer.h \
+    ui/commandviewmanager.h
 
 FORMS += \
     ui/mainwindow.ui
