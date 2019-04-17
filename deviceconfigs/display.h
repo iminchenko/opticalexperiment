@@ -1,9 +1,8 @@
-#pragma  once
-
-#include <cmath>
+#pragma once
 
 #include "wave.h"
 #include "device.h"
+#include <math.h>
 
 class Display: public Device {
 public:
@@ -22,3 +21,4 @@ private:
     double K_ = M_PI / 5;
     double deltaK_ = 1*K_;
 };
+

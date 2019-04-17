@@ -56,8 +56,14 @@ SOURCES += \
     propertyobserver.cpp \
     utility/idgenerator.cpp \
     ui/commandhandlerchart.cpp \
+    ui/parametersmanager.cpp \
+    ui/chartitem.cpp \
     ui/chartview.cpp \
-    ui/parametersmanager.cpp
+    ui/chartwidget.cpp \
+    deviceconfigs/diffractiongrating.cpp \
+    ui/diffractiongratingitem.cpp \
+    ui/basechartitem.cpp \
+    ui/diffractiogratingchartitem.cpp
 
 HEADERS += \
     command/command.h \
@@ -91,8 +97,14 @@ HEADERS += \
     propertyobserver.h \
     utility/idgenerator.h \
     ui/commandhandlerchart.h \
+    ui/parametersmanager.h \
+    ui/chartitem.h \
     ui/chartview.h \
-    ui/parametersmanager.h
+    ui/chartwidget.h \
+    deviceconfigs/diffractiongrating.h \
+    ui/diffractiongratingitem.h \
+    ui/basechartitem.h \
+    ui/diffractiogratingchartitem.h
 
 FORMS += \
     ui/mainwindow.ui

@@ -38,6 +38,7 @@ public:
     int getType() const;
     int getId() const;
 protected:
+    void setType(int type);
     // был ли путь изменен => надо ли пересчитывать кэш
     bool changed() const;
 

@@ -14,27 +14,7 @@
    <string>Optical Constructor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,12,0,0,0">
-    <item row="4" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QComboBox" name="cbMode"/>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>1</width>
-          <height>1</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0">
     <item row="2" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -46,8 +26,23 @@
        </property>
       </widget>
       <widget class="QSplitter" name="splitter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
+       </property>
+       <property name="opaqueResize">
+        <bool>true</bool>
+       </property>
+       <property name="handleWidth">
+        <number>6</number>
+       </property>
+       <property name="childrenCollapsible">
+        <bool>true</bool>
        </property>
        <widget class="QTableWidget" name="tableWidget">
         <attribute name="horizontalHeaderStretchLastSection">
@@ -67,11 +62,7 @@
          </property>
         </column>
        </widget>
-       <widget class="QTabWidget" name="tabWidget">
-        <property name="currentIndex">
-         <number>-1</number>
-        </property>
-       </widget>
+       <widget class="ChartWidget" name="chartWidget" native="true"/>
       </widget>
      </widget>
     </item>
@@ -119,6 +110,7 @@
    <addaction name="actionLaser"/>
    <addaction name="separator"/>
    <addaction name="actionShield"/>
+   <addaction name="actionDiffractionGrating"/>
   </widget>
   <action name="actionShield">
    <property name="checkable">
@@ -155,6 +147,18 @@
     <string>About</string>
    </property>
   </action>
+  <action name="actionDiffractionGrating">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../recource.qrc">
+     <normaloff>:/icons/grating.png</normaloff>:/icons/grating.png</iconset>
+   </property>
+   <property name="text">
+    <string>DiffractionGrating</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -162,6 +166,12 @@
    <class>ConstructAreaWidget</class>
    <extends>QGraphicsView</extends>
    <header>ui/constructareawidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ChartWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/chartwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

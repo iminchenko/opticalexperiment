@@ -141,3 +141,7 @@ int Device::getType() const {
 int Device::getId() const {
     return _id;
 }
+
+void Device::setType(int type) {
+    _type = type;
+}

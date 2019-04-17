@@ -9,28 +9,8 @@
 #include <QScrollArea>
 #include "deviceconfigs/wave.h"
 #include "ui/parametersmanager.h"
+#include "ui/chartitem.h"
 
-constexpr double xMinus = -50;
-constexpr double xPlus = 50;
-constexpr short int sizeDiscretization = 500;
-constexpr int discritezationsStep = 1e+3;
-constexpr int CHART_MINIMUM_HEIGHT = 175;
-
-constexpr double xDefaultMin = -1e-4;
-constexpr double xDefaultMax = 1e-4;
-constexpr double yDefaultMin = -1e-4;
-constexpr double yDefaultMax = 1e-4;
-
-constexpr double SCALE = 5e-8;
-
-constexpr double MATH_EPSILON_0 = 8.85419e-12;
-constexpr double MATH_C = 3e8;
-constexpr double MATH_LAMBDA = 550e-9;
-constexpr double MATH_L = 0.5;
-constexpr double MATH_K = 2 * M_PI / MATH_LAMBDA;
-constexpr double MATH_K_1 = M_PI / (MATH_LAMBDA * MATH_L);
-constexpr double MATH_D = 1e-3;
-constexpr double MATH_ALPHA = ( MATH_EPSILON_0 * MATH_C) / (8 * M_PI);
 
 using namespace QtDataVisualization;
 

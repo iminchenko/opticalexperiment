@@ -1,5 +1,6 @@
 #include "commandhandlerview.h"
 #include "laseritem.h"
+#include "diffractiongratingitem.h"
 #include "shielditem.h"
 #include "genericitem.h"
 #include "connectionitem.h"
@@ -31,13 +32,24 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
 bool CommandHandlerView::addItem(std::shared_ptr<Command> cmnd) {
     ConstructorItem *newDevice = nullptr;
 
-    if (cmnd->data.ad.typeItemId == deviceType::TYPE_LASER) {
-        newDevice = new LaserItem(cmnd->data.ad.pos(), cmnd->data.ad.id);
-    } else if (cmnd->data.ad.typeItemId == deviceType::TYPE_SHIELD) {
-        newDevice = new ShieldItem(cmnd->data.ad.pos(), cmnd->data.ad.id);
-    } else {
+    switch (cmnd->data.ad.typeItemId) {
+    case deviceType::TYPE_LASER : {
+       newDevice = new LaserItem(cmnd->data.ad.pos(), cmnd->data.ad.id);
+       break;
+    }
+    case deviceType::TYPE_SHIELD : {
+       newDevice = new ShieldItem(cmnd->data.ad.pos(), cmnd->data.ad.id);
+       break;
+    }
+    case deviceType::TYPE_DIFFRACTION_GRATING : {
+       newDevice = new DiffractionGratingItem(cmnd->data.ad.pos(), cmnd->data.ad.id);
+       break;
+    }
+    default : {
         newDevice = new GenericItem(cmnd->data.ad.pos(), cmnd->data.ad.id,
                                     cmnd->data.ad.typeItemId);
+        break;
+    }
     }
 
     _scene->addItem(newDevice);

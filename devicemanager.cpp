@@ -2,6 +2,7 @@
 #include "deviceconfigs/devicedefines.h"
 #include "deviceconfigs/laser.h"
 #include "deviceconfigs/display.h"
+#include "deviceconfigs/diffractiongrating.h"
 
 using std::shared_ptr;
 using std::make_unique;
@@ -14,6 +15,9 @@ void DeviceManager::addDevice(int type, int id) {
             break;
         case deviceType::TYPE_SHIELD:
             _devices.push_back(make_unique<Display>(id));
+            break;
+        case deviceType::TYPE_DIFFRACTION_GRATING:
+            _devices.push_back(make_unique<DiffractionGrating>(id));
             break;
         default:
             _devices.push_back(make_unique<Device>(type, id));
