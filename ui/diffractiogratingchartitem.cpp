@@ -11,12 +11,8 @@ DiffractioGratingChartItem::DiffractioGratingChartItem(
     qsrand(QTime::currentTime().second());
     _source = diffractionGrating;
 
-    double _maxX = 1e-4, _minX = -1e-4;
-    double _maxY = 1e-4, _minY = -1e-4;
-    double _stepX = std::abs(_maxX - _minX) / 10;
-    double _stepY = std::abs(_maxY - _minY) / 10;
-    int _stepsX = static_cast<int>((_maxX - _minX)/_stepX);
-    int _stepsY = static_cast<int>((_maxY - _minY)/_stepY);
+    _stepX = std::abs(_maxX - _minX) / 100;
+    _stepY = std::abs(_maxY - _minY) / 100;
 }
 
 struct projectionPoint {
@@ -40,12 +36,14 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
         N1 = 10 * _source->getA() / MATH_LAMBDA,
         N2 = 10 * _source->getW() / MATH_LAMBDA;
 
+    _stepX = std::abs(_maxX - _minX) / 100;
+    _stepY = std::abs(_maxY - _minY) / 100;
+
     std::vector<std::vector<projectionPoint>> *series = new std::vector<std::vector<projectionPoint>>();
     QPointF currentPoint = QPointF(_minX, _minY);
-    for(; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
+    for(currentPoint.ry() = _minX; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
          std::vector<projectionPoint> newRow = std::vector<projectionPoint>();
-         currentPoint.rx() = _minX;
-         for(; currentPoint.x() <= _maxX; currentPoint.rx() += _stepX) {
+         for(currentPoint.rx() = _minX; currentPoint.x() <= _maxX; currentPoint.rx() += _stepX) {
              newRow.push_back(
                   projectionPoint(
                      currentPoint.x(),
@@ -65,18 +63,27 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
     // border of current line of grade
     double currentBorder = _minX;
 
+    //lines in step
+    int linesInStep = (_stepY / (_source->getB() + _source->getA())) + 1;
+
     // calculation of values lines-by-lines of diffraction grade
     for(currentPoint.ry() = _minY; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
         // moving to the next line
-        if(currentPoint.y() >= currentBorder) {
-            currentPoint.ry() = currentBorder + _source->getB();
-            currentBorder += _source->getB() + _source->getA();
+        if(currentPoint.y() > currentBorder) {
+            /*int lineNum = (int) (currentPoint.y() - _minX) / (_source->getB() + _source->getA());
+            currentBorder = (lineNum + 1) * (_source->getB() + _source->getA()) - _minX;
+            currentPoint.ry() = currentBorder - _source->getA();
+            */
+
+             currentBorder += (linesInStep) * (_source->getA() + _source->getB());
+             currentPoint.ry() = currentBorder - _source->getB();
+
             if (currentPoint.y() > _maxY) {
                 break;
             }
         }
 
-        for(currentPoint.rx() = _minX; currentPoint.x() <= _maxX; currentPoint.rx() += _stepX*10) {
+        for(currentPoint.rx() = _minX; currentPoint.x() <= _maxX; currentPoint.rx() += _stepX) {
             // x-projection of tensity:
             std::complex<double> E_x = std::complex<double>(0,0);
             // y-projection of tensity:
@@ -93,8 +100,11 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
                      0,
                      MATH_K * l_i
                 );
-                E_x += waves[i].ex() * std::exp(exp_power);
-                E_y += waves[i].ey() * std::exp(exp_power);
+                std::complex<double>  coeff = std::exp(exp_power);
+                coeff *= linesInStep;
+
+                E_x += waves[i].ex() * coeff;
+                E_y += waves[i].ey() * coeff;
             }
             // calculating the tensity projection on shield of this point
             for(auto iter = series->begin(); iter != series->end(); iter++) {
@@ -123,7 +133,7 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
         QSurfaceDataRow *newRow = new QSurfaceDataRow();
         for(auto iter2 = (*iter).begin(); iter2 != (*iter).end(); iter2++) {
             // result coordinates of point
-            double I = (norm((*iter2).E_x) + norm((*iter2).E_x))* MATH_ALPHA * SCALE;
+            double I = (norm((*iter2).E_x) + norm((*iter2).E_x))* MATH_ALPHA * 10000000;
             newRow->push_back(
                  QSurfaceDataItem(
                      QVector3D(
