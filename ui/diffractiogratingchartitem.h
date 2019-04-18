@@ -14,6 +14,9 @@ private:
     virtual QLineSeries* fill2DSeries( ) override;
 
     DiffractionGrating *_source;
+
+    double _gradeStepY = _stepY;
+    double _gradeStepX = _stepX;
 };
 
 #endif // DIFFRACTIOGRATINGCHARTITEM_H

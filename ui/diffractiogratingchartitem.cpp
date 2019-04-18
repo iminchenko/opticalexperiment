@@ -39,6 +39,9 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
     _stepX = std::abs(_maxX - _minX) / 100;
     _stepY = std::abs(_maxY - _minY) / 100;
 
+    _gradeStepY = _source->getB()/10;
+    _gradeStepX = _source->getB()/10;
+
     std::vector<std::vector<projectionPoint>> *series = new std::vector<std::vector<projectionPoint>>();
     QPointF currentPoint = QPointF(_minX, _minY);
     for(currentPoint.ry() = _minX; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
@@ -53,37 +56,41 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
              );
          }
          series->push_back(newRow);
-     }
+    }
 
     std::vector<QPointF> sources = getSourcesPosition(waves.size());
 
     currentPoint.rx() = _minX;
     currentPoint.ry() = _minY;
 
-    // border of current line of grade
-    double currentBorder = _minX;
+    // half of covered by lines areas width
+    double linesArea = (_source->getN3() * (_source->getA() + _source->getB()) - _source->getA()) / 2;
+    // left border of lines
+    double firstLineBorder = ((_maxY -_minY) / 2);
+    // right border of lines
+    double lastLineBorder = firstLineBorder;
 
-    //lines in step
-    int linesInStep = (_stepY / (_source->getB() + _source->getA())) + 1;
+    // it's our left and right border in cycle
+    firstLineBorder -= linesArea;
+    lastLineBorder += linesArea;
+
+    // border of current line of grade
+    double currentBorder = firstLineBorder + _source->getB();
 
     // calculation of values lines-by-lines of diffraction grade
-    for(currentPoint.ry() = _minY; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
+    for(currentPoint.ry() = firstLineBorder; currentPoint.y() <= lastLineBorder; currentPoint.ry() += _gradeStepY) {
         // moving to the next line
         if(currentPoint.y() > currentBorder) {
-            /*int lineNum = (int) (currentPoint.y() - _minX) / (_source->getB() + _source->getA());
-            currentBorder = (lineNum + 1) * (_source->getB() + _source->getA()) - _minX;
-            currentPoint.ry() = currentBorder - _source->getA();
-            */
-
-             currentBorder += (linesInStep) * (_source->getA() + _source->getB());
-             currentPoint.ry() = currentBorder - _source->getB();
-
-            if (currentPoint.y() > _maxY) {
+            currentBorder += _source->getA();
+            currentPoint.ry() = currentBorder;
+            currentBorder += _source->getB();
+            if (currentPoint.y() > lastLineBorder) {
+                // if we leave lines area
                 break;
             }
         }
 
-        for(currentPoint.rx() = _minX; currentPoint.x() <= _maxX; currentPoint.rx() += _stepX) {
+        for(currentPoint.rx() = _minX; currentPoint.x() <= _maxX; currentPoint.rx() += _gradeStepX) {
             // x-projection of tensity:
             std::complex<double> E_x = std::complex<double>(0,0);
             // y-projection of tensity:
@@ -101,7 +108,6 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
                      MATH_K * l_i
                 );
                 std::complex<double>  coeff = std::exp(exp_power);
-                coeff *= linesInStep;
 
                 E_x += waves[i].ex() * coeff;
                 E_y += waves[i].ey() * coeff;
@@ -119,8 +125,8 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
                          0,
                          MATH_K * l_i
                     );
-                    (*iter2).E_x += E_x / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power);
-                    (*iter2).E_y += E_y / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power);
+                    (*iter2).E_x += E_x / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power) * 100000.;
+                    (*iter2).E_y += E_y / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power) * 100000.;
                 }
             }
         }
