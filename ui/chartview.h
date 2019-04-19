@@ -8,7 +8,6 @@
 #include <QtDataVisualization/QSurface3DSeries>
 #include <QScrollArea>
 #include "deviceconfigs/wave.h"
-#include "ui/parametersmanager.h"
 #include "ui/chartitem.h"
 
 

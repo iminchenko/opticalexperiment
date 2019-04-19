@@ -56,7 +56,6 @@ SOURCES += \
     propertyobserver.cpp \
     utility/idgenerator.cpp \
     ui/commandhandlerchart.cpp \
-    ui/parametersmanager.cpp \
     ui/chartitem.cpp \
     ui/chartview.cpp \
     ui/chartwidget.cpp \
@@ -97,7 +96,6 @@ HEADERS += \
     propertyobserver.h \
     utility/idgenerator.h \
     ui/commandhandlerchart.h \
-    ui/parametersmanager.h \
     ui/chartitem.h \
     ui/chartview.h \
     ui/chartwidget.h \

@@ -11,7 +11,6 @@
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
-#include "ui/parametersmanager.h"
 
 #include "qcombobox.h"
 
