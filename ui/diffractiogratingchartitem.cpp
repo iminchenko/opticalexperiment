@@ -143,9 +143,9 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
             newRow->push_back(
                  QSurfaceDataItem(
                      QVector3D(
-                         (float) (*iter2).x,
-                         (float) I,
-                         (float) (*iter2).z
+                         static_cast<float>(iter2->x),
+                         static_cast<float>(I),
+                         static_cast<float>(iter2->z)
                      )
                  )
             );

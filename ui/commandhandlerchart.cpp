@@ -57,12 +57,18 @@ bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd) {
 }
 
 bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
-    int i = 0;
-    for(; _charts->at(i).get()->getId() != cmnd->data.dd.id && i < _charts->size(); i++){}
+    auto iter = std::find_if(
+        _charts->begin(),
+        _charts->end(),
+        [cmnd] (std::shared_ptr<BaseChartItem> item) -> bool {
+            return item->getId() == cmnd->data.dd.id;
+        }
+    );
 
-    if(i < _charts->size()) {
-        _charts->erase(_charts->begin() + i);
-        _chartWidget->removeChart(i);
+    if (iter != _charts->end()) {
+        _chartWidget->removeChart(iter - _charts->begin());
+        _charts->erase(iter);
+
     }
 
     return true;
