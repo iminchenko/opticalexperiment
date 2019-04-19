@@ -7,12 +7,10 @@
 #include "propertyobserver.h"
 #include "globaldefines.h"
 #include "deviceconfigs/deviceconfiglist.h"
-#include "devicemanager.h"
 #include "commandhandlerview.h"
 #include "command/commandhanlerglobal.h"
 #include "ui/commandhandlerchart.h"
-
-#include "qcombobox.h"
+#include "utility/constructorserializer.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,13 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     for (auto iter : ui->instrumentToolBar->actions()) {
         _grInstruments->addAction(iter);
     }
-
+    
     connect(ui->actionLaser, SIGNAL(toggled(bool)),
-            &INSTRUMENT_CONFIG, SLOT(setTypeLaser()));
+            InstrumentConfig::i(), SLOT(setTypeLaser()));
     connect(ui->actionShield, SIGNAL(toggled(bool)),
-            &INSTRUMENT_CONFIG, SLOT(setTypeShield()));
-    connect(ui->actionDiffractionGrating, SIGNAL(toggled(bool)),
-            &INSTRUMENT_CONFIG, SLOT(setTypeDiffractionGrating()));
+            InstrumentConfig::i(), SLOT(setTypeShield()));
 
     auto p = new PropertyObserver(ui->tableWidget, this);
 
@@ -40,15 +36,15 @@ MainWindow::MainWindow(QWidget *parent) :
     initDevices();
     initCommandPattern();
 
-    // TODO убрать это отседова
+    // TODO: убрать это отседова
     connect(p, SIGNAL(invoke(std::shared_ptr<Command>)),
-            &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
+            CommandHanlerGlobal::i(), SLOT(handle(std::shared_ptr<Command>)));
 
     ui->graphicsView->resize(this->height() * 4 / 5, 0);
     
     // ToDo: Скорее всего эту строчку куда-то нужно перенести
-    CH_VIEW.setScene(ui->graphicsView->scene()); 
-    CH_CHART.setWidget(ui->chartWidget);
+    CommandHandlerView::i()->setScene(ui->graphicsView->scene()); 
+    CommandHandlerChart::i()->setWidget(ui->chartWidget);
 }
 
 MainWindow::~MainWindow() {
@@ -56,21 +52,21 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::initDevices() {
-    DEVICECONFIG_LIST.loadDevices(CONFIG_PATH);
+    DeviceConfigList::i()->loadDevices(CONFIG_PATH);
 
-    for (size_t i = 0; i < DEVICECONFIG_LIST.count(); ++i) {
-        QAction *act = new QAction(DEVICECONFIG_LIST[i].getName().c_str(),
+    for (size_t i = 0; i < DeviceConfigList::i()->count(); ++i) {
+        QAction *act = new QAction((*DeviceConfigList::i())[i].getName().c_str(),
                                    this);
         act->setProperty("id", QVariant(int(i)));
         act->setCheckable(true);
         _grInstruments->addAction(act);
         ui->instrumentToolBar->insertAction(ui->actionShield, act);
         connect(act, SIGNAL(toggled(bool)),
-                &INSTRUMENT_CONFIG, SLOT(setTypeGeneric()));
+                InstrumentConfig::i(), SLOT(setTypeGeneric()));
 
         // icon creation
         // TODO: вынести в отдельный блок
-        QImage img(DEVICECONFIG_LIST[i].getBounding().size().toSize(),
+        QImage img((*DeviceConfigList::i())[i].getBounding().size().toSize(),
                    QImage::Format_ARGB32);
         QPainter painter(&img);
 
@@ -81,7 +77,7 @@ void MainWindow::initDevices() {
 
         img.fill(QColor(0, 0, 0, 0));
 
-        DEVICECONFIG_LIST[i].draw(&painter);
+        (*DeviceConfigList::i())[i].draw(&painter);
 
         QPixmap pix;
         pix.convertFromImage(img);
@@ -107,5 +103,41 @@ void MainWindow::showInfoWindow() {
 
 void MainWindow::initCommandPattern() {
     connect(ui->graphicsView, SIGNAL(invoke(std::shared_ptr<Command>)),
-            &CH_GLOBAL, SLOT(handle(std::shared_ptr<Command>)));
+            CommandHanlerGlobal::i(), SLOT(handle(std::shared_ptr<Command>)));
+}
+
+void MainWindow::on_actionSave_triggered() {
+    if (ConstructorSerializer::getPath() == "") {
+        on_actionSave_As_triggered();
+    }
+
+    ConstructorSerializer::save();
+}
+
+void MainWindow::on_actionSave_As_triggered() {
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    "Save as",
+                                                    "unnamed.opcstr",
+                                                    "*.opcstr");
+
+    if (filename != "") {
+        if (filename.endsWith(".opcstr")) {
+            filename += ".opcstr";
+        }
+
+        ConstructorSerializer::setPath(filename);
+        on_actionSave_triggered();
+    }
+}
+
+void MainWindow::on_actionLoad_triggered() {
+    QString filename = QFileDialog::getOpenFileName(this,
+                                                    "Load",
+                                                    "",
+                                                    "*.opcstr");
+
+    if (filename != "") {
+        ConstructorSerializer::setPath(filename);
+        ConstructorSerializer::load();
+    }
 }

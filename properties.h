@@ -7,6 +7,8 @@ class Properties {
 public:
     using map = QMap<QString, double>;
 
+    virtual ~Properties() = 0;
+
     virtual QMap<QString, double> getProperties() const;
     virtual void setProperties(const map &properties);
 

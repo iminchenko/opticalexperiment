@@ -22,3 +22,5 @@ enum deviceType {
     TYPE_DIFFRACTION_GRATING = -3,
     TYPE_GENERIC = 0
 };
+
+constexpr int NO_ID = -1;

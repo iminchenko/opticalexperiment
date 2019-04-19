@@ -24,16 +24,21 @@ struct DrawingConfig {
 
     // TODO: возможно стоит отсюда перенести
     static DrawingType toType(const std::string &type) {
-        if (type == "size")
+        if (type == "size") {
             return TYPE_SIZE;
-        if (type == "line")
+        }
+        if (type == "line") {
             return TYPE_LINE;
-        if (type == "rect")
+        }
+        if (type == "rect") {
             return TYPE_RECT;
-        if (type == "circle")
+        }
+        if (type == "circle") {
             return TYPE_CIRCLE;
-        if (type == "text")
+        }
+        if (type == "text") {
             return TYPE_TEXT;
+        }
 
 #ifdef _DEBUG
         qDebug() << "Unknown string drawing type" << type.c_str();

@@ -4,7 +4,10 @@
 #include "ui/diffractiogratingchartitem.h"
 #include <QTabBar>
 
-CommandHandlerChart::CommandHandlerChart() {
+CommandHandlerChart::CommandHandlerChart()
+    : CommandHandler(nullptr),
+      Singleton<CommandHandlerChart>(*this)
+{
     _charts = new std::vector<std::shared_ptr<BaseChartItem>>();
 }
 
@@ -37,7 +40,7 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
 }
 
 bool CommandHandlerChart::createDiffractionGrade(std::shared_ptr<Command> cmnd) {
-    auto shield = dynamic_cast<DiffractionGrating*>(DEVICE_MANAGER.getDeviceById(cmnd->data.ad.id).get());
+    auto shield = dynamic_cast<DiffractionGrating*>(DeviceManager::i()->getDeviceById(cmnd->data.ad.id).get());
 
     auto chart = std::shared_ptr<BaseChartItem>(new DiffractioGratingChartItem(cmnd->data.ad.id, shield));
 
@@ -47,7 +50,7 @@ bool CommandHandlerChart::createDiffractionGrade(std::shared_ptr<Command> cmnd) 
 }
 
 bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd) {
-    auto shield = dynamic_cast<Display*>(DEVICE_MANAGER.getDeviceById(cmnd->data.ad.id).get());
+    auto shield = dynamic_cast<Display*>(DeviceManager::i()->getDeviceById(cmnd->data.ad.id).get());
 
     auto chart = std::shared_ptr<BaseChartItem>(new ChartItem(cmnd->data.ad.id, shield));
 

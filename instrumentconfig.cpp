@@ -3,7 +3,9 @@
 #include "instrumentconfig.h"
 
 InstrumentConfig::InstrumentConfig()
-    :_type(TYPE_LASER) {}
+     : QObject(nullptr),
+       Singleton<InstrumentConfig>(*this),
+       _type(TYPE_LASER) {}
 
 deviceType InstrumentConfig::getType() const {
     return _type;

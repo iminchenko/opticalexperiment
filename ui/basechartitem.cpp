@@ -45,7 +45,6 @@ QSurfaceDataArray *BaseChartItem::get3dSeries() {
         _3dDataArray = fill3DSeries();
     }
 
-    //copying
     for (int i = 0; i < _3dDataArray->size(); i++) {
         QSurfaceDataRow *newRow = new QSurfaceDataRow();
         for (int j = 0; j < _3dDataArray->at(i)->size(); j++) {

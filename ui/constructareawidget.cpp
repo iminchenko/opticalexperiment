@@ -14,7 +14,7 @@
 
 ConstructAreaWidget::ConstructAreaWidget(QWidget *parent)
     :QGraphicsView(parent), _connectionLine(nullptr) {
-    auto *scene = new QGraphicsScene(this);
+    auto scene = new QGraphicsScene(this);
     scene->setSceneRect(this->rect());
     setScene(scene);
 
@@ -57,7 +57,7 @@ void ConstructAreaWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     QGraphicsView::mouseDoubleClickEvent(event);
 
     invoke(Command::AddDevice(
-               mapToScene(event->pos()), INSTRUMENT_CONFIG.getTypeId(), DEVICE_ID_GEN.getId())
+               mapToScene(event->pos()), InstrumentConfig::i()->getTypeId(), IdGenerator::i()->getId())
            );
 
     emit deviceEmplacementChanged();
@@ -102,15 +102,17 @@ void ConstructAreaWidget::createConnectionLine(QPointF pos) {
     if (_connectionLine == nullptr) {
         auto v = dynamic_cast<OutputVertexItem *>(scene()->itemAt(pos,
                                                                   transform()));
-        if (v)
+        if (v) {
             _connectionLine = scene()->addLine(QLineF(v->scenePos(), pos),
                                                            QPen(Qt::black, 0));
+        }
     }
 }
 
 void ConstructAreaWidget::adjustConnectionLine(QPointF pos) {
-    if (_connectionLine != nullptr)
+    if (_connectionLine != nullptr) {
         _connectionLine->setLine(QLineF(_connectionLine->line().p1(), pos));
+    }
 }
 
 void ConstructAreaWidget::dropConnectionLine() {

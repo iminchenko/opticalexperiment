@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "commandhandlerview.h"
 #include "laseritem.h"
 #include "diffractiongratingitem.h"
@@ -5,7 +7,9 @@
 #include "genericitem.h"
 #include "connectionitem.h"
 
-CommandHandlerView::CommandHandlerView() {}
+CommandHandlerView::CommandHandlerView() 
+    : CommandHandler(nullptr),
+      Singleton<CommandHandlerView>(*this) {}
 
 void CommandHandlerView::setScene(QGraphicsScene *scene) {
     _scene = scene;
@@ -22,11 +26,23 @@ bool CommandHandlerView::handle(std::shared_ptr<Command> cmnd) {
         return removeItem(cmnd);
     case TypeCommand::CMND_DELETE_CONNECTION:
         return removeConnection(cmnd);
+    case TypeCommand::CMND_CHANGE_VARIABLE:
+        return changeVariables(cmnd);
     case TypeCommand::CMND_REFRESH_DEVICE:
         return true;
     default:
         return true;
     }
+}
+
+QPointF CommandHandlerView::getDevicePos(int id) {
+    auto item = findItemWithId(id);
+
+    if (!item) {
+        throw std::logic_error("can't find device with id");
+    }
+
+    return item->pos();
 }
 
 bool CommandHandlerView::addItem(std::shared_ptr<Command> cmnd) {
@@ -63,8 +79,9 @@ bool CommandHandlerView::addConnection(std::shared_ptr<Command> cmnd) {
     auto source = findItemWithId(cmnd->data.ac.sourceId);
     auto dest = findItemWithId(cmnd->data.ac.destId);
 
-    if (!source || !dest)
+    if (!source || !dest) {
         return false;
+    }
 
     auto v1 = source->getOutput(cmnd->data.ac.sourceNum);
     auto v2 = dest->getInput(cmnd->data.ac.destNum);
@@ -80,8 +97,9 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
                              [cmnd](ConstructorItem *item)
                              { return item->getId() == cmnd->data.dd.id; });
 
-    if (iter == _devices.end())
+    if (iter == _devices.end()) {
         return false;
+    }
 
     delete *iter;
     _devices.erase(iter);
@@ -92,13 +110,32 @@ bool CommandHandlerView::removeItem(std::shared_ptr<Command> cmnd) {
 bool CommandHandlerView::removeConnection(std::shared_ptr<Command> cmnd) {
     auto vertex = findItemWithId(cmnd->data.dc.sourceId);
 
-    if (!vertex)
+    if (!vertex) {
         // что-то поломалось
         return false;
+    }
 
     auto out = vertex->getOutput(cmnd->data.dc.sourceNum);
 
     delete out->getConnection();
+
+    return true;
+}
+
+bool CommandHandlerView::changeVariables(std::shared_ptr<Command> cmnd) {
+    auto device = findItemWithId(cmnd->data.cv.id);
+
+    if (!device) {
+        return false;
+    }
+
+    QMap<QString, double> properties;
+
+    for (const auto &i: cmnd->varList) {
+        properties[i.first.c_str()] = i.second;
+    }
+
+    device->setProperties(properties);
 
     return true;
 }

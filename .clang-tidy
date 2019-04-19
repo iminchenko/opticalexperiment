@@ -1,0 +1,15 @@
+Checks: 'readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming,google-readability-casting,misc-unused-*,clang-diagnostic-absolute-value,hicpp-exception-baseclass,hicpp-use-equals-default,readability-container-size-empty,eadability-inconsistent-declaration-parameter-name,modernize-deprecated-headers,google-readability-todo,google-readability-todo,readability-else-after-return,hicpp-use-auto,modernize-use-auto,clang-analyzer-security.FloatLoopCounte,cppcoreguidelines-pro-type-member-init'
+WarningsAsErrors: 'readability-braces-around-statements,clang-diagnostic-unused-parameter,readability-identifier-naming,google-readability-casting,misc-unused-*,clang-diagnostic-absolute-value,hicpp-exception-baseclass,hicpp-use-equals-default,readability-container-size-empty,eadability-inconsistent-declaration-parameter-name,modernize-deprecated-headers'
+#HeaderFilterRegex: '.*'
+AnalyzeTemporaryDtors: false
+FormatStyle: file
+CheckOptions:
+  - { key: readability-identifier-naming.NamespaceCase,       value: CamelCase }
+  - { key: readability-identifier-naming.ClassCase,           value: CamelCase  }
+  - { key: readability-identifier-naming.StructCase,          value: camelCase  }
+  - { key: readability-identifier-naming.FunctionCase,        value: camelCase }
+  - { key: readability-identifier-naming.VariableCase,        value: camelCase }
+  - { key: readability-identifier-naming.GlobalConstantCase,  value: UPPER_CASE }
+  - { key: readability-identifier-naming.ClassConstantCase,   value: UPPER_CASE }
+  - { key: readability-identifier-naming.LocalConstantCase,   value: camelCase }
+  - { key: readability-identifier-naming.TypeTemplateParameterSuffix, value: "T" }

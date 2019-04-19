@@ -57,12 +57,12 @@ SOURCES += \
     utility/idgenerator.cpp \
     ui/commandhandlerchart.cpp \
     ui/chartitem.cpp \
-    ui/chartview.cpp \
     ui/chartwidget.cpp \
     deviceconfigs/diffractiongrating.cpp \
     ui/diffractiongratingitem.cpp \
     ui/basechartitem.cpp \
-    ui/diffractiogratingchartitem.cpp
+    ui/diffractiogratingchartitem.cpp \
+    utility/constructorserializer.cpp
 
 HEADERS += \
     command/command.h \
@@ -97,12 +97,12 @@ HEADERS += \
     utility/idgenerator.h \
     ui/commandhandlerchart.h \
     ui/chartitem.h \
-    ui/chartview.h \
     ui/chartwidget.h \
     deviceconfigs/diffractiongrating.h \
     ui/diffractiongratingitem.h \
     ui/basechartitem.h \
-    ui/diffractiogratingchartitem.h
+    ui/diffractiogratingchartitem.h \
+    utility/constructorserializer.h
 
 FORMS += \
     ui/mainwindow.ui

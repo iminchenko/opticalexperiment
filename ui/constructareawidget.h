@@ -9,7 +9,7 @@ class Command;
 class ConstructAreaWidget : public QGraphicsView {
     Q_OBJECT
 public:
-    explicit ConstructAreaWidget(QWidget *parent = 0);
+    explicit ConstructAreaWidget(QWidget *parent = nullptr);
 
 signals:
     void propertiesItemClicked(Properties *);

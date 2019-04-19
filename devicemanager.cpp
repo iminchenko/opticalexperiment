@@ -8,6 +8,9 @@ using std::shared_ptr;
 using std::make_unique;
 using std::make_shared;
 
+DeviceManager::DeviceManager() 
+    : Singleton<DeviceManager> (*this) {}
+
 void DeviceManager::addDevice(int type, int id) {
     switch(type) {
         case deviceType::TYPE_LASER:
@@ -29,7 +32,6 @@ void DeviceManager::addConnection(int sourceDevId,
                                   int sourceOut,
                                   int destDevId,
                                   int destInput) {
-    // 10 - magic number for distance
     getDeviceById(destDevId)->setConnection(
                 destInput,getDeviceById(sourceDevId),sourceOut);
 }
@@ -54,20 +56,17 @@ void DeviceManager::removeConnection(int sourceDevId,
 }
 
 void DeviceManager::changeVariables(int id, VarList vars) {
-    if (id == -1)
+    if (id == -1) {
         return;
+    }
     getDeviceById(id)->setVariables(vars);
 }
 
-size_t DeviceManager::deviceCount() const {
-    return (size_t)_matrConn.rows();
-}
+std::shared_ptr<Device> DeviceManager::getDeviceById(int id) {
+    auto iter = getDeviceIterById(id);
 
-int DeviceManager::getMaxId() const {
-    return _maxId;
+    return iter != _devices.end() ? *iter : nullptr;
 }
-
-DeviceManager::DeviceManager() :_maxId(0) {}
 
 std::vector<std::shared_ptr<Device>>::iterator DeviceManager::getDeviceIterById(int id) {
     return std::find_if(_devices.begin(),
@@ -75,10 +74,4 @@ std::vector<std::shared_ptr<Device>>::iterator DeviceManager::getDeviceIterById(
                         [id](auto device) {
                             return device->getId() == id;
                         });
-}
-
-std::shared_ptr<Device> DeviceManager::getDeviceById(int id) {
-    auto iter = getDeviceIterById(id);
-
-    return iter != _devices.end() ? *iter : nullptr;
 }

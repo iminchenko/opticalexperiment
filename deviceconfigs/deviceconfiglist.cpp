@@ -12,7 +12,9 @@
 #include "utility/parser.h"
 
 using std::list;
-using std::complex;
+
+DeviceConfigList::DeviceConfigList()
+    : Singleton<DeviceConfigList> (*this){}
 
 void DeviceConfigList::loadDevices(std::string filename) {
     QJsonDocument doc;
@@ -49,7 +51,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
     QJsonArray arr = doc.array();
 
-    _devList.reserve((size_t)arr.size());
+    _devList.reserve(static_cast<size_t>(arr.size()));
 
     for (const auto &iter : arr) {
         QJsonObject obj = iter.toObject();
@@ -69,7 +71,7 @@ void DeviceConfigList::loadDevices(std::string filename) {
 
                 if (type != DrawingConfig::TYPE_TEXT) {
                     QJsonArray jsonCoords = drawObj["coordinates"].toArray();
-                    oneDrawing.coordinates.reserve((size_t) jsonCoords.size());
+                    oneDrawing.coordinates.reserve(static_cast<size_t>(jsonCoords.size()));
 
                     for (const auto &coordinate : jsonCoords) {
                         oneDrawing.coordinates.push_back(coordinate.toInt());
@@ -132,8 +134,12 @@ size_t DeviceConfigList::count() const {
 const DeviceConfig &DeviceConfigList::operator[](int id) const {
     // позже добавить нормальную проверку на лазер и экран
     // id < 0?
-    if (id == deviceType::TYPE_LASER || id == deviceType::TYPE_SHIELD || id == deviceType::TYPE_DIFFRACTION_GRATING)
+    if (id == deviceType::TYPE_LASER ||
+            id == deviceType::TYPE_SHIELD ||
+            id == deviceType::TYPE_DIFFRACTION_GRATING
+    ) {
         return _dummyDevice;
+    }
 
     return _devList[id];
 }

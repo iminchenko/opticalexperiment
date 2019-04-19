@@ -10,26 +10,28 @@
 #include "deviceconfigs/devicedefines.h"
 #include "command/command.h"
 
-#define CH_VIEW singleton<CommandHandlerView>()
-
 class ConstructorItem;
 
-class CommandHandlerView : CommandHandler {
-    friend CommandHandlerView& singleton<CommandHandlerView>();
-    
+class CommandHandlerView : CommandHandler,  public Singleton<CommandHandlerView> {
 public: 
+    CommandHandlerView();    
+    
     void setScene(QGraphicsScene *scene);    
     bool handle(std::shared_ptr<Command> cmnd) override;
+
+    // FIXME: этот метод должен быть в другом классе
+    QPointF getDevicePos(int id);
 
 private:
     bool addItem(std::shared_ptr<Command> cmnd);
     bool addConnection(std::shared_ptr<Command> cmnd);
     bool removeItem(std::shared_ptr<Command> cmnd);
     bool removeConnection(std::shared_ptr<Command> cmnd);
+    bool changeVariables(std::shared_ptr<Command> cmnd);
+
     ConstructorItem *findItemWithId(int id);
 
 private:
-    CommandHandlerView();
     QGraphicsScene  *_scene;
 
     QList<ConstructorItem *> _devices;
