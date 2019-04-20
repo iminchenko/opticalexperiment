@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
             InstrumentConfig::i(), SLOT(setTypeLaser()));
     connect(ui->actionShield, SIGNAL(toggled(bool)),
             InstrumentConfig::i(), SLOT(setTypeShield()));
+    connect(ui->actionDiffractionGrating, SIGNAL(toggled(bool)),
+            InstrumentConfig::i(), SLOT(setTypeDiffractionGrating()));
 
     auto p = new PropertyObserver(ui->tableWidget, this);
 

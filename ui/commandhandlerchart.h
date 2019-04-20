@@ -11,6 +11,7 @@
 class CommandHandlerChart: CommandHandler, public Singleton<CommandHandlerChart> {
 public:
     CommandHandlerChart();
+    ~CommandHandlerChart();
     bool handle(std::shared_ptr<Command> cmnd) override;
     void setWidget(ChartWidget *chartWidget);
 

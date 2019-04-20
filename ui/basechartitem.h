@@ -41,7 +41,6 @@ enum SourcePositionMode {
     InCircle
 };
 
-//ToDo: additional tools list
 class BaseChartItem
 {
 public:
@@ -93,9 +92,6 @@ protected:
 
     double _min2dX = xMinus, _max2dX = xPlus, step2d = xPlus / sizeDiscretization;
 
-    //source of data for generations
-    // must be added by classes
-
     //results of modelling
     QSurfaceDataArray *_3dDataArray;
     QLineSeries *_2dDataArray;
@@ -110,7 +106,6 @@ protected:
     int _id;
 
     SourcePositionMode _sourcePositionMode;
-
 };
 
 #endif // BASECHARTITEM_H

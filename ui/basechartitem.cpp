@@ -148,10 +148,15 @@ QPointF BaseChartItem::getSourcePositionInCircle() const {
 }
 
 void BaseChartItem::update() {
-    if(_3dDataArray) delete _3dDataArray;
-    _3dDataArray = NULL;
-    if(_2dDataArray) delete _3dDataArray;
-    _2dDataArray = NULL;
+    if (_3dDataArray) {
+        delete _3dDataArray;
+    }
+    _3dDataArray = nullptr;
+
+    if (_2dDataArray) {
+        delete _3dDataArray;
+    }
+    _2dDataArray = nullptr;
 
     _max2d = 0;
     _max3d = 0;

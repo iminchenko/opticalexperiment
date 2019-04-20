@@ -1,4 +1,5 @@
 #include "diffractiogratingchartitem.h"
+#include <omp.h>
 
 DiffractioGratingChartItem::DiffractioGratingChartItem(
         int id, DiffractionGrating * diffractionGrating
@@ -16,6 +17,8 @@ DiffractioGratingChartItem::DiffractioGratingChartItem(
 }
 
 struct projectionPoint {
+    projectionPoint() {}
+
     projectionPoint(double x, std::complex<double> E_x, std::complex<double> E_y, double z) {
         this->x = x;
         this->E_x = E_x;
@@ -32,34 +35,37 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
     if (waves.size() == 0)
         return getDefault3dChart();
 
-    double
-        N1 = 10 * _source->getA() / MATH_LAMBDA,
-        N2 = 10 * _source->getW() / MATH_LAMBDA;
+    double N1 = 10 * _source->getA() / MATH_LAMBDA;
+    double N2 = 10 * _source->getW() / MATH_LAMBDA;
 
+    //discretization steps
     _stepX = std::abs(_maxX - _minX) / 100;
     _stepY = std::abs(_maxY - _minY) / 100;
 
-    _gradeStepY = _source->getB()/10;
-    _gradeStepX = _source->getB()/10;
+    _gradeStepX = _source->getB()/2;
+    _gradeStepY = _source->getB()/2;
 
-    std::vector<std::vector<projectionPoint>> *series = new std::vector<std::vector<projectionPoint>>();
+    size_t rowLength = static_cast<size_t> ((_maxX - _minX)/_stepX);
+    size_t rowsNum = static_cast<size_t> ((_maxY - _minY)/_stepY);
+
+    size_t pointsNum = rowsNum * rowLength;
+    projectionPoint* series = new projectionPoint[pointsNum];
+
     QPointF currentPoint = QPointF(_minX, _minY);
-    for(currentPoint.ry() = _minX; currentPoint.y() <= _maxY; currentPoint.ry() += _stepY) {
-         std::vector<projectionPoint> newRow = std::vector<projectionPoint>();
-         for(currentPoint.rx() = _minX; currentPoint.x() <= _maxX; currentPoint.rx() += _stepX) {
-             newRow.push_back(
-                  projectionPoint(
-                     currentPoint.x(),
-                     0, 0,
-                     currentPoint.y()
-                  )
-             );
-         }
-         series->push_back(newRow);
+    for (size_t i = 0; i < rowsNum; i++) {
+        currentPoint.rx() = _minX;
+        for (size_t j = 0; j < rowLength; j++) {
+            series[i * rowLength + j].x = currentPoint.x();
+            series[i * rowLength + j].z = currentPoint.y();
+            series[i * rowLength + j].E_x = 0;
+            series[i * rowLength + j].E_y = 0;
+
+            currentPoint.rx() += _stepX;
+        }
+        currentPoint.ry() += _stepY;
     }
 
     std::vector<QPointF> sources = getSourcesPosition(waves.size());
-
     currentPoint.rx() = _minX;
     currentPoint.ry() = _minY;
 
@@ -77,8 +83,18 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
     // border of current line of grade
     double currentBorder = firstLineBorder + _source->getB();
 
+    // for progress bar
+    int lastProgress = 0;
+
     // calculation of values lines-by-lines of diffraction grade
     for(currentPoint.ry() = firstLineBorder; currentPoint.y() <= lastLineBorder; currentPoint.ry() += _gradeStepY) {
+        if( (lastLineBorder - firstLineBorder)/(currentPoint.y() - firstLineBorder) > lastProgress) {
+            lastProgress = static_cast<int>(
+                        (lastLineBorder - firstLineBorder) / (currentPoint.y() - firstLineBorder)
+            );
+            qDebug() << lastProgress;
+        }
+
         // moving to the next line
         if(currentPoint.y() > currentBorder) {
             currentBorder += _source->getA();
@@ -107,27 +123,25 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
                      0,
                      MATH_K * l_i
                 );
-                std::complex<double>  coeff = std::exp(exp_power);
+                std::complex<double> coeff = std::exp(exp_power);
 
                 E_x += waves[i].ex() * coeff;
                 E_y += waves[i].ey() * coeff;
             }
             // calculating the tensity projection on shield of this point
-            for(auto iter = series->begin(); iter != series->end(); iter++) {
-                for(auto iter2 = (*iter).begin(); iter2 != (*iter).end(); iter2++) {
-                    // l_i - distance from point of grade to shield:
-                    double l_i = sqrt(
-                                pow(currentPoint.x() - (*iter2).x, 2) +
-                                pow(currentPoint.y() - (*iter2).z, 2) +
-                                pow(MATH_L, 2)
-                            );
-                    std::complex<double> exp_power = std::complex<double>(
-                         0,
-                         MATH_K * l_i
-                    );
-                    (*iter2).E_x += E_x / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power) * 100000.;
-                    (*iter2).E_y += E_y / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power) * 100000.;
-                }
+            for (int i = 0; i < pointsNum; i++) {
+                // l_i - distance from point of grade to shield:
+                double l_i = sqrt(
+                            pow(currentPoint.x() - series[i].x, 2) +
+                            pow(currentPoint.y() - series[i].z, 2) +
+                            pow(MATH_L, 2)
+                        );
+                std::complex<double> exp_power = std::complex<double>(
+                     0,
+                     MATH_K * l_i
+                );
+                series[i].E_x += E_x / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power);
+                series[i].E_y += E_y / (N1 * N2 * _source->getN3() * l_i) * std::exp(exp_power);
             }
         }
     }
@@ -135,25 +149,26 @@ QSurfaceDataArray* DiffractioGratingChartItem::fill3DSeries() {
     // forming result from projections
     _max3d = 0;
     QSurfaceDataArray *resultSeries = new QSurfaceDataArray();
-    for(auto iter = series->begin(); iter != series->end(); iter++) {
-        QSurfaceDataRow *newRow = new QSurfaceDataRow();
-        for(auto iter2 = (*iter).begin(); iter2 != (*iter).end(); iter2++) {
+
+    for(size_t i = 0; i < rowsNum; i++) {
+        QSurfaceDataRow *newRow = new QSurfaceDataRow(static_cast<int>(rowLength));
+        for(size_t j = 0; j < rowLength; j++) {
             // result coordinates of point
-            double I = (norm((*iter2).E_x) + norm((*iter2).E_x))* MATH_ALPHA * 10000000;
-            newRow->push_back(
-                 QSurfaceDataItem(
+            double I = (norm(series[i*rowLength + j].E_x) + norm(series[i*rowLength + j].E_y)) * MATH_ALPHA * 1000;
+            (*newRow)[j].setPosition(
                      QVector3D(
-                         static_cast<float>(iter2->x),
+                         static_cast<float>(series[i*rowLength + j].x),
                          static_cast<float>(I),
-                         static_cast<float>(iter2->z)
+                         static_cast<float>(series[i*rowLength + j].z)
                      )
-                 )
             );
             // calculating max intensivity
             _max3d = I > _max3d ? I : _max3d;
         }
         resultSeries->push_back(newRow);
     }
+
+    delete [] series;
     return resultSeries;
 }
 

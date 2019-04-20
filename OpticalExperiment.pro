@@ -6,7 +6,7 @@
 
 QT       += core gui
 QT       += charts
-QT += datavisualization
+QT       += datavisualization
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -110,4 +110,8 @@ FORMS += \
 RESOURCES += \
     recource.qrc
 
-win32: LIBS += -lopengl32
+win32: LIBS += \
+    -lopengl32 \
+    -fopenmp \
+    -msse3
+

@@ -11,6 +11,10 @@ CommandHandlerChart::CommandHandlerChart()
     _charts = new std::vector<std::shared_ptr<BaseChartItem>>();
 }
 
+CommandHandlerChart::~CommandHandlerChart() {
+    delete _charts;
+}
+
 void CommandHandlerChart::setWidget(ChartWidget *chartWidget) {
     _chartWidget = chartWidget;
     _chartWidget->setChartsArray(_charts);
@@ -73,7 +77,6 @@ bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
         _charts->erase(iter);
 
     }
-
     return true;
 }
 
