@@ -1,137 +1,158 @@
 #include "chartwidget.h"
 #include <exception>
 
-ChartWidget::ChartWidget(QWidget *parent)
-{
-    _containerLayout = new QVBoxLayout();
+ChartWidget::ChartWidget(QWidget *parent) : QScrollArea(parent) {
+    auto containerLayout = new QVBoxLayout();
 
-    //adding chart selector
+    // adding chart selector
     _chartSelector = new QComboBox();
-    connect( _chartSelector, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(changeChart(int)));
+    connect(_chartSelector,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(updateChart()));
 
-    QFormLayout *chartLayout = new QFormLayout();
+    auto *chartLayout = new QFormLayout();
     chartLayout->addRow("Select chart:", _chartSelector);
 
-    QGroupBox *chartsControls = new QGroupBox();
+    auto *chartsControls = new QGroupBox();
     chartsControls->setLayout(chartLayout);
     chartsControls->setTitle("Charts:");
-    _containerLayout->addWidget(chartsControls);
+    containerLayout->addWidget(chartsControls);
 
     // adding source mode selector
     _sourceModeSelector = new QComboBox();
-    _sourceModeSelector->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle" << "In Circle");
-    connect( _sourceModeSelector, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(sourceModeChanged(int)));
+    _sourceModeSelector->addItems(QStringList() << "(x, 0)"
+                                                << "(0, x)"
+                                                << "On Circle"
+                                                << "In Circle");
+    connect(_sourceModeSelector,
+            SIGNAL(currentIndexChanged(int)),
+            this,
+            SLOT(sourceModeChanged(int)));
 
-    QFormLayout *sourceModeLayout = new QFormLayout();
-    sourceModeLayout->addRow("Select source position mode:", _sourceModeSelector);
+    auto *sourceModeLayout = new QFormLayout();
+    sourceModeLayout->addRow("Select source position mode:",
+                             _sourceModeSelector);
 
-    QGroupBox *sourceModeControls = new QGroupBox();
+    auto *sourceModeControls = new QGroupBox();
     sourceModeControls->setLayout(sourceModeLayout);
     sourceModeControls->setTitle("Charts:");
-    _containerLayout->addWidget(sourceModeControls);
+    containerLayout->addWidget(sourceModeControls);
 
-    //adding scaling controlls
-    QFormLayout *scalingLayout = new QFormLayout();
+    // adding scaling controlls
+    auto *scalingLayout = new QFormLayout();
 
     _slider = new QSlider(Qt::Horizontal);
     _slider->setMaximum(100);
     _slider->setMinimum(10);
-    connect((QSlider*) _slider, SIGNAL(sliderReleased()), this, SLOT(updateScaleFactor()));
+    connect(static_cast<QSlider *>(_slider),
+            SIGNAL(sliderReleased()),
+            this,
+            SLOT(updateScaleFactor()));
 
     _maxLabel = new QLabel("0");
 
     scalingLayout->addRow("Scale factor:", _slider);
-    scalingLayout->addRow("Max value:",_maxLabel);
+    scalingLayout->addRow("Max value:", _maxLabel);
 
-    QGroupBox *maxValueBlock = new QGroupBox();
+    auto *maxValueBlock = new QGroupBox();
     maxValueBlock->setLayout(scalingLayout);
     maxValueBlock->setTitle("Scaling chart:");
-    _containerLayout->addWidget(maxValueBlock);
+    containerLayout->addWidget(maxValueBlock);
 
-    //adding xy - controls
+    // adding xy - controls
     _xMinEditField = new QLineEdit();
     _xMaxEditField = new QLineEdit();
     _yMinEditField = new QLineEdit();
     _yMaxEditField = new QLineEdit();
-    _xMinEditField->setText(QString::number(xDefaultMin));
-    _xMaxEditField->setText(QString::number(xDefaultMax));
-    _yMinEditField->setText(QString::number(yDefaultMin));
-    _yMaxEditField->setText(QString::number(yDefaultMax));
+    _xMinEditField->setText(QString::number(X_DEFAULT_MIN));
+    _xMaxEditField->setText(QString::number(X_DEFAULT_MAX));
+    _yMinEditField->setText(QString::number(Y_DEFAULT_MIN));
+    _yMaxEditField->setText(QString::number(Y_DEFAULT_MAX));
 
-    QFormLayout *sizeControlsLayout = new QFormLayout();
+    auto *sizeControlsLayout = new QFormLayout();
     sizeControlsLayout->addRow("xMin", _xMinEditField);
     sizeControlsLayout->addRow("xMax", _xMaxEditField);
     sizeControlsLayout->addRow("yMin", _yMinEditField);
     sizeControlsLayout->addRow("yMax", _yMaxEditField);
 
-    QPushButton *updateBtn = new QPushButton("Update");
+    auto *updateBtn = new QPushButton("Update");
     sizeControlsLayout->addWidget(updateBtn);
     connect(updateBtn, SIGNAL(clicked()), this, SLOT(updateSizes()));
 
-    QGroupBox *xyControls = new QGroupBox();
+    auto *xyControls = new QGroupBox();
     xyControls->setLayout(sizeControlsLayout);
     xyControls->setTitle("X,Y controls:");
-    _containerLayout->addWidget(xyControls);
+    containerLayout->addWidget(xyControls);
 
-    //adding charts
-    initChart3D();
-    initChart2D();
+    // adding charts
+    initChart3D(containerLayout);
+    initChart2D(containerLayout);
 
-    //adding scroll area
+    // adding scroll area
     _activatedContainer = new QFrame();
-    _activatedContainer->setLayout(_containerLayout);
+    _activatedContainer->setLayout(containerLayout);
 
     //_scrollArea = new QScrollArea(this);
     //_scrollArea->setWidget(_activatedContainer);
 
-    //_tabIdx = _tabWidget->addTab(_scrollArea,"Shield chart #" + QString::number(_id));
+    //_tabIdx = _tabWidget->addTab(_scrollArea,"Shield chart #" +
+    // QString::number(_id));
 
-    _deactivatedContainer = new QFrame();
-    QLayout* deactivatedLayout = new QVBoxLayout();
-    QLabel *deactivatedLabel = new QLabel("Для отображения результатов моделирования добавьте экран");
+    _deactivatedContainer      = new QFrame();
+    QLayout *deactivatedLayout = new QVBoxLayout();
+    QLabel *deactivatedLabel   = new QLabel(
+        "Для отображения результатов моделирования добавьте экран");
+    deactivatedLabel->setWordWrap(true);
+
     deactivatedLayout->addWidget(deactivatedLabel);
     _deactivatedContainer->setLayout(deactivatedLayout);
-    _deactivatedContainer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    _deactivatedContainer->setSizePolicy(
+        QSizePolicy::Preferred,
+        //                QSizePolicy::MinimumExpanding,
+        QSizePolicy::MinimumExpanding);
 
     _changableLayout = new QStackedLayout();
     _changableLayout->addWidget(_deactivatedContainer);
     _changableLayout->addWidget(_activatedContainer);
 
-    QWidget* inner = new QFrame();
+    auto *inner = new QFrame();
     inner->setLayout(_changableLayout);
-    //inner->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    //    inner->setSizePolicy(
+    //        QSizePolicy::MinimumExpanding,
+    //        QSizePolicy::MinimumExpanding
+    //    );
     this->setWidget(inner);
     this->setWidgetResizable(true);
 }
 
-void ChartWidget::initChart2D() {
+void ChartWidget::initChart2D(QLayout *containerLayout) {
     _chart = new QChart();
     //_chart->setTitle("Shield chart #" + QString::number(_id));
 
     _chart->addSeries(new QLineSeries(_chart));
 
     _chart->createDefaultAxes();
-    _chart->axisX()->setRange(xMinus, xPlus);
-    _chart->axisY()->setRange(0, 0.01);
+    _chart->axes(Qt::Horizontal).back()->setRange(xMinus, xPlus);
+    _chart->axes(Qt::Vertical).back()->setRange(0, 0.01);
     _chart->legend()->hide();
     _chart->setAnimationOptions(QChart::SeriesAnimations);
 
-    _chartView = new QChartView(_chart);
-    _chartView->setRenderHint(QPainter::Antialiasing, true);
-    _chartView->setMinimumHeight(CHART_MINIMUM_HEIGHT);
+    auto chartView = new QChartView(_chart);
+    chartView->setRenderHint(QPainter::Antialiasing, true);
+    chartView->setMinimumHeight(CHART_MINIMUM_HEIGHT);
 
-    _containerLayout->addWidget(_chartView);
+    containerLayout->addWidget(chartView);
 }
 
-void ChartWidget::initChart3D() {
+void ChartWidget::initChart3D(QLayout *containerLayout) {
     _surfaceW = new Q3DSurface(Q_NULLPTR, Q_NULLPTR);
 
-    _3dProxyFunc = new QSurfaceDataProxy();
-    _3dSeriesFunc = new QSurface3DSeries(_3dProxyFunc);
-    _3dSeriesFunc->setDrawMode(QSurface3DSeries::DrawSurface);
-    _surfaceW->addSeries(_3dSeriesFunc);
+    _3dProxyFunc      = new QSurfaceDataProxy();
+    auto Series3dFunc = new QSurface3DSeries(_3dProxyFunc);
+    Series3dFunc->setDrawMode(QSurface3DSeries::DrawSurface);
+    // Series3dFunc->setFlatShadingEnabled(true);
+    _surfaceW->addSeries(Series3dFunc);
 
     //_surfaceW->setTitle("Intensivity on shield #" + QString::number(_id));
 
@@ -139,9 +160,11 @@ void ChartWidget::initChart3D() {
     _surfaceW->axisX()->setLabelFormat("%.2f");
     _surfaceW->axisZ()->setLabelFormat("%.2f");
 
-    _surfaceW->axisX()->setRange(getXMin(), getXMax());
+    _surfaceW->axisX()->setRange(static_cast<float>(getXMin()),
+                                 static_cast<float>(getXMax()));
     _surfaceW->axisY()->setRange(0, 1);
-    _surfaceW->axisZ()->setRange(getYMin(), getYMax());
+    _surfaceW->axisZ()->setRange(static_cast<float>(getYMin()),
+                                 static_cast<float>(getYMax()));
 
     _surfaceW->axisX()->setLabelAutoRotation(90);
     _surfaceW->axisY()->setLabelAutoRotation(90);
@@ -163,7 +186,7 @@ void ChartWidget::initChart3D() {
 
     _surfaceW->setReflection(false);
 
-    //setting of pallete of colours
+    // setting of pallete of colours
     QLinearGradient gr;
     gr.setColorAt(0.0, Qt::blue);
     gr.setColorAt(0.33, QColor(Qt::green).darker(100));
@@ -171,34 +194,32 @@ void ChartWidget::initChart3D() {
     gr.setColorAt(1, Qt::red);
 
     _surfaceW->seriesList().at(0)->setBaseGradient(gr);
-    _surfaceW->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+    _surfaceW->seriesList().at(0)->setColorStyle(
+        Q3DTheme::ColorStyleRangeGradient);
 
-    //init graph with data
-    //QSurfaceDataArray *dataArray = getDefaultChart();
-    //_3dProxyFunc->resetArray(dataArray);
-
-    //creating container
-    _surfaceContainer = QWidget::createWindowContainer(_surfaceW);
-    _surfaceContainer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-    _surfaceContainer->setMinimumHeight(600);
+    // creating container
+    auto surfaceContainer = QWidget::createWindowContainer(_surfaceW);
+    surfaceContainer->setSizePolicy(QSizePolicy::Minimum,
+                                    QSizePolicy::Expanding);
+    surfaceContainer->setMinimumHeight(600);
     _surfaceW->setOrthoProjection(true);
     _surfaceW->setFlipHorizontalGrid(true);
 
-    //adding container element into layout
-    _containerLayout->addWidget(_surfaceContainer);
+    // adding container element into layout
+    containerLayout->addWidget(surfaceContainer);
 }
 
-
-void ChartWidget::updateSizes(){
+void ChartWidget::updateSizes() {
     BaseChartItem *chart = getActiveChart();
-    if(chart == NULL)
+    if (chart == nullptr) {
         return;
+    }
     try {
-        double
-                xMin = getXMin(),
-                xMax = getXMax(),
-                yMin = getYMin(),
-                yMax = getYMax();
+        double xMin = getXMin();
+        double xMax = getXMax();
+        double yMin = getYMin();
+        double yMax = getYMax();
+
         if (xMin >= xMax) {
             throw std::runtime_error("Uncorrect borders: x-min > x-max!");
         }
@@ -206,52 +227,43 @@ void ChartWidget::updateSizes(){
             throw std::runtime_error("Uncorrect borders: x-min > x-max!");
         }
         chart->setLocationSizes(xMin, xMax, yMin, yMax);
-    }
-    catch (std::runtime_error err) {
+    } catch (std::runtime_error err) {
         (new QErrorMessage(this))->showMessage(err.what());
     }
 
     // updating 3d chart
-    QSurfaceDataArray* series3d = chart->get3dSeries();
-    _3dProxyFunc->resetArray(series3d);
-    _surfaceW->axisX()->setRange(chart->getXMin(), chart->getXMax());
-    _surfaceW->axisZ()->setRange(chart->getYMin(), chart->getYMax());
-
-    _maxLabel->setText(QString::number(chart->getMax3dValue()));
+    update3dChart();
 }
 
 void ChartWidget::sourceModeChanged(int positionMode) {
     BaseChartItem *chart = getActiveChart();
-    if(chart == NULL)
+    if (chart == nullptr) {
         return;
-
-    SourcePositionMode mode = static_cast<SourcePositionMode>(positionMode);
+    }
+    auto mode = static_cast<SourcePositionMode>(positionMode);
 
     chart->setSourcePositionMode(mode);
 
     // updating 3d chart
-    QSurfaceDataArray* series3d = chart->get3dSeries();
-    _3dProxyFunc->resetArray(series3d);
-    _surfaceW->axisX()->setRange(chart->getXMin(), chart->getXMax());
-    _surfaceW->axisZ()->setRange(chart->getYMin(), chart->getYMax());
-
-    _maxLabel->setText(QString::number(chart->getMax3dValue()));
+    update3dChart();
 }
 
 void ChartWidget::updateScaleFactor() {
     BaseChartItem *chart = getActiveChart();
-    if(chart == NULL)
+    if (chart == nullptr) {
         return;
+    }
     int value = _slider->value();
-     _surfaceW->axisY()->setRange(0, (chart->getMax3dValue() * 100 / value));
+    _surfaceW->axisY()->setRange(
+        0, static_cast<float>(chart->getMax3dValue() * 100 / value));
 }
 
-
-BaseChartItem* ChartWidget::getActiveChart(){
-    int id = _chartSelector->currentIndex();
-    if (id == -1)
-        return NULL;
-    return  _charts->at(id).get();
+BaseChartItem *ChartWidget::getActiveChart() {
+    auto id = static_cast<int>(_chartSelector->currentIndex());
+    if (id == -1) {
+        return nullptr;
+    }
+    return _charts->at(static_cast<size_t>(id)).get();
 }
 
 void ChartWidget::deactivate() {
@@ -260,19 +272,16 @@ void ChartWidget::deactivate() {
 
 void ChartWidget::activate() {
     _changableLayout->setCurrentWidget(_activatedContainer);
-    if (_chartSelector->currentIndex() == -1)
+    if (_chartSelector->currentIndex() == -1) {
         _chartSelector->setCurrentIndex(0);
-        changeChart(0);
+        updateChart();
+    }
 }
 
-void ChartWidget::changeChart(int id) {
-   updateChart();
-}
-
-void ChartWidget::addChart(int id){
+void ChartWidget::addChart(int id) {
     _chartSelector->addItem(
-        "Shield #" + QString::number((_charts->at(id))->getId())
-    );
+        "Shield #"
+        + QString::number((_charts->at(static_cast<size_t>(id)))->getId()));
     if (_charts->size() == 1) {
         // first chart added
         activate();
@@ -283,57 +292,90 @@ void ChartWidget::addChart(int id){
 void ChartWidget::removeChart(int id) {
     if (_chartSelector->currentIndex() == id) {
         _chartSelector->removeItem(id);
-        if (_charts->size() == 0) {
+        if (_charts->empty()) {
             _chartSelector->setCurrentIndex(-1);
             deactivate();
         } else {
             _chartSelector->setCurrentIndex(0);
         }
-    } else{
+    } else {
         _chartSelector->removeItem(id);
     }
 }
 
-void ChartWidget::updateChart(){
+void ChartWidget::updateChart() {
     int id = _chartSelector->currentIndex();
     if (id == -1) {
-         deactivate();
-         return;
+        deactivate();
+        return;
     }
+    BaseChartItem *chart = (_charts->at(static_cast<size_t>(id))).get();
 
-    BaseChartItem* chart = (_charts->at(id)).get();
+    // updating charts
+    update3dChart(chart);
+    update2dChart(chart);
 
+    // updating modelling area size settings
+    updateAreaSizeSettings(chart);
+    // updating sources localization's mode
+    _sourceModeSelector->setCurrentIndex(chart->getSourcePositionMode());
+    qDebug() << chart->getSourcePositionMode();
+}
+
+void ChartWidget::update3dChart() {
+    BaseChartItem *chart = getActiveChart();
+    if (chart == nullptr) {
+        return;
+    }
+    // updating chart
+    update3dChart(chart);
+}
+
+void ChartWidget::update2dChart() {
+    BaseChartItem *chart = getActiveChart();
+    if (chart == nullptr) {
+        return;
+    }
+    // updating chart
+    update2dChart(chart);
+}
+
+void ChartWidget::update3dChart(BaseChartItem *chart) {
     // updating 3d chart
-    QSurfaceDataArray* series3d = chart->get3dSeries();
+    QSurfaceDataArray *series3d = chart->get3dSeries();
     _3dProxyFunc->resetArray(series3d);
-    _surfaceW->axisX()->setRange(chart->getXMin(), chart->getXMax());
-    _surfaceW->axisZ()->setRange(chart->getYMin(), chart->getYMax());
 
+    _surfaceW->axisX()->setRange(static_cast<float>(chart->getXMin()),
+                                 static_cast<float>(chart->getXMax()));
+    _surfaceW->axisZ()->setRange(static_cast<float>(chart->getYMin()),
+                                 static_cast<float>(chart->getYMax()));
+
+    updateScaleFactor();
     _maxLabel->setText(QString::number(chart->getMax3dValue()));
+}
 
+void ChartWidget::update2dChart(BaseChartItem *chart) {
     // updating 2d chart
     _chart->removeAllSeries();
-    auto series2d = dynamic_cast<QXYSeries*>(chart->get2dSeries());
+    auto series2d = dynamic_cast<QXYSeries *>(chart->get2dSeries());
     _chart->addSeries(series2d);
+}
 
+void ChartWidget::updateAreaSizeSettings(BaseChartItem *chart) {
     // updating modelling parameters
     _xMinEditField->setText(QString::number(chart->getXMin()));
     _xMaxEditField->setText(QString::number(chart->getXMax()));
     _yMinEditField->setText(QString::number(chart->getYMin()));
     _yMaxEditField->setText(QString::number(chart->getYMax()));
-
-    _sourceModeSelector->setCurrentIndex(chart->getSourcePositionMode());
-    //ToDo
-    //chart.getSourcePosition();
-
 }
 
-void ChartWidget::setChartsArray(std::vector<std::shared_ptr<BaseChartItem>> *charts){
+void ChartWidget::setChartsArray(
+    std::vector<std::shared_ptr<BaseChartItem>> *charts) {
     _charts = charts;
 }
 
-double ChartWidget::getXMin() {
-    bool ok = true;
+double ChartWidget::getXMin() const {
+    bool ok    = true;
     double res = _xMinEditField->text().toDouble(&ok);
     if (!ok) {
         throw std::runtime_error("Failed to parse x-min value");
@@ -341,8 +383,8 @@ double ChartWidget::getXMin() {
     return res;
 }
 
-double ChartWidget::getYMin() {
-    bool ok = true;
+double ChartWidget::getYMin() const {
+    bool ok    = true;
     double res = _yMinEditField->text().toDouble(&ok);
     if (!ok) {
         throw std::runtime_error("Failed to parse y-min value");
@@ -350,8 +392,8 @@ double ChartWidget::getYMin() {
     return res;
 }
 
-double ChartWidget::getXMax() {
-    bool ok = true;
+double ChartWidget::getXMax() const {
+    bool ok    = true;
     double res = _xMaxEditField->text().toDouble(&ok);
     if (!ok) {
         throw std::runtime_error("Failed to parse x-max value");
@@ -359,12 +401,11 @@ double ChartWidget::getXMax() {
     return res;
 }
 
-double ChartWidget::getYMax() {
-    bool ok = true;
+double ChartWidget::getYMax() const {
+    bool ok    = true;
     double res = _yMaxEditField->text().toDouble(&ok);
     if (!ok) {
         throw std::runtime_error("Failed to parse y-max value");
     }
     return res;
 }
-

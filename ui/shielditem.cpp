@@ -3,10 +3,8 @@
 
 #include "shielditem.h"
 
-ShieldItem::ShieldItem(QPointF pos,
-                       int id,
-                       QGraphicsItem *parent)
-    :ConstructorItem(pos, id, parent) {
+ShieldItem::ShieldItem(QPointF pos, int id, QGraphicsItem *parent)
+    : ConstructorItem(pos, id, parent) {
     addInputVertex();
 
     map properties;
@@ -17,14 +15,14 @@ ShieldItem::ShieldItem(QPointF pos,
 }
 
 void ShieldItem::paint(QPainter *painter,
-                       const QStyleOptionGraphicsItem*,
-                       QWidget*) {
+                       const QStyleOptionGraphicsItem *,
+                       QWidget *) {
     drawBox(painter);
 
     painter->setPen(QPen(getBorderColor(), getBorderWidth()));
     painter->setBrush(Qt::NoBrush);
 
     painter->drawPolygon(QPolygonF() << QPointF(-5, -14) << QPointF(-5, 6)
-                         << QPointF(5, 14) << QPointF(5, -6));
-    painter->drawText(QPointF(-23, -14), "#"+QString::number(getId()));
+                                     << QPointF(5, 14) << QPointF(5, -6));
+    painter->drawText(QPointF(-23, -14), "#" + QString::number(getId()));
 }

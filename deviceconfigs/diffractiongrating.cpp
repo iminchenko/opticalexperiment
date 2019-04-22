@@ -1,24 +1,22 @@
 #include "diffractiongrating.h"
 
-DiffractionGrating::DiffractionGrating(int id)
-    : Display (id)
-{
+DiffractionGrating::DiffractionGrating(int id) : Display(id) {
     setType(TYPE_DIFFRACTION_GRATING);
 }
 
-double DiffractionGrating::getA() {
+double DiffractionGrating::getA() const {
     return _a;
 }
 
-double DiffractionGrating::getB() {
+double DiffractionGrating::getB() const {
     return _b;
 }
 
-double DiffractionGrating::getW() {
+double DiffractionGrating::getW() const {
     return _W;
 }
 
-double DiffractionGrating::getN3() {
+double DiffractionGrating::getN3() const {
     return _N3;
 }
 

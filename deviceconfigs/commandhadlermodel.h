@@ -1,5 +1,5 @@
-#ifndef COMANDHADLERMODEL_H
-#define COMANDHADLERMODEL_H
+#pragma once
+
 #include <memory>
 
 #include "command/commandhandler.h"
@@ -21,5 +21,3 @@ private:
     bool refreshItem(pCommand cmnd);
      
 };
-
-#endif // COMANDHADLERMODEL_H

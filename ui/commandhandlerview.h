@@ -1,5 +1,5 @@
-#ifndef COMANDHANDLERVIEW_H
-#define COMANDHANDLERVIEW_H
+#pragma once
+
 #include <memory>
 #include <QGraphicsScene>
 #include <QPointF>
@@ -32,9 +32,7 @@ private:
     ConstructorItem *findItemWithId(int id);
 
 private:
-    QGraphicsScene  *_scene;
+    QGraphicsScene  *_scene = nullptr;
 
     QList<ConstructorItem *> _devices;
 };
-
-#endif // COMANDHANDLERVIEW_H

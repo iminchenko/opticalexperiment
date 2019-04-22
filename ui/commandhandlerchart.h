@@ -1,14 +1,15 @@
-#ifndef COMMANDHANDLERCHART_H
-#define COMMANDHANDLERCHART_H
-#include <memory>
+#pragma once
+
+#include "command/command.h"
 #include "command/commandhandler.h"
+#include "deviceconfigs/devicedefines.h"
 #include "ui/basechartitem.h"
 #include "ui/chartwidget.h"
 #include "utility/singleton.hpp"
-#include "deviceconfigs/devicedefines.h"
-#include "command/command.h"
+#include <memory>
 
-class CommandHandlerChart: CommandHandler, public Singleton<CommandHandlerChart> {
+class CommandHandlerChart : CommandHandler,
+                            public Singleton<CommandHandlerChart> {
 public:
     CommandHandlerChart();
     ~CommandHandlerChart();
@@ -25,8 +26,6 @@ private:
     bool removeShield(std::shared_ptr<Command> cmnd);
     void update();
 
-    ChartWidget* _chartWidget;
+    ChartWidget *_chartWidget = nullptr;
     std::vector<std::shared_ptr<BaseChartItem>> *_charts;
 };
-
-#endif // COMMANDHANDLERCHART_H

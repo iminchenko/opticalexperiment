@@ -56,13 +56,13 @@ SOURCES += \
     propertyobserver.cpp \
     utility/idgenerator.cpp \
     ui/commandhandlerchart.cpp \
-    ui/chartitem.cpp \
     ui/chartwidget.cpp \
     deviceconfigs/diffractiongrating.cpp \
     ui/diffractiongratingitem.cpp \
     ui/basechartitem.cpp \
-    ui/diffractiogratingchartitem.cpp \
-    utility/constructorserializer.cpp
+    utility/constructorserializer.cpp \
+    ui/shieldchartitem.cpp \
+    ui/diffractiongratingchartitem.cpp
 
 HEADERS += \
     command/command.h \
@@ -96,13 +96,13 @@ HEADERS += \
     propertyobserver.h \
     utility/idgenerator.h \
     ui/commandhandlerchart.h \
-    ui/chartitem.h \
     ui/chartwidget.h \
     deviceconfigs/diffractiongrating.h \
     ui/diffractiongratingitem.h \
     ui/basechartitem.h \
-    ui/diffractiogratingchartitem.h \
-    utility/constructorserializer.h
+    utility/constructorserializer.h \
+    ui/shieldchartitem.h \
+    ui/diffractiongratingchartitem.h
 
 FORMS += \
     ui/mainwindow.ui
@@ -110,8 +110,4 @@ FORMS += \
 RESOURCES += \
     recource.qrc
 
-win32: LIBS += \
-    -lopengl32 \
-    -fopenmp \
-    -msse3
-
+win32: LIBS += -lopengl32

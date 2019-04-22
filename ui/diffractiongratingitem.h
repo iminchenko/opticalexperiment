@@ -2,8 +2,7 @@
 
 #include "shielditem.h"
 
-class DiffractionGratingItem : public ShieldItem
-{
+class DiffractionGratingItem : public ShieldItem {
 public:
     DiffractionGratingItem(QPointF pos, int id, QGraphicsItem *parent = nullptr);
 
