@@ -19,6 +19,7 @@ using VarList = std::list<std::pair<std::string, double>>;
 enum deviceType {
     TYPE_LASER = -1,
     TYPE_SHIELD = -2,
+    TYPE_DIFFRACTION_GRATING = -3,
     TYPE_GENERIC = 0
 };
 

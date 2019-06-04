@@ -28,6 +28,10 @@ void InstrumentConfig::setTypeShield() {
     setType(TYPE_SHIELD);
 }
 
+void InstrumentConfig::setTypeDiffractionGrating() {
+    setType(TYPE_DIFFRACTION_GRATING);
+}
+
 void InstrumentConfig::setTypeGeneric() {
     setType(TYPE_GENERIC);
 

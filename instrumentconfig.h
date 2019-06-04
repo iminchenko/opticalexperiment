@@ -19,6 +19,7 @@ public slots:
     void setTypeLaser();
     void setTypeShield();
     void setTypeGeneric();
+    void setTypeDiffractionGrating();
 
 private:
     deviceType _type;

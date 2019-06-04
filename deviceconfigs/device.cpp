@@ -1,22 +1,19 @@
+#include <QDebug>
+
 #include "device.h"
 #include "deviceconfiglist.h"
 #include "utility/parser.h"
 
-using  std::vector;
+using std::vector;
 
-Device::Device() :
-    _changed(true),
-    _type(0),
-    _id(-1)
-{}
+Device::Device() : _changed(true), _type(0), _id(-1) {}
 
-Device::Device(int type, int id) 
-    : _connections((*DeviceConfigList::i())[type].getInputCount(), {nullptr, 0}),
-      _changed(true),
-      _type(type), 
-      _id(id),    
+Device::Device(int type, int id)
+    : _connections((*DeviceConfigList::i())[type].getInputCount(),
+                   {nullptr, 0}),
+      _changed(true), _type(type), _id(id),
       _concreteMatrix((*DeviceConfigList::i())[type].exprMatrix().rows(),
-                    (*DeviceConfigList::i())[type].exprMatrix().columns()),
+                      (*DeviceConfigList::i())[type].exprMatrix().columns()),
       _concreteVariables((*DeviceConfigList::i())[type].getVariables()),
       _waveCache((*DeviceConfigList::i())[type].getOutputCount()),
       _connectionCache((*DeviceConfigList::i())[type].getInputCount(), false) {
@@ -40,7 +37,7 @@ Waves Device::getWave(int output) const {
 void Device::setConnection(int input,
                            std::shared_ptr<Device> source,
                            int output) {
-    _changed = true;
+    _changed            = true;
     _connections[input] = Connection(source, output);
 }
 
@@ -67,8 +64,9 @@ bool Device::changed() const {
 
     int j = 0;
     for (const auto &i : _connections) {
-        if ((!i.device.expired() && i.device.lock()->changed())
-            || (i.device.expired() && _connectionCache[j++])) {
+        auto device = i.device.lock();
+        if ((device && device->changed())
+            || (device == nullptr && _connectionCache[j++])) {
             _changed = true;
             return true;
         }
@@ -83,14 +81,14 @@ void Device::updateWaveChache() const {
     }
 
     vector<Waves> inputWaves;
-
-    int j = 0;
-    for (const auto& connection : _connections) {
+    size_t k = 0;
+    for (const auto &connection : _connections) {
         if (!connection.device.expired()) {
-            _connectionCache[j++] = true;
-            inputWaves.push_back(connection.device.lock()->getWave(connection.output));
+            _connectionCache[k++] = true;
+            inputWaves.push_back(
+                connection.device.lock()->getWave(connection.output));
         } else {
-            _connectionCache[j++] = false;
+            _connectionCache[k++] = false;
             inputWaves.emplace_back();
         }
     }
@@ -131,14 +129,12 @@ void Device::updateWaveChache() const {
 void Device::updateMatrix() {
     for (size_t i = 0; i < _concreteMatrix.rows(); ++i) {
         for (size_t j = 0; j < _concreteMatrix.columns(); ++j) {
-            _concreteMatrix[i][j].real(
-                evaluateExprassion((*DeviceConfigList::i())[_type].exprMatrix()[i][j].first,
-                                   _concreteVariables)
-            );
-            _concreteMatrix[i][j].imag(
-                evaluateExprassion((*DeviceConfigList::i())[_type].exprMatrix()[i][j].second,
-                                   _concreteVariables)
-            );
+            _concreteMatrix[i][j].real(evaluateExprassion(
+                (*DeviceConfigList::i())[_type].exprMatrix()[i][j].first,
+                _concreteVariables));
+            _concreteMatrix[i][j].imag(evaluateExprassion(
+                (*DeviceConfigList::i())[_type].exprMatrix()[i][j].second,
+                _concreteVariables));
         }
     }
 }
@@ -149,4 +145,8 @@ int Device::getType() const {
 
 int Device::getId() const {
     return _id;
+}
+
+void Device::setType(int type) {
+    _type = type;
 }

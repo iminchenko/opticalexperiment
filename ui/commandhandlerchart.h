@@ -1,31 +1,31 @@
-#ifndef COMMANDHANDLERCHART_H
-#define COMMANDHANDLERCHART_H
+#pragma once
 
+#include "command/command.h"
+#include "command/commandhandler.h"
+#include "deviceconfigs/devicedefines.h"
+#include "ui/basechartitem.h"
+#include "ui/chartwidget.h"
+#include "utility/singleton.hpp"
 #include <memory>
 
-#include "command/commandhandler.h"
-#include "ui/chartview.h"
-#include "utility/singleton.hpp"
-#include "deviceconfigs/devicedefines.h"
-#include "command/command.h"
-
-class CommandHandlerChart: CommandHandler, public Singleton<CommandHandlerChart> {
+class CommandHandlerChart : CommandHandler,
+                            public Singleton<CommandHandlerChart> {
 public:
     CommandHandlerChart();
-    
-    void setTabWidget(QTabWidget *tabWidget);
+    ~CommandHandlerChart();
     bool handle(std::shared_ptr<Command> cmnd) override;
+    void setWidget(ChartWidget *chartWidget);
 
 private:
-    std::shared_ptr<ChartView> findItemWithId(int id);
-    QList<std::shared_ptr<ChartView>>::iterator findIterWithId(int id);
+    std::shared_ptr<BaseChartItem> findItemWithId(int id);
+    QList<std::shared_ptr<BaseChartItem>>::iterator findIterWithId(int id);
 
+    bool createDiffractionGrade(std::shared_ptr<Command> cmnd);
     bool createShield(std::shared_ptr<Command> cmnd);
+
     bool removeShield(std::shared_ptr<Command> cmnd);
     void update();
 
-    QTabWidget* _tabWidget;
-    QList<std::shared_ptr<ChartView>> _charts;
+    ChartWidget *_chartWidget = nullptr;
+    std::vector<std::shared_ptr<BaseChartItem>> *_charts;
 };
-
-#endif // COMMANDHANDLERCHART_H

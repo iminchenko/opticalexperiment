@@ -1,13 +1,21 @@
 #include "commandhandlerchart.h"
 #include "devicemanager.h"
+#include "ui/diffractiongratingchartitem.h"
+#include "ui/shieldchartitem.h"
 #include <QTabBar>
 
 CommandHandlerChart::CommandHandlerChart()
-    : CommandHandler(nullptr),
-      Singleton<CommandHandlerChart>(*this) {}
+    : CommandHandler(nullptr), Singleton<CommandHandlerChart>(*this) {
+    _charts = new std::vector<std::shared_ptr<BaseChartItem>>();
+}
 
-void CommandHandlerChart::setTabWidget(QTabWidget *tabWidget) {
-    _tabWidget = tabWidget;
+CommandHandlerChart::~CommandHandlerChart() {
+    delete _charts;
+}
+
+void CommandHandlerChart::setWidget(ChartWidget *chartWidget) {
+    _chartWidget = chartWidget;
+    _chartWidget->setChartsArray(_charts);
 }
 
 bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
@@ -16,60 +24,66 @@ bool CommandHandlerChart::handle(std::shared_ptr<Command> cmnd) {
         if (cmnd->data.ad.typeItemId == deviceType::TYPE_SHIELD) {
             return createShield(cmnd);
         }
+        if (cmnd->data.ad.typeItemId == deviceType::TYPE_DIFFRACTION_GRATING) {
+            return createDiffractionGrade(cmnd);
+        }
         return true;
     case TypeCommand::CMND_DELETE_DEVICE:
-        return removeShield(cmnd);
+        removeShield(cmnd);
+        [[fallthrough]];
     case TypeCommand::CMND_ADD_CONNECTION:
     case TypeCommand::CMND_REFRESH_DEVICE:
     case TypeCommand::CMND_CHANGE_VARIABLE:
     case TypeCommand::CMND_DELETE_CONNECTION:
         update();
         return true;
-    default:
-        return true;
     }
+    return true;
+}
+
+bool CommandHandlerChart::createDiffractionGrade(
+    std::shared_ptr<Command> cmnd) {
+    auto shield = dynamic_cast<DiffractionGrating *>(
+        DeviceManager::i()->getDeviceById(cmnd->data.ad.id).get());
+
+    auto chart = std::shared_ptr<BaseChartItem>(
+        new DiffractionGratingChartItem(cmnd->data.ad.id, shield));
+
+    _charts->push_back(chart);
+    _chartWidget->addChart(static_cast<int>(_charts->size() - 1));
+    return true;
 }
 
 bool CommandHandlerChart::createShield(std::shared_ptr<Command> cmnd) {
-    auto chart = std::make_shared<ChartView>(cmnd->data.ad.id, _tabWidget);
-    chart->update(X_MINUS, X_PLUS, X_PLUS / SIZE_DISCRETIZATION, [](double){return 0;});
-    _charts.push_back(chart);
+    auto shield = dynamic_cast<Display *>(
+        DeviceManager::i()->getDeviceById(cmnd->data.ad.id).get());
+
+    auto chart = std::shared_ptr<BaseChartItem>(
+        new ShieldChartItem(cmnd->data.ad.id, shield));
+
+    _charts->push_back(chart);
+    _chartWidget->addChart(static_cast<int>(_charts->size() - 1));
     return true;
 }
 
 bool CommandHandlerChart::removeShield(std::shared_ptr<Command> cmnd) {
-    auto iter = findIterWithId(cmnd->data.dd.id);
+    auto iter
+        = std::find_if(_charts->begin(),
+                       _charts->end(),
+                       [cmnd](std::shared_ptr<BaseChartItem> item) -> bool {
+                           return item->getId() == cmnd->data.dd.id;
+                       });
 
-    if (iter != _charts.end()) {
-        int tabIdx = (*iter)->getTabIndex();
-        _charts.erase(iter);
-
-        for (auto &chart : _charts) {
-            chart->updateTabIndexAfterRemovingTab(tabIdx);
-        }
+    if (iter != _charts->end()) {
+        _chartWidget->removeChart(iter - _charts->begin());
+        _charts->erase(iter);
     }
-
     return true;
 }
 
 void CommandHandlerChart::update() {
-    for (auto &chart : _charts) {
-        auto rawDevice = (DeviceManager::i()->getDeviceById(chart->getId()).get());
-        auto shield = dynamic_cast<Display*>(rawDevice);
-        chart->update(X_MINUS, X_PLUS, X_PLUS / SIZE_DISCRETIZATION,
-                [&shield](double x){return shield->getValue(x).real();});
-        chart->update3d([&shield](){return shield->getWave();});
+    for (auto chart : *(_charts)) {
+        chart->update();
     }
-}
-
-std::shared_ptr<ChartView> CommandHandlerChart::findItemWithId(int id) {
-    return *findIterWithId(id);
-}
-
-QList<std::shared_ptr<ChartView>>::iterator CommandHandlerChart::findIterWithId(int id) {
-    return std::find_if(_charts.begin(),
-                        _charts.end(),
-                        [id](auto cw) {
-                            return cw->getId() == id;
-                        });
+    _chartWidget->updateChart();
 }

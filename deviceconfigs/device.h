@@ -1,11 +1,11 @@
 #pragma once
 
 #include <complex>
-#include <string>
-#include <vector>
 #include <list>
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "matrix.h"
 #include "wave.h"
@@ -18,8 +18,8 @@ class Device {
         int output;
 
         Connection() = default;
-        Connection(std::shared_ptr<Device> dev, int out):
-        device(dev), output(out) {}
+        Connection(std::shared_ptr<Device> dev, int out)
+            : device(dev), output(out) {}
     };
 
 public:
@@ -38,10 +38,12 @@ public:
 
     int getType() const;
     int getId() const;
-protected:
+
     // был ли путь изменен => надо ли пересчитывать кэш
     bool changed() const;
 
+protected:
+    void setType(int type);
     std::vector<Connection> _connections;
 
     mutable bool _changed = true;
@@ -53,7 +55,7 @@ private:
 private:
     // базовая инфа об устройстве
     int _type = 0;
-    int _id = -1;
+    int _id   = -1;
 
     TransMatrix _concreteMatrix;
     VarList _concreteVariables;

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "constructoritem.h"
+#include "shielditem.h"
 
-class ShieldItem : public ConstructorItem {
+class DiffractionGratingItem : public ShieldItem {
 public:
-    ShieldItem(QPointF pos, int id, QGraphicsItem *parent = nullptr);
+    DiffractionGratingItem(QPointF pos, int id, QGraphicsItem *parent = nullptr);
 
     virtual void paint(QPainter *painter,
                        const QStyleOptionGraphicsItem *option,

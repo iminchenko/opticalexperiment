@@ -27,14 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
             InstrumentConfig::i(), SLOT(setTypeLaser()));
     connect(ui->actionShield, SIGNAL(toggled(bool)),
             InstrumentConfig::i(), SLOT(setTypeShield()));
+    connect(ui->actionDiffractionGrating, SIGNAL(toggled(bool)),
+            InstrumentConfig::i(), SLOT(setTypeDiffractionGrating()));
 
     auto p = new PropertyObserver(ui->tableWidget, this);
 
     connect(ui->graphicsView, SIGNAL(propertiesItemClicked(Properties*)),
             p, SLOT(loadProperties(Properties*)));
-    ui->cbMode->addItems(QStringList() << "(x, 0)" << "(0, x)" << "On Circle" << "In Circle");
-    connect( ui->cbMode, SIGNAL(currentIndexChanged(int)),
-            ParametersManager::i(), SLOT(setSourcePositionMode(int)));
 
     initDevices();
     initCommandPattern();
@@ -47,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     
     // ToDo: Скорее всего эту строчку куда-то нужно перенести
     CommandHandlerView::i()->setScene(ui->graphicsView->scene()); 
-    CommandHandlerChart::i()->setTabWidget(ui->tabWidget);
+    CommandHandlerChart::i()->setWidget(ui->chartWidget);
 }
 
 MainWindow::~MainWindow() {

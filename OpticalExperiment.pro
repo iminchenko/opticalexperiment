@@ -6,7 +6,7 @@
 
 QT       += core gui
 QT       += charts
-QT += datavisualization
+QT       += datavisualization
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -56,9 +56,13 @@ SOURCES += \
     propertyobserver.cpp \
     utility/idgenerator.cpp \
     ui/commandhandlerchart.cpp \
-    ui/chartview.cpp \
-    ui/parametersmanager.cpp \
-    utility/constructorserializer.cpp
+    ui/chartwidget.cpp \
+    deviceconfigs/diffractiongrating.cpp \
+    ui/diffractiongratingitem.cpp \
+    ui/basechartitem.cpp \
+    utility/constructorserializer.cpp \
+    ui/shieldchartitem.cpp \
+    ui/diffractiongratingchartitem.cpp
 
 HEADERS += \
     command/command.h \
@@ -92,9 +96,13 @@ HEADERS += \
     propertyobserver.h \
     utility/idgenerator.h \
     ui/commandhandlerchart.h \
-    ui/chartview.h \
-    ui/parametersmanager.h \
-    utility/constructorserializer.h
+    ui/chartwidget.h \
+    deviceconfigs/diffractiongrating.h \
+    ui/diffractiongratingitem.h \
+    ui/basechartitem.h \
+    utility/constructorserializer.h \
+    ui/shieldchartitem.h \
+    ui/diffractiongratingchartitem.h
 
 FORMS += \
     ui/mainwindow.ui
