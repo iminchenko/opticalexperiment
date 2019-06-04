@@ -1,13 +1,10 @@
 #include "shieldchartitem.h"
 
 ShieldChartItem::ShieldChartItem(int id, Display* source) {
-    _id          = id;
-    _3dDataArray = nullptr;
-    _2dDataArray = nullptr;
+    _id = id;
+    _source = source;
 
     qsrand(static_cast<size_t>(QTime::currentTime().second()));
-
-    _source = source;
 }
 
 bool ShieldChartItem::isSourceChanged() {

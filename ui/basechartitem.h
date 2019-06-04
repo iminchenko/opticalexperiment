@@ -81,12 +81,12 @@ protected:
 
     double randomDouble(double max) const;
 
-    // for overwriting
+    // for overloading
     virtual QSurfaceDataArray* fill3DSeries() = 0;
     virtual QLineSeries* fill2DSeries()       = 0;
     virtual bool isSourceChanged()            = 0;
 
-    // modelation settings:
+    // modeling  settings:
     double _maxX  = X_DEFAULT_MAX;
     double _minX  = X_DEFAULT_MIN;
     double _maxY  = Y_DEFAULT_MAX;
@@ -101,8 +101,8 @@ protected:
     double _step2d = xPlus / sizeDiscretization;
 
     // results of modelling
-    QSurfaceDataArray* _3dDataArray;
-    QLineSeries* _2dDataArray;
+    QSurfaceDataArray* _3dDataArray = nullptr;
+    QLineSeries* _2dDataArray = nullptr;
 
     // maximum values of series for scalling
     double _max3d = 0;

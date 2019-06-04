@@ -1,5 +1,18 @@
 #include "diffractiongratingchartitem.h"
 
+struct ProjectionPoint {
+    ProjectionPoint() : x(0), z(0), E_x(0), E_y(0) {}
+
+    ProjectionPoint(double x,
+                    std::complex<double> E_x,
+                    std::complex<double> E_y,
+                    double z)
+     : x(x), z(z), E_x(E_x), E_y(E_y){}
+
+    double x, z;
+    std::complex<double> E_x, E_y;
+};
+
 DiffractionGratingChartItem::DiffractionGratingChartItem(
     int id,
     DiffractionGrating* diffractionGrating) {
@@ -13,23 +26,6 @@ DiffractionGratingChartItem::DiffractionGratingChartItem(
     _stepX = std::abs(_maxX - _minX) / SHIELD_STEPS_X;
     _stepY = std::abs(_maxY - _minY) / SHIELD_STEPS_Y;
 }
-
-struct ProjectionPoint {
-    ProjectionPoint() : x(0), z(0), E_x(0), E_y(0) {}
-
-    ProjectionPoint(double x,
-                    std::complex<double> E_x,
-                    std::complex<double> E_y,
-                    double z) {
-        this->x   = x;
-        this->E_x = E_x;
-        this->E_y = E_y;
-        this->z   = z;
-    }
-
-    double x, z;
-    std::complex<double> E_x, E_y;
-};
 
 bool DiffractionGratingChartItem::isSourceChanged() {
     return _source->changed();
@@ -55,7 +51,7 @@ QSurfaceDataArray* DiffractionGratingChartItem::fill3DSeries() {
     auto rowsNum   = static_cast<size_t>((_maxY - _minY) / _stepY);
 
     size_t pointsNum = rowsNum * rowLength;
-    auto series      = new ProjectionPoint[pointsNum];
+    ProjectionPoint series[pointsNum];
 
     QPointF currentPoint = QPointF(_minX, _minY);
     for (size_t i = 0; i < rowsNum; i++) {
@@ -166,7 +162,6 @@ QSurfaceDataArray* DiffractionGratingChartItem::fill3DSeries() {
         resultSeries->push_back(newRow);
     }
 
-    delete[] series;
     return resultSeries;
 }
 
