@@ -16,8 +16,8 @@ QSurfaceDataArray* ShieldChartItem::fill3DSeries() {
     if (waves.empty()) {
         return getDefault3dChart();
     }
-    _stepX = std::abs(_maxX - _minX) / discritezationsStep;
-    _stepY = std::abs(_maxY - _minY) / discritezationsStep;
+    _stepX = std::abs(_maxX - _minX) / DISCRETIZATION_STEP;
+    _stepY = std::abs(_maxY - _minY) / DISCRETIZATION_STEP;
 
     // result matrix of intencivity
     auto dataArray = new QSurfaceDataArray();
