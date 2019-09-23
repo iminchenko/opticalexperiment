@@ -21,11 +21,11 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
+            - llvm-toolchain-xenial-8
           packages:
-            - clang-6.0
+            - clang-8
       env:
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+        - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
         - COMPILER_FLAGS="-DCMAKE_CXX_FLAGS=-Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic"
         - EXTRA_FLAGS=""
         - AFTER_BUILD=""
@@ -35,15 +35,15 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-6.0
+            - llvm-toolchain-xenial-8
           packages:
-            - clang-6.0
-            - clang-tidy-6.0
-            - clang-format-6.0
+            - clang-8
+            - clang-tidy-8
+            - clang-format-8
       env:
-        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+        - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
         - EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-        - AFTER_BUILD="clang-tidy-6.0 -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h *.hpp deviceconfigs/*.hpp ui/*.h utility/*.hpp command/*.hpp"
+        - AFTER_BUILD="clang-tidy-8 -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h *.hpp deviceconfigs/*.hpp ui/*.h utility/*.hpp command/*.hpp"
 
 before_install:
   # Qt
