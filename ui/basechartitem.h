@@ -9,10 +9,10 @@
 #include <QtDataVisualization/QSurface3DSeries>
 #include <QtDataVisualization/QSurfaceDataProxy>
 
-constexpr double xMinus                = -50;
-constexpr double xPlus                 = 50;
-constexpr short int sizeDiscretization = 500;
-constexpr int discritezationsStep      = 1e+3;
+constexpr double X_MINUS                = -50;
+constexpr double X_PLUS                 = 50;
+constexpr short int SIZE_DISCRETIZATION = 500;
+constexpr int DISCRETIZATION_STEP      = 1e+3;
 constexpr int CHART_MINIMUM_HEIGHT     = 175;
 
 constexpr double X_DEFAULT_MIN = -1e-4;
@@ -91,14 +91,14 @@ protected:
     double _minX  = X_DEFAULT_MIN;
     double _maxY  = Y_DEFAULT_MAX;
     double _minY  = Y_DEFAULT_MIN;
-    double _stepX = std::abs(_maxX - _minX) / discritezationsStep;
-    double _stepY = std::abs(_maxY - _minY) / discritezationsStep;
+    double _stepX = std::abs(_maxX - _minX) / DISCRETIZATION_STEP;
+    double _stepY = std::abs(_maxY - _minY) / DISCRETIZATION_STEP;
     int _stepsX   = static_cast<int>((_maxX - _minX) / _stepX);
     int _stepsY   = static_cast<int>((_maxY - _minY) / _stepY);
 
-    double _min2dX = xMinus;
-    double _max2dX = xPlus;
-    double _step2d = xPlus / sizeDiscretization;
+    double _min2dX = X_MINUS;
+    double _max2dX = X_PLUS;
+    double _step2d = X_PLUS / SIZE_DISCRETIZATION;
 
     // results of modelling
     QSurfaceDataArray* _3dDataArray = nullptr;

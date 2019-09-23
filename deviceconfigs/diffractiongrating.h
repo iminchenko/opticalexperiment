@@ -2,7 +2,7 @@
 
 #include "deviceconfigs/display.h"
 #include "wave.h"
-#include <math.h>
+#include <cmath>
 
 class DiffractionGrating : public Display {
 public:

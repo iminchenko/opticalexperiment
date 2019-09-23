@@ -133,7 +133,7 @@ void ChartWidget::initChart2D(QLayout *containerLayout) {
     _chart->addSeries(new QLineSeries(_chart));
 
     _chart->createDefaultAxes();
-    _chart->axes(Qt::Horizontal).back()->setRange(xMinus, xPlus);
+    _chart->axes(Qt::Horizontal).back()->setRange(X_MINUS, X_PLUS);
     _chart->axes(Qt::Vertical).back()->setRange(0, 0.01);
     _chart->legend()->hide();
     _chart->setAnimationOptions(QChart::SeriesAnimations);
