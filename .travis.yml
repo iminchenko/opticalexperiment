@@ -47,13 +47,13 @@ matrix:
 
 before_install:
   # Qt
-  - sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y
+  - sudo add-apt-repository ppa:beineri/opt-qt-5.11.0-xenial -y
   - sudo apt-get update
 
 install:
   # Qt
-  - sudo apt-get install qt510base qt510-meta-minimal qt510charts-no-lgpl qt510datavis3d-no-lgpl -y
-  - source /opt/qt510/bin/qt510-env.sh
+  - sudo apt-get install libgl-dev qt511base qt511-meta-minimal qt511charts-no-lgpl qt511datavis3d-no-lgpl -y
+  - source /opt/qt511/bin/qt511-env.sh
 
 script:
   - eval "${MATRIX_EVAL}"
