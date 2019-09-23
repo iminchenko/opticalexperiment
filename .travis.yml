@@ -43,7 +43,7 @@ matrix:
       env:
         - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
         - EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-        - AFTER_BUILD="clang-tidy-8 -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h *.hpp deviceconfigs/*.hpp ui/*.h utility/*.hpp command/*.hpp"
+        - AFTER_BUILD="clang-tidy-8 -p build/ *.cpp deviceconfigs/*.cpp ui/*.cpp utility/*.cpp command/*.cpp *.h deviceconfigs/*.h ui/*.h utility/*.h command/*.h ui/*.h utility/*.hpp"
 
 before_install:
   # Qt

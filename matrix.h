@@ -88,7 +88,7 @@ void Matrix<T>::removeAt(size_t index) {
 template<class T>
 void Matrix<T>::resize(size_t size) {
     if (_rows < size) {
-        _matrix.reserve((size_t)size);
+        _matrix.reserve(static_cast<size_t>(size));
         for (int i = size - _rows; i > 0; i--) {
             _matrix.push_back(std::vector<T>(size, 0));
         }
@@ -100,9 +100,9 @@ void Matrix<T>::resize(size_t size) {
             }
         }
 
-        _rows = _columns = (int)_matrix.size();
+        _rows = _columns = static_cast<int>(_matrix.size());
     } else if (_rows > size) {
-        _matrix.resize((size_t)size);
+        _matrix.resize(static_cast<size_t>(size));
         _rows = size;
         
         for (int i = 0; i < _rows; i++) {
